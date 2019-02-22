@@ -2,6 +2,12 @@
     x:Class="AngelBoard.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:AngelBoard">
+    xmlns:local="using:AngelBoard"
+    xmlns:converters="using:AngelBoard.Converters">
 
+    <Application.Resources>
+        
+        <!--  Converters  -->
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </Application.Resources>
 </Application>
