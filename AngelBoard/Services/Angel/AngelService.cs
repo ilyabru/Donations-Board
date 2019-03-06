@@ -10,11 +10,14 @@ namespace AngelBoard.Services
 {
     public class AngelService : IAngelService
     {
+        private readonly ISQLiteService _sqliteService;
         private SQLiteAsyncConnection conn;
 
-        public AngelService()
+        public AngelService(ISQLiteService sqliteService)
         {
-            conn = SQLiteService.GetConnection("angels.db");
+            _sqliteService = sqliteService;
+
+            conn = _sqliteService.GetConnection("angels.db");
 
             conn.CreateTableAsync<Session>().Wait();
             //conn.InsertAsync(new Session { CreateDate = DateTime.Now }).Wait();

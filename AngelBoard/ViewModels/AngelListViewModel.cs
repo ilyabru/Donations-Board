@@ -2,6 +2,7 @@
 using AngelBoard.Services;
 using AngelBoard.ViewModels.Base;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,12 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Core;
 
 namespace AngelBoard.ViewModels
 {
     public class AngelListViewModel : BaseViewModel
     {
         private readonly IAngelService _angelService;
+        private readonly IMessageService _messageService;
 
         private ObservableCollection<Angel> angels;
         private Angel selectedAngel;
@@ -22,20 +25,15 @@ namespace AngelBoard.ViewModels
 
         private bool isNew = true;
 
-        public AngelListViewModel()
-        {
-            _angelService = new AngelService();
-            InputAngel = new Angel();
-        }
-
-        //private async Task<AngelListViewModel> InitializeAsync()
-        //{
-        //    Angels = 
-        //}
-
-        public AngelListViewModel(IAngelService angelService)
+        public AngelListViewModel(IAngelService angelService,
+            IMessageService messageService)
         {
             _angelService = angelService;
+            _messageService = messageService;
+
+            InputAngel = new Angel();
+
+            Initialize();
         }
 
         public ObservableCollection<Angel> Angels
@@ -92,11 +90,13 @@ namespace AngelBoard.ViewModels
 
         private async Task OnSaveAngel()
         {
+
             if (IsNew)
             {
                 await _angelService.AddAngelAsync(InputAngel);
                 Angels.Add(InputAngel);
 
+                _messageService.Send(this, "NewAngelSaved", InputAngel);
             }
             else
             {
@@ -107,7 +107,13 @@ namespace AngelBoard.ViewModels
                 await _angelService.UpdateAngelAsync(InputAngel);
 
                 SelectedAngel = null; // reset listview
+
+                _messageService.Send(this, "AngelChanged", InputAngel);
             }
+
+
+            //IEventAggregator ea = new EventAggregator();
+            //ea.GetEvent<AngelMessage>().Publish(InputAngel);
 
             // Clear textboxes
             IsNew = true;
@@ -130,6 +136,15 @@ namespace AngelBoard.ViewModels
         {
             await _angelService.DeleteAngelAsync(SelectedAngel);
             Angels.Remove(SelectedAngel);
+        }
+
+        public async void Initialize()
+        {
+            IsBusy = true;
+
+            Angels = await _angelService.GetAngelsAsync();
+
+            IsBusy = false;
         }
     }
 }

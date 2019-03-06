@@ -3,9 +3,9 @@ using SQLite;
 
 namespace AngelBoard.Services
 {
-    static class SQLiteService
+    public class SQLiteService : ISQLiteService
     {
-        public static SQLiteAsyncConnection GetConnection(string dbPath)
+        public SQLiteAsyncConnection GetConnection(string dbPath)
         {
             return new SQLiteAsyncConnection(FileAccessHelper.GetLocalFilePath(dbPath));
         }

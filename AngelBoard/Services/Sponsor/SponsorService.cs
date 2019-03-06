@@ -10,11 +10,14 @@ namespace AngelBoard.Services
 {
     public class SponsorService : ISponsorService
     {
+        private readonly ISQLiteService _sqliteService;
         private SQLiteAsyncConnection conn;
 
-        public SponsorService()
+        public SponsorService(ISQLiteService sqliteService)
         {
-            conn = SQLiteService.GetConnection("angels.db");
+            _sqliteService = sqliteService;
+
+            conn = _sqliteService.GetConnection("angels.db");
 
             conn.CreateTableAsync<Sponsor>().Wait();
         }

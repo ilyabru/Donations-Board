@@ -4,12 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AngelBoard"
     xmlns:models="using:AngelBoard.Models"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     >
     <Page.Resources>
+        <!--Converters-->
+        <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="Green" FalseValue="Yellow" />
+
         <Style x:Key="AngelsFlipViewStyle" TargetType="FlipView">
             <Setter Property="Background" Value="{ThemeResource FlipViewBackground}"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -194,52 +200,89 @@
             </Setter>
         </Style>
     </Page.Resources>
-    
-    
-    <Grid>
+
+    <Frame x:Name="frame">
         <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Angel Board" />
-                <Button Click="AddEditAngel_Click">Add/Edit Contacts</Button>
-            </StackPanel>
-            <GridView ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}"
+            <Button VerticalAlignment="Top" Command="{x:Bind ViewModel.EditAngels}">Add/Edit Contacts</Button>
+            <GridView Grid.Row="1"
+                      ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
                       IsItemClickEnabled="True"
                       ItemClick="GridView_ItemClick"
                       HorizontalAlignment="Center">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="models:Angel">
-                        <Grid Width="300" Height="200" >
+                        <Grid x:Name="AngelGrid"
+                              Width="300" Height="200"
+                              Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}">
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            
-                            <TextBlock Text="{x:Bind Name}"     Grid.Row="0" FontSize="40"     HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock Text="{x:Bind Location}" Grid.Row="1"     FontSize="40"    HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock Text="{x:Bind Amount}" Grid.Row="2"   FontSize="40"    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                            <TextBlock Text="{x:Bind Name, Mode=OneWay}"     Foreground="Black"  Grid.Row="0" FontSize="40"     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"  Grid.Row="1"     FontSize="40"    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Bind Amount, Mode=OneWay}"   Foreground="Black"  Grid.Row="2"   FontSize="40"    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <!--<VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="ColorStates">
+                                    <VisualState>
+                                        <VisualState.StateTriggers>
+                                            <StateTrigger IsActive="{x:Bind IsViewed, Mode=OneWay}" />
+                                        </VisualState.StateTriggers>
+
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="AngelGrid"
+                                                            Storyboard.TargetProperty="(Grid.Background)(SolidColorBrush.Color)"
+                                                            From="Yellow" To="Green" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>-->
+
                         </Grid>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
-        </StackPanel>
-        <Popup x:Name="AngelPopup" IsLightDismissEnabled="True" SizeChanged="Page_SizeChanged">
-            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
+
+            <Popup x:Name="AngelPopup" IsLightDismissEnabled="True" SizeChanged="Page_SizeChanged">
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
                     Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-                <FlipView  Style="{StaticResource AngelsFlipViewStyle}" 
+                    <FlipView  Style="{StaticResource AngelsFlipViewStyle}" 
                            ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}" 
+                           SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
                            Height="500">
-                    <FlipView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Angel">
-                            <StackPanel>
-                                <TextBlock Text="{x:Bind Name}" />
-                                <TextBlock Text="{x:Bind Location}" />
-                                <TextBlock Text="{x:Bind Amount}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </FlipView.ItemTemplate>
-                </FlipView>
-            </Border>
-        </Popup>
-    </Grid>
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="SelectionChanged">
+                                <core:InvokeCommandAction Command="{x:Bind ViewModel.SelectionChanged}"
+                                                      InputConverter="{StaticResource SelectionChangedEventArgsConverter}"
+                                                      />
+
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        <FlipView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Angel">
+                                <Grid Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="{x:Bind Name}"     Grid.Row="0"    Foreground="Black"  FontSize="40"     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Bind Location}" Grid.Row="1"    Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Bind Amount}"   Grid.Row="2"    Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                </Border>
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PopupThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+            </Popup>
+        </StackPanel>
+    </Frame>
 </Page>

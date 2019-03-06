@@ -27,7 +27,7 @@ namespace AngelBoard.Views
     {
         public AngelListView()
         {
-            ViewModel = new AngelListViewModel();
+            ViewModel = ServiceLocator.Current.GetService<AngelListViewModel>();
             this.InitializeComponent();
         }
 
@@ -74,5 +74,6 @@ namespace AngelBoard.Views
             FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
             flyoutBase.ShowAt(senderElement);
         }
+
     }
 }

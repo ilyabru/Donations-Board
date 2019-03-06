@@ -3,11 +3,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AngelBoard"
-    xmlns:converters="using:AngelBoard.Converters">
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:myconverters="using:AngelBoard.Converters">
 
     <Application.Resources>
         
         <!--  Converters  -->
-        <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+
+        <myconverters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
     </Application.Resources>
 </Application>

@@ -1,4 +1,5 @@
-﻿using AngelBoard.ViewModels;
+﻿using AngelBoard.Services;
+using AngelBoard.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,8 +29,13 @@ namespace AngelBoard.Views
     {
         public MainPage()
         {
-            ViewModel = new MainPageViewModel();
-            this.InitializeComponent();
+            ViewModel = ServiceLocator.Current.GetService<MainPageViewModel>();
+
+            InitializeComponent();
+            InitlializeContext();
+            InitializeNavigation();
+
+
 
             AngelPopup.Height = 500;
 
@@ -39,16 +47,32 @@ namespace AngelBoard.Views
             coreTitleBar.ExtendViewIntoTitleBar = false;
         }
 
+
         public MainPageViewModel ViewModel { get; set; }
 
-        private void AddEditAngel_Click(object sender, RoutedEventArgs e)
+        private void InitlializeContext()
         {
-            this.Frame.Navigate(typeof(AngelListView), ViewModel.Angels);
+            var context = ServiceLocator.Current.GetService<IContextService>();
+            context.Initialize(Dispatcher, ApplicationView.GetForCurrentView().Id, CoreApplication.GetCurrentView().IsMain);
+        }
+
+        private void InitializeNavigation()
+        {
+            var navigationService = ServiceLocator.Current.GetService<INavigationService>();
+            navigationService.Initialize(frame);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ViewModel.Subscribe();
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (!AngelPopup.IsOpen) { AngelPopup.IsOpen = true; }
+            if (!AngelPopup.IsOpen)
+            {
+                AngelPopup.IsOpen = true;
+            }
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
