@@ -47,7 +47,6 @@ namespace AngelBoard.Views
             coreTitleBar.ExtendViewIntoTitleBar = false;
         }
 
-
         public MainPageViewModel ViewModel { get; set; }
 
         private void InitlializeContext()
@@ -60,11 +59,31 @@ namespace AngelBoard.Views
         {
             var navigationService = ServiceLocator.Current.GetService<INavigationService>();
             navigationService.Initialize(frame);
+            var appView = ApplicationView.GetForCurrentView();
+            appView.Consolidated += OnViewConsolidated;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel.Subscribe();
+            await ViewModel.LoadAsync();
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            ViewModel.Unsubscribe();
+        }
+
+        // TODO: move this and other common methods to a shellview
+        private void OnViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
+        {
+            ViewModel.Unsubscribe();
+            ViewModel = null;
+            Bindings.StopTracking();
+            var appView = ApplicationView.GetForCurrentView();
+            appView.Consolidated -= OnViewConsolidated;
+            ServiceLocator.DisposeCurrent();
+            //Window.Current.Close();
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -85,6 +104,11 @@ namespace AngelBoard.Views
 
             //AngelPopup.HorizontalOffset = point.X + hOffset;
             AngelPopup.VerticalOffset = point.Y + vOffset;
+        }
+
+        private void AngelPopup_Closed(object sender, object e)
+        {
+            gvAngels.SelectedItem = null;
         }
     }
 }

@@ -26,6 +26,7 @@ namespace AngelBoard
             NavigationService.Register<MainPageViewModel, MainPage>();
             NavigationService.Register<AngelListViewModel, AngelListView>();
             NavigationService.Register<ControlPanelViewModel, ControlPanelView>();
+            NavigationService.Register<SettingsViewModel, SettingsView>();
         }
     }
 }

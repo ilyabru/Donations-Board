@@ -26,14 +26,12 @@ namespace AngelBoard.ViewModels
         private bool isNew = true;
 
         public AngelListViewModel(IAngelService angelService,
-            IMessageService messageService)
+                                  IMessageService messageService)
         {
             _angelService = angelService;
             _messageService = messageService;
 
             InputAngel = new Angel();
-
-            Initialize();
         }
 
         public ObservableCollection<Angel> Angels
@@ -73,24 +71,17 @@ namespace AngelBoard.ViewModels
         public ICommand CancelEditAngel => new RelayCommand(OnCancelEditAngel);
         public ICommand DeleteAngel => new RelayCommand(async () => await OnDeleteAngel());
 
-        public override Task InitializeAsync(object navigationData)
+        public async Task LoadAsync()
         {
-            IsNew = true;
-
             IsBusy = true;
 
-            //Angels = await _angelService.GetAngelsAsync(); // TODO replace with navdata from main page?
-            Angels = (ObservableCollection<Angel>)navigationData;
-            InputAngel = new Angel();
+            Angels = await _angelService.GetAngelsAsync();
 
             IsBusy = false;
-
-            return base.InitializeAsync(navigationData);
         }
 
         private async Task OnSaveAngel()
         {
-
             if (IsNew)
             {
                 await _angelService.AddAngelAsync(InputAngel);
@@ -111,10 +102,6 @@ namespace AngelBoard.ViewModels
                 _messageService.Send(this, "AngelChanged", InputAngel);
             }
 
-
-            //IEventAggregator ea = new EventAggregator();
-            //ea.GetEvent<AngelMessage>().Publish(InputAngel);
-
             // Clear textboxes
             IsNew = true;
             InputAngel = new Angel();
@@ -123,7 +110,7 @@ namespace AngelBoard.ViewModels
         private void OnEditAngel()
         {
             IsNew = false;
-            InputAngel = (Angel)SelectedAngel.Clone();
+            InputAngel.Merge(SelectedAngel);
         }
 
         private void OnCancelEditAngel()
@@ -135,16 +122,10 @@ namespace AngelBoard.ViewModels
         private async Task OnDeleteAngel()
         {
             await _angelService.DeleteAngelAsync(SelectedAngel);
+            _messageService.Send(this, "AngelDeleted", SelectedAngel);
             Angels.Remove(SelectedAngel);
-        }
 
-        public async void Initialize()
-        {
-            IsBusy = true;
 
-            Angels = await _angelService.GetAngelsAsync();
-
-            IsBusy = false;
         }
     }
 }

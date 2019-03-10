@@ -7,10 +7,16 @@
     xmlns:myconverters="using:AngelBoard.Converters">
 
     <Application.Resources>
-        
-        <!--  Converters  -->
-        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/FlipView.xaml" />
+                <ResourceDictionary Source="/Styles/AdaptiveGridViewItemStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <myconverters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
+            <!--  Converters  -->
+            <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+
+            <myconverters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

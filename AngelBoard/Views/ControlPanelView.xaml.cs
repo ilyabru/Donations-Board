@@ -41,7 +41,7 @@ namespace AngelBoard.Views
 
         }
 
-        public ControlPanelViewModel ViewModel { get; }
+        public ControlPanelViewModel ViewModel { get; private set; }
 
         private void InitializeContext()
         {
@@ -54,6 +54,8 @@ namespace AngelBoard.Views
             _navigationService = ServiceLocator.Current.GetService<INavigationService>();
             _navigationService.Initialize(frame);
             frame.Navigated += OnFrameNavigated;
+            var appView = ApplicationView.GetForCurrentView();
+            appView.Consolidated += OnViewConsolidated;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -65,9 +67,15 @@ namespace AngelBoard.Views
 
         }
 
-        private void NvPanel_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        private void OnViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
         {
-            this.Frame.GoBack();
+            //ViewModel.Unsubscribe();
+            ViewModel = null;
+            //Bindings.StopTracking();
+            var appView = ApplicationView.GetForCurrentView();
+            appView.Consolidated -= OnViewConsolidated;
+            ServiceLocator.DisposeCurrent();
+            Window.Current.Close();
         }
 
         private void OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -78,7 +86,7 @@ namespace AngelBoard.Views
             }
             else if (args.IsSettingsSelected)
             {
-                //ViewModel.NavigateTo(typeof(SettingsViewModel));
+                ViewModel.NavigateTo(typeof(SettingsViewModel));
             }
         }
 
@@ -87,10 +95,19 @@ namespace AngelBoard.Views
             var targetType = NavigationService.GetViewModel(e.SourcePageType);
             switch (targetType.Name)
             {
+                case nameof(SettingsViewModel):
+                    ViewModel.SelectedItem = nvPanel.SettingsItem;
+                    break;
                 default:
                     ViewModel.SelectedItem = ViewModel.Items.Where(r => r.ViewModel == targetType).FirstOrDefault();
                     break;
             }
+            UpdateBackButton();
+        }
+
+        private void UpdateBackButton()
+        {
+            nvPanel.IsBackEnabled = _navigationService.CanGoBack;
         }
     }
 }

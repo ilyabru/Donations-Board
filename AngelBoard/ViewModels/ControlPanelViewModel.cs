@@ -10,7 +10,7 @@ namespace AngelBoard.ViewModels
 {
     public class ControlPanelViewModel : BaseViewModel
     {
-        private readonly NavigationItem AngelList = new NavigationItem("Angel List", typeof(AngelListViewModel));
+        private readonly NavigationItem AngelListItem = new NavigationItem("Angel List", typeof(AngelListViewModel));
 
         private INavigationService _navigationService;
 
@@ -43,19 +43,24 @@ namespace AngelBoard.ViewModels
 
         public void NavigateTo(Type viewModel)
         {
-            switch (viewModel.Name)
-            {
-                case nameof(AngelListViewModel):
-                    _navigationService.Navigate(viewModel);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            _navigationService.Navigate(viewModel);
+
+            //switch (viewModel.Name)
+            //{
+            //    case nameof(AngelListViewModel):
+            //        _navigationService.Navigate(viewModel);
+            //        break;
+            //    case nameof(SettingsViewModel):
+            //        _navigationService.Navigate(viewModel);
+            //        break;
+            //    default:
+            //        throw new NotImplementedException();
+            //}
         }
 
         private IEnumerable<NavigationItem> GetItems()
         {
-            yield return AngelList;
+            yield return AngelListItem;
         }
     }
 }

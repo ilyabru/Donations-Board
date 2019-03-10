@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using AngelBoard.Services;
 using AngelBoard.ViewModels;
+using GearVrController4Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.ViewManagement;
 
@@ -19,6 +20,7 @@ namespace AngelBoard
             serviceCollection.AddSingleton<IAngelService, AngelService>();
 
             serviceCollection.AddSingleton<IMessageService, MessageService>();
+            serviceCollection.AddSingleton<GearVrController>();
 
             serviceCollection.AddScoped<IContextService, ContextService>();
             serviceCollection.AddScoped<INavigationService, NavigationService>();
@@ -27,6 +29,7 @@ namespace AngelBoard
             serviceCollection.AddTransient<MainPageViewModel>();
             serviceCollection.AddTransient<ControlPanelViewModel>();
             serviceCollection.AddTransient<AngelListViewModel>();
+            serviceCollection.AddTransient<SettingsViewModel>();
 
             _rootServiceProvider = serviceCollection.BuildServiceProvider();
         }

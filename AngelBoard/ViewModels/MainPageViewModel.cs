@@ -25,6 +25,7 @@ namespace AngelBoard.ViewModels
         private ObservableCollection<Angel> angels;
         private Angel selectedAngel;
         private Sponsor selectedSponsor;
+        private bool isViewing = false;
 
         public MainPageViewModel(IAngelService angelService,
                                  IContextService contextService,
@@ -35,22 +36,7 @@ namespace AngelBoard.ViewModels
             _contextService = contextService;
             _navigationService = navigationService;
             _messageService = messageService;
-
-            Initialize();
-
         }
-
-        //private async Task<MainPageViewModel> InitializeAsync()
-        //{
-        //    Angels = await _angelService.GetAngelsAsync();
-        //    return this;
-        //}
-
-        //public static Task<MainPageViewModel> CreateAsync()
-        //{
-        //    var ret = new MainPageViewModel();
-        //    return ret.InitializeAsync();
-        //}
 
         public ObservableCollection<Angel> Angels
         {
@@ -61,7 +47,37 @@ namespace AngelBoard.ViewModels
         public Angel SelectedAngel
         {
             get => selectedAngel;
-            set => SetPropertyValue(ref selectedAngel, value);
+            set
+            {
+                // sets isViewed property when navigating the flipview
+                if (selectedAngel != null &&
+                    selectedAngel != value &&
+                    value != null && 
+                    isViewing == true)
+                {
+                    SelectedAngel.IsViewed = true;
+                }
+
+                SetPropertyValue(ref selectedAngel, value);
+            }
+        }
+
+
+        public bool IsViewing
+        {
+            get => isViewing;
+            set
+            {
+                // sets isViewed property when leaving flipview
+                if (isViewing == true && 
+                    value == false &&
+                    SelectedAngel != null)
+                {
+                    SelectedAngel.IsViewed = true;
+                }
+
+                SetPropertyValue(ref isViewing, value);
+            }
         }
 
         public Sponsor SelectedSponsor
@@ -70,17 +86,15 @@ namespace AngelBoard.ViewModels
             set => SetPropertyValue(ref selectedSponsor, value);
         }
 
-
         public ICommand EditAngels => new RelayCommand(async () => await OnEditAngels());
-        //public ICommand ItemTapped => new Command<Angel>(async (a) => await OnItemTapped(a));
-        public ICommand SelectionChanged => new RelayCommand<(IList<object>, IList<object>)>(async (s) => await OnSelectionChanged(s));
 
-        public async void Initialize()
+        public async Task LoadAsync()
         {
             IsBusy = true;
 
 
             Angels = await _angelService.GetAngelsAsync();
+            SelectedAngel = null;
             //SelectedSponsor =  await _sponsorService.GetSponsorAsync(Preferences.Get("selected_sponsor", -1));
             //Preferences.Clear();
 
@@ -92,23 +106,34 @@ namespace AngelBoard.ViewModels
             _messageService.Subscribe<AngelListViewModel, Angel>(this, OnAngelSaved);
         }
 
+        public void Unsubscribe()
+        {
+            _messageService.Unsubscribe(this);
+        }
+
         private async void OnAngelSaved(AngelListViewModel sender, string message, Angel changed)
         {
-            switch (message)
+            if (changed != null)
             {
-                case "NewAngelSaved":
-                    await _contextService.RunAsync(() =>
+                await _contextService.RunAsync(async () =>
+                {
+                    var savedAngel = await _angelService.GetAngelAsync(changed.Id);
+                    //int angelIndex = Angels.IndexOf(Angels.Where(a => a.Id == savedAngel.Id).FirstOrDefault());
+                    var listAngelIndex = Angels.IndexOf(Angels.Where(a => a.Id == changed.Id).FirstOrDefault());
+
+                    switch (message)
                     {
-                        Angels.Add((Angel)changed.Clone());
-                    });
-                    break;
-                case "AngelChanged":
-                    await _contextService.RunAsync(() =>
-                    {
-                        var angelIndex = Angels.IndexOf(Angels.Where(a => a.Id == changed.Id).First());
-                        Angels[angelIndex] = (Angel)changed.Clone();
-                    });
-                    break;
+                        case "NewAngelSaved":
+                            Angels.Add(savedAngel);
+                            break;
+                        case "AngelChanged":
+                            Angels[listAngelIndex] = savedAngel;
+                            break;
+                        case "AngelDeleted":
+                            Angels.RemoveAt(listAngelIndex);
+                            break;
+                    }
+                });
             }
         }
 
@@ -126,22 +151,6 @@ namespace AngelBoard.ViewModels
         private async Task OnItemTapped(Angel a)
         {
             //await NavigationService.NavigateToPopupAsync<AngelCarouselViewModel>(Angels);
-        }
-
-        private Task OnSelectionChanged((IList<object>, IList<object>) changedObjects)
-        {
-            var changedAngels = (newItem: (Angel)changedObjects.Item1.FirstOrDefault(),
-                oldItem: (Angel)changedObjects.Item2.FirstOrDefault());
-
-            if (changedAngels.newItem != null && changedAngels.oldItem != null)
-            {
-                if (changedAngels.oldItem.IsViewed == false)
-                {
-                    changedAngels.oldItem.IsViewed = true;
-                }
-            }
-
-            return Task.FromResult(false);
         }
     }
 }

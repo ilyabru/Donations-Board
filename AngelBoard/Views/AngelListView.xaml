@@ -12,7 +12,6 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <!--<RowDefinition Height="Auto" />-->
             <RowDefinition />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -22,11 +21,8 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!--<HyperlinkButton Grid.Row="0" Grid.ColumnSpan="2" Content="Click to go to Main Page" 
-                 Click="HyperlinkButton_Click"
-                 HorizontalAlignment="Center"/>-->
-
-        <ListView Grid.Row="0" ItemsSource="{x:Bind ViewModel.Angels}"
+        <ListView Grid.Row="0" 
+                  ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
                   Width="200">
             <ListView.ItemTemplate>
@@ -50,6 +46,8 @@
             <TextBox Text="{x:Bind ViewModel.InputAngel.Amount, Mode=TwoWay}"
                      PlaceholderText="Amount" 
                      Margin="10"/>
+            <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsNew, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}" 
+                          IsOn="{x:Bind ViewModel.InputAngel.IsViewed, Mode=TwoWay}" />
             <Button IsEnabled="{x:Bind ViewModel.IsNew, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                     Command="{x:Bind ViewModel.CancelEditAngel}"
                     HorizontalAlignment="Center"

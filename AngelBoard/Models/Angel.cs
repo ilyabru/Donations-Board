@@ -45,23 +45,21 @@ namespace AngelBoard.Models
             set => SetPropertyValue(ref isViewed, value);
         }
 
-        public Angel()
-            : this(string.Empty, string.Empty, string.Empty, false)
-        {
-
-        }
-
-        public Angel(string name, string location, string amount, bool isViewed)
-        {
-            Name = name;
-            Location = location;
-            Amount = amount;
-            IsViewed = isViewed;
-        }
-
         public object Clone()
         {
             return (Angel)MemberwiseClone();
+        }
+
+        public void Merge(Angel source)
+        {
+            if (source != null)
+            {
+                Id = source.Id;
+                Name = source.Name;
+                Location = source.Location;
+                Amount = source.Amount;
+                IsViewed = source.IsViewed;
+            }
         }
     }
 }

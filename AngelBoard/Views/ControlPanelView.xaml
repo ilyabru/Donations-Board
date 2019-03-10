@@ -12,29 +12,25 @@
 
     <Page.Resources>
         <DataTemplate x:Name="NavigationViewItem" x:DataType="viewmodels:NavigationItem">
-            <Grid Height="50">
-                <TextBlock VerticalAlignment="Center" 
-                           HorizontalAlignment="Center"
-                           Text="{x:Bind Label}" />
-            </Grid>
+            <TextBlock Text="{x:Bind Label}" />
         </DataTemplate>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <muxc:NavigationView x:Name="nvPanel"
-                             Header="Control Panel" 
+        <muxc:NavigationView x:Name="nvPanel" 
                              MenuItemsSource="{x:Bind ViewModel.Items}"
                              MenuItemTemplate="{StaticResource NavigationViewItem}"
+                             SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
                              PaneDisplayMode="Top"
-                             IsBackEnabled="True"
-                             SelectionChanged="OnSelectionChanged"
-                             BackRequested="NvPanel_BackRequested">
+                             IsBackEnabled="False"
+                             IsBackButtonVisible="Collapsed"
+                             SelectionChanged="OnSelectionChanged">
             <Grid>
-                <Frame x:Name="frame">
+                <Frame x:Name="frame" Margin="10">
                     <Frame.ContentTransitions>
                         <TransitionCollection>
                             <NavigationThemeTransition/>
