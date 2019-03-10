@@ -1,11 +1,14 @@
 ﻿using AngelBoard.Services;
 using AngelBoard.ViewModels;
+using GearVrController4Windows;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
+using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
@@ -27,6 +30,8 @@ namespace AngelBoard.Views
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private readonly GearVrController gvc;
+
         public MainPage()
         {
             ViewModel = ServiceLocator.Current.GetService<MainPageViewModel>();
@@ -35,7 +40,9 @@ namespace AngelBoard.Views
             InitlializeContext();
             InitializeNavigation();
 
-
+            gvc = ServiceLocator.Current.GetService<GearVrController>();
+            gvc.PropertyChanged += Gvc_PropertyChanged;
+            
 
             AngelPopup.Height = 500;
 
@@ -45,6 +52,30 @@ namespace AngelBoard.Views
 
 
             coreTitleBar.ExtendViewIntoTitleBar = false;
+        }
+
+        private void Gvc_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (gvc.TouchpadButton == true)
+            {
+                if (!AngelPopup.IsOpen)
+                {
+                    fvAngels.SelectedItem = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.Id).FirstOrDefault();
+                    if (fvAngels.SelectedItem != null)
+                        AngelPopup.IsOpen = true;
+                }
+                else
+                {
+                    if (fvAngels.SelectedIndex < ViewModel.Angels.Count - 1)
+                    {
+                        fvAngels.SetValue(FlipView.SelectedIndexProperty, fvAngels.SelectedIndex + 1);
+                    }
+                    else
+                    {
+                        AngelPopup.IsOpen = false;
+                    }
+                }
+            }
         }
 
         public MainPageViewModel ViewModel { get; set; }
@@ -67,6 +98,9 @@ namespace AngelBoard.Views
         {
             ViewModel.Subscribe();
             await ViewModel.LoadAsync();
+
+            var savedDeviceInfo = await DeviceInformation.CreateFromIdAsync("BluetoothLE#BluetoothLE5c:f3:70:87:c6:ee-7d:d0:15:ba:ba:2c"); // TODO: save this somewhere, don't hardcode
+            gvc.Create(savedDeviceInfo);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -79,7 +113,7 @@ namespace AngelBoard.Views
         {
             ViewModel.Unsubscribe();
             ViewModel = null;
-            Bindings.StopTracking();
+            //Bindings.StopTracking();
             var appView = ApplicationView.GetForCurrentView();
             appView.Consolidated -= OnViewConsolidated;
             ServiceLocator.DisposeCurrent();

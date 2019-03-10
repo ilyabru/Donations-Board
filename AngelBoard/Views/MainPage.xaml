@@ -80,7 +80,8 @@
                    Closed="AngelPopup_Closed"
                    IsOpen="{x:Bind ViewModel.IsViewing, Mode=TwoWay}">
 
-                <FlipView  Style="{StaticResource FlipViewStyle}" 
+                <FlipView  x:Name="fvAngels"
+                           Style="{StaticResource FlipViewStyle}" 
                            ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}" 
                            SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
                            Height="500"
