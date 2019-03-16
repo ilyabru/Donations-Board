@@ -99,8 +99,8 @@ namespace AngelBoard.Views
             ViewModel.Subscribe();
             await ViewModel.LoadAsync();
 
-            var savedDeviceInfo = await DeviceInformation.CreateFromIdAsync("BluetoothLE#BluetoothLE5c:f3:70:87:c6:ee-7d:d0:15:ba:ba:2c"); // TODO: save this somewhere, don't hardcode
-            gvc.Create(savedDeviceInfo);
+            //var savedDeviceInfo = await DeviceInformation.CreateFromIdAsync("BluetoothLE#BluetoothLE5c:f3:70:87:c6:ee-7d:d0:15:ba:ba:2c"); // TODO: save this somewhere, don't hardcode
+            //gvc.Create(savedDeviceInfo);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -143,6 +143,22 @@ namespace AngelBoard.Views
         private void AngelPopup_Closed(object sender, object e)
         {
             gvAngels.SelectedItem = null;
+        }
+
+        private void GvAngels_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            gvAngels.ScrollIntoView(e.AddedItems.FirstOrDefault());
+        }
+
+        // ensure only 4 rows of data exist
+        private void GvAngels_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            gvAngels.ItemHeight = e.NewSize.Height / 4;
+        }
+
+        private void KeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            args.Handled = true;
         }
     }
 }

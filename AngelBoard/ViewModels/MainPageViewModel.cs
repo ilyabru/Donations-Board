@@ -98,6 +98,9 @@ namespace AngelBoard.ViewModels
             //SelectedSponsor =  await _sponsorService.GetSponsorAsync(Preferences.Get("selected_sponsor", -1));
             //Preferences.Clear();
 
+            // navigates to control panel on startup
+            await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Angels);
+
             IsBusy = false;
         }
 

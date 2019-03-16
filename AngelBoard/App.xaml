@@ -11,6 +11,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/FlipView.xaml" />
                 <ResourceDictionary Source="/Styles/AdaptiveGridViewItemStyle.xaml" />
+                <ResourceDictionary Source="/Styles/GridViewStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--  Converters  -->

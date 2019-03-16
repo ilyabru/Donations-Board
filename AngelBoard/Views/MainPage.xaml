@@ -12,36 +12,49 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="LightSkyBlue"
+    KeyboardAcceleratorPlacementMode="Hidden"
     >
     <Page.Resources>
         <!--Converters-->
         <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="RoyalBlue" FalseValue="Yellow" />
-        
-    </Page.Resources>
 
+    </Page.Resources>
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Key="P" Modifiers="Control"
+                             Invoked="KeyboardAccelerator_Invoked">
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Invoked">
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.EditAngels}" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </KeyboardAccelerator>
+    </Page.KeyboardAccelerators>
     <Frame x:Name="frame">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Button  Command="{x:Bind ViewModel.EditAngels}">Add/Edit Contacts</Button>
             <controls:AdaptiveGridView ItemContainerStyle="{StaticResource AdaptiveGridViewItemStyle}" x:Name="gvAngels"
+                                       Style="{StaticResource GridViewStyle}"
                       Grid.Row="1"
                       ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}"
                       SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
                       IsItemClickEnabled="True"
                       ItemClick="GridView_ItemClick"
                       DesiredWidth="300"
+                                       
+                                       SizeChanged="GvAngels_SizeChanged"
+                                       SelectionChanged="GvAngels_SelectionChanged"
                       >
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="models:Angel">
                         <Grid x:Name="AngelGrid"
-                              Height="250"
-                              CornerRadius="25"
+                              
                               Margin="10"
+                              CornerRadius="10"
                               Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                              Padding="5"
+                              
                               BorderBrush="DarkRed"
                               BorderThickness="5">
                             <Grid.RowDefinitions>
