@@ -6,10 +6,15 @@
     xmlns:models="using:AngelBoard.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:controls="using:AngelBoard.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     x:Name="RootPage">
-
+    <Page.Resources>
+        <!--Converters-->
+        <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="RoyalBlue" FalseValue="Yellow" />
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -27,35 +32,68 @@
                   Width="200">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Angel">
-                    <StackPanel>
-                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" />
-                        <TextBlock Text="{x:Bind Location, Mode=OneWay}" />
-                        <TextBlock Text="{x:Bind Amount, Mode=OneWay}"/>
+                    <StackPanel Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}">
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" Foreground="Black" />
+                        <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"/>
+                        <TextBlock Text="{x:Bind Amount, Mode=OneWay}" Foreground="Black"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="12,2,12,0" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Padding" Value="12,2,12,0" />
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
 
         <StackPanel Grid.Row="0" Grid.Column="1">
             <TextBox Text="{x:Bind ViewModel.InputAngel.Name, Mode=TwoWay}"
-                     PlaceholderText="Name" 
-                     Margin="10"/>
+                     Margin="10" 
+                     Header="Name"/>
             <TextBox Text="{x:Bind ViewModel.InputAngel.Location, Mode=TwoWay}"
-                     PlaceholderText="Location" 
-                     Margin="10"/>
-            <TextBox Text="{x:Bind ViewModel.InputAngel.Amount, Mode=TwoWay}"
-                     PlaceholderText="Amount" 
-                     Margin="10"/>
+                     Margin="10" 
+                     Header="Location"/>
+            <StackPanel Orientation="Horizontal">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.InputAngel.IsMonthly, Mode=TwoWay}"
+                          Margin="10" 
+                          Header="Is Monthly?"
+                          OffContent="No"
+                          OnContent="Yes"/>
+                <controls:DecimalTextBox x:Name="txtMonthlyAmount"
+                     Visibility="{x:Bind ViewModel.InputAngel.IsMonthly, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                     Text="{x:Bind ViewModel.InputAngel.Amount, Converter={StaticResource DecimalDivisionConverter}, ConverterParameter=12, Mode=TwoWay}"
+                     Width="150"
+                     Margin="10" 
+                     Header="Amount Monthly"
+                     Format="0.00"/>
+                <TextBlock 
+                    Visibility="{x:Bind ViewModel.InputAngel.IsMonthly, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                    Text=" x 12 = " VerticalAlignment="Center"/>
+                <controls:DecimalTextBox x:Name="txtTotalAmount"
+                     Text="{x:Bind ViewModel.InputAngel.Amount, Mode=TwoWay, Converter={StaticResource DecimalConverter}}"
+                     Width="200"
+                     Margin="10" 
+                     Header="Amount"
+                     Format="0.00"/>
+            </StackPanel>
             <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsNew, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}" 
-                          IsOn="{x:Bind ViewModel.InputAngel.IsViewed, Mode=TwoWay}" />
+                          IsOn="{x:Bind ViewModel.InputAngel.IsViewed, Mode=TwoWay}" 
+                          Margin="10" 
+                          Header="Has been viewed?"
+                          OffContent=""
+                          OnContent="" />
+
+            <Button Command="{x:Bind ViewModel.SaveAngel}"
+                    HorizontalAlignment="Center"
+                    Margin="10"
+                    Content="Save" />
             <Button IsEnabled="{x:Bind ViewModel.IsNew, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                     Command="{x:Bind ViewModel.CancelEditAngel}"
                     HorizontalAlignment="Center"
-                    Margin="10">Cancel</Button>
-            <Button 
-                Command="{x:Bind ViewModel.SaveAngel}"
-                HorizontalAlignment="Center"
-                Margin="10">Save</Button>
+                    Margin="10"
+                    Content="Cancel" />
         </StackPanel>
 
         <Button Grid.Row="1" Grid.ColumnSpan="2" Content="Edit Angel" 

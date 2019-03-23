@@ -16,8 +16,11 @@
 
             <!--  Converters  -->
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
             <myconverters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
+            <myconverters:DecimalConverter x:Key="DecimalConverter" />
+            <myconverters:DecimalDivisionConverter x:Key="DecimalDivisionConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

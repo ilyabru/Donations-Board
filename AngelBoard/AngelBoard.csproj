@@ -119,13 +119,21 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Result.cs" />
+    <Compile Include="Common\ValidationConstraint.cs" />
     <Compile Include="Configuration\Startup.cs" />
+    <Compile Include="Controls\DecimalTextBox.cs" />
+    <Compile Include="Converters\DecimalConverter.cs" />
+    <Compile Include="Converters\DecimalDivisionConverter.cs" />
     <Compile Include="Converters\SelectionChangedEventArgsConverter.cs" />
     <Compile Include="Helpers\FileAccessHelper.cs" />
     <Compile Include="Helpers\ObservableObject.cs" />
     <Compile Include="Configuration\ServiceLocator.cs" />
+    <Compile Include="Services\Angel\MockAngelService.cs" />
     <Compile Include="Services\Context\ContextService.cs" />
     <Compile Include="Services\Context\IContextService.cs" />
+    <Compile Include="Services\Dialog\DialogService.cs" />
+    <Compile Include="Services\Dialog\IDialogService.cs" />
     <Compile Include="Services\Messaging\IMessageService.cs" />
     <Compile Include="Services\Messaging\MessageService.cs" />
     <Compile Include="Services\Navigation\INavigationService.cs" />
@@ -143,7 +151,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Angel.cs" />
-    <Compile Include="Models\DataSource.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Sponsor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -240,6 +247,7 @@
       <HintPath>..\..\..\..\..\Users\Ilya\Source\Repos\GearVrController4Windows\GearVrController4Windows\bin\x64\Debug\GearVrController4Windows.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

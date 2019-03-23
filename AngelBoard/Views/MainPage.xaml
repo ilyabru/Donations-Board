@@ -58,14 +58,19 @@
                               BorderBrush="DarkRed"
                               BorderThickness="5">
                             <Grid.RowDefinitions>
-                                <RowDefinition  Height="2*"/>
                                 <RowDefinition  Height="*"/>
-                                <RowDefinition  Height="2*"/>
+                                <RowDefinition  Height="*"/>
+                                <RowDefinition  Height="*"/>
                             </Grid.RowDefinitions>
-
-                            <TextBlock Text="{x:Bind Name, Mode=OneWay}"     Foreground="Black"  Grid.Row="0"     FontSize="28"     HorizontalAlignment="Center" VerticalAlignment="Bottom" TextWrapping="Wrap" TextAlignment="Center"/>
-                            <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"  Grid.Row="1"     FontSize="28"    HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock Text="{x:Bind Amount, Mode=OneWay}"   Foreground="Black"  Grid.Row="2"     FontSize="28"    HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
+                                <TextBlock Text="{x:Bind Name, Mode=OneWay}"  Width="350"   Foreground="Black"       FontSize="32"      TextAlignment="Center" TextWrapping="WrapWholeWords"/>
+                            </Viewbox>
+                            <Viewbox Grid.Row="1" VerticalAlignment="Center">
+                                <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"  Width="250"   FontSize="24"   TextAlignment="Center" />
+                            </Viewbox>
+                            <Viewbox Grid.Row="2" VerticalAlignment="Top">
+                                <TextBlock Text="{x:Bind Amount, Mode=OneWay}"   Foreground="Black"  Width="250"   FontSize="32"    TextAlignment="Center"/>
+                            </Viewbox>
                             <!--<VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="ColorStates">
                                     <VisualState>
@@ -102,7 +107,7 @@
                     <FlipView.ItemTemplate>
                         <DataTemplate x:DataType="models:Angel">
                             <Grid Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}" Margin="25"
-                                      CornerRadius="25"
+                                  CornerRadius="25"
                                   BorderBrush="DarkRed"
                                   BorderThickness="5">
                                 <Grid.RowDefinitions>
@@ -110,10 +115,15 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-
-                                <TextBlock Text="{x:Bind Name}"     Grid.Row="0"    Foreground="Black"  FontSize="40"     HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="{x:Bind Location}" Grid.Row="1"    Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="{x:Bind Amount}"   Grid.Row="2"    Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Viewbox  Grid.Row="0">
+                                    <TextBlock Text="{x:Bind Name}"    Width="300"    Foreground="Black"  FontSize="30"  TextAlignment="Center"    VerticalAlignment="Bottom"/>
+                                </Viewbox>
+                                <Viewbox  Grid.Row="1" >
+                                    <TextBlock Text="{x:Bind Location}"  Width="300"  Foreground="Black"  FontSize="40" TextAlignment="Center"  HorizontalAlignment="Center" />
+                                </Viewbox>
+                                <Viewbox Grid.Row="2">
+                                    <TextBlock Text="{x:Bind Amount}"     Width="300"   Foreground="Black"   FontSize="40" TextAlignment="Center" VerticalAlignment="Top"/>
+                                </Viewbox>
                             </Grid>
                         </DataTemplate>
                     </FlipView.ItemTemplate>

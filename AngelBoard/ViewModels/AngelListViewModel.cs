@@ -3,6 +3,7 @@ using AngelBoard.Services;
 using AngelBoard.ViewModels.Base;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +19,8 @@ namespace AngelBoard.ViewModels
     {
         private readonly IAngelService _angelService;
         private readonly IMessageService _messageService;
+        private readonly IDialogService _dialogService;
+        private readonly IContextService _contextService;
 
         private ObservableCollection<Angel> angels;
         private Angel selectedAngel;
@@ -26,12 +29,14 @@ namespace AngelBoard.ViewModels
         private bool isNew = true;
 
         public AngelListViewModel(IAngelService angelService,
-                                  IMessageService messageService)
+                                  IMessageService messageService,
+                                  IDialogService dialogService,
+                                  IContextService contextService)
         {
             _angelService = angelService;
             _messageService = messageService;
-
-            InputAngel = new Angel();
+            _dialogService = dialogService;
+            _contextService = contextService;
         }
 
         public ObservableCollection<Angel> Angels
@@ -67,7 +72,7 @@ namespace AngelBoard.ViewModels
         }
 
         public ICommand SaveAngel => new RelayCommand(async () => await OnSaveAngel());
-        public ICommand EditAngel => new RelayCommand(() => OnEditAngel());
+        public ICommand EditAngel => new RelayCommand(OnEditAngel);
         public ICommand CancelEditAngel => new RelayCommand(OnCancelEditAngel);
         public ICommand DeleteAngel => new RelayCommand(async () => await OnDeleteAngel());
 
@@ -76,40 +81,98 @@ namespace AngelBoard.ViewModels
             IsBusy = true;
 
             Angels = await _angelService.GetAngelsAsync();
+            InputAngel = new Angel();
 
             IsBusy = false;
         }
 
+        public void Subscribe()
+        {
+            _messageService.Subscribe<MainPageViewModel, Angel>(this, OnAngelUpdated);
+        }
+
+        public void Unsubscribe()
+        {
+            _messageService.Unsubscribe(this);
+        }
+
+        private async void OnAngelUpdated(MainPageViewModel sender, string message, Angel changed)
+        {
+            if (changed != null)
+            {
+                await _contextService.RunAsync(async () =>
+                {
+                    var savedAngel = await _angelService.GetAngelAsync(changed.Id);
+                    var viewedAngel = Angels.FirstOrDefault(a => a.Id == changed.Id);
+
+                    switch (message)
+                    {
+                        case "AngelViewed":
+                            savedAngel.IsViewed = true;
+                            await _angelService.UpdateAngelAsync(savedAngel);
+                            viewedAngel.IsViewed = true;
+                            break;
+                    }
+                });
+            }
+        }
+
+        protected IEnumerable<IValidationConstraint<Angel>> GetValidationConstraints(Angel model)
+        {
+            yield return new RequiredConstraint<Angel>("Name", model.Name);
+            yield return new RequiredConstraint<Angel>("Location", model.Location);
+            yield return new RequiredGreaterThanZeroConstraint<Angel>("Amount", model.Amount);
+        }
+
+        private Result Validate(Angel model)
+        {
+            foreach (var constraint in GetValidationConstraints(model))
+            {
+                if (!constraint.Validate())
+                {
+                    return Result.Error("Validation Error", constraint.Message);
+                }
+            }
+            return Result.Ok();
+        }
+
         private async Task OnSaveAngel()
         {
-            if (IsNew)
+            // SelectedAngel.Merge(InputAngel);
+            var result = Validate(InputAngel);
+            if (result.IsOk)
             {
-                await _angelService.AddAngelAsync(InputAngel);
-                Angels.Add(InputAngel);
+                if (IsNew)
+                {
+                    await _angelService.AddAngelAsync(InputAngel);
+                    Angels.Add(InputAngel);
 
-                _messageService.Send(this, "NewAngelSaved", InputAngel);
+                    _messageService.Send(this, "NewAngelSaved", InputAngel);
+                }
+                else
+                {
+                    await _angelService.UpdateAngelAsync(InputAngel);
+                    SelectedAngel.Merge(InputAngel);
+
+                    SelectedAngel = null; // reset listview
+
+                    _messageService.Send(this, "AngelChanged", InputAngel);
+                }
+
+                // Clear textboxes
+                IsNew = true;
+                InputAngel = new Angel();
             }
             else
             {
-                SelectedAngel.Name = InputAngel.Name;
-                SelectedAngel.Location = InputAngel.Location;
-                SelectedAngel.Amount = InputAngel.Amount;
-
-                await _angelService.UpdateAngelAsync(InputAngel);
-
-                SelectedAngel = null; // reset listview
-
-                _messageService.Send(this, "AngelChanged", InputAngel);
+                await _dialogService.ShowAsync(result.Message, $"{result.Description} Please, correct the error and try again.");
             }
-
-            // Clear textboxes
-            IsNew = true;
-            InputAngel = new Angel();
         }
 
         private void OnEditAngel()
         {
             IsNew = false;
+
             InputAngel.Merge(SelectedAngel);
         }
 
@@ -124,8 +187,6 @@ namespace AngelBoard.ViewModels
             await _angelService.DeleteAngelAsync(SelectedAngel);
             _messageService.Send(this, "AngelDeleted", SelectedAngel);
             Angels.Remove(SelectedAngel);
-
-
         }
     }
 }

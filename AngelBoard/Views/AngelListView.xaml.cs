@@ -35,7 +35,13 @@ namespace AngelBoard.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            ViewModel.Subscribe();
             await ViewModel.LoadAsync();
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            ViewModel.Unsubscribe();
         }
     }
 }

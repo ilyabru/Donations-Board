@@ -56,6 +56,7 @@ namespace AngelBoard.ViewModels
                     isViewing == true)
                 {
                     SelectedAngel.IsViewed = true;
+                    _messageService.Send(this, "AngelViewed", SelectedAngel);
                 }
 
                 SetPropertyValue(ref selectedAngel, value);
@@ -74,6 +75,7 @@ namespace AngelBoard.ViewModels
                     SelectedAngel != null)
                 {
                     SelectedAngel.IsViewed = true;
+                    _messageService.Send(this, "AngelViewed", SelectedAngel);
                 }
 
                 SetPropertyValue(ref isViewing, value);
@@ -121,8 +123,7 @@ namespace AngelBoard.ViewModels
                 await _contextService.RunAsync(async () =>
                 {
                     var savedAngel = await _angelService.GetAngelAsync(changed.Id);
-                    //int angelIndex = Angels.IndexOf(Angels.Where(a => a.Id == savedAngel.Id).FirstOrDefault());
-                    var listAngelIndex = Angels.IndexOf(Angels.Where(a => a.Id == changed.Id).FirstOrDefault());
+                    var listAngelIndex = Angels.IndexOf(Angels.FirstOrDefault(a => a.Id == changed.Id));
 
                     switch (message)
                     {
@@ -130,7 +131,7 @@ namespace AngelBoard.ViewModels
                             Angels.Add(savedAngel);
                             break;
                         case "AngelChanged":
-                            Angels[listAngelIndex] = savedAngel;
+                            Angels[listAngelIndex].Merge(savedAngel);
                             break;
                         case "AngelDeleted":
                             Angels.RemoveAt(listAngelIndex);

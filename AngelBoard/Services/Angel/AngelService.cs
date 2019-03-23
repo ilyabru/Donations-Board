@@ -24,19 +24,6 @@ namespace AngelBoard.Services
             conn.CreateTableAsync<Angel>().Wait();
         }
 
-        //basic validation to ensure values were entered
-        private void ValidateAngel(Angel angel)
-        {
-            if (string.IsNullOrEmpty(angel.Name))
-                throw new Exception("Valid name required");
-
-            if (string.IsNullOrEmpty(angel.Location))
-                throw new Exception("Valid location required");
-
-            if (string.IsNullOrEmpty(angel.Amount))
-                throw new Exception("Valid amount required");
-        }
-
         public async Task<ObservableCollection<Angel>> GetAngelsAsync()
         {
             var angels = await conn.Table<Angel>().ToListAsync();
@@ -45,9 +32,7 @@ namespace AngelBoard.Services
         }
 
         public async Task AddAngelAsync(Angel angel)
-        {
-            ValidateAngel(angel);
-            
+        {           
             await conn.InsertAsync(angel);
         }
 
@@ -58,8 +43,6 @@ namespace AngelBoard.Services
 
         public async Task UpdateAngelAsync(Angel angel)
         {
-            ValidateAngel(angel);
-
             await conn.UpdateAsync(angel);
         }
 

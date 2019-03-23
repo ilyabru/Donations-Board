@@ -5,11 +5,12 @@ using System;
 namespace AngelBoard.Models
 {
     [Table("angels")]
-    public class Angel : ObservableObject, ICloneable
+    public class Angel : ObservableObject
     {
         private string name;
         private string location;
-        private string amount;
+        private decimal amount;
+        private bool isMonthly;
         private bool isViewed;
 
         [PrimaryKey, AutoIncrement]
@@ -32,22 +33,23 @@ namespace AngelBoard.Models
             set => SetPropertyValue(ref location, value);
         }
 
-        [MaxLength(300)]
-        public string Amount
+        public decimal Amount
         {
             get => amount;
             set => SetPropertyValue(ref amount, value);
         }
 
+        public bool IsMonthly
+        {
+            get => isMonthly;
+            set => SetPropertyValue(ref isMonthly, value);
+        }
+
+
         public bool IsViewed
         {
             get => isViewed;
             set => SetPropertyValue(ref isViewed, value);
-        }
-
-        public object Clone()
-        {
-            return (Angel)MemberwiseClone();
         }
 
         public void Merge(Angel source)
