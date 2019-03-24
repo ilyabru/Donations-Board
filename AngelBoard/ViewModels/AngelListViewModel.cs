@@ -1,4 +1,5 @@
-﻿using AngelBoard.Models;
+﻿using AngelBoard.Configuration;
+using AngelBoard.Models;
 using AngelBoard.Services;
 using AngelBoard.ViewModels.Base;
 using GalaSoft.MvvmLight.Command;
@@ -80,15 +81,21 @@ namespace AngelBoard.ViewModels
         {
             IsBusy = true;
 
-            Angels = await _angelService.GetAngelsAsync();
+            await RefreshAsync();
             InputAngel = new Angel();
 
             IsBusy = false;
         }
 
+        public async Task RefreshAsync()
+        {
+            Angels = await _angelService.GetAngelsAsync();
+        }
+
         public void Subscribe()
         {
             _messageService.Subscribe<MainPageViewModel, Angel>(this, OnAngelUpdated);
+            _messageService.Subscribe<SettingsViewModel, Guid>(this, OnSessionChanged);
         }
 
         public void Unsubscribe()
@@ -115,6 +122,21 @@ namespace AngelBoard.ViewModels
                     }
                 });
             }
+        }
+
+        private async void OnSessionChanged(SettingsViewModel sender, string message, Guid changedSessionId)
+        {
+            await _contextService.RunAsync(async () =>
+            {
+                if (message == "SessionChanged")
+                {
+                    // make sure appsettings was updated even though it should be
+                    if (changedSessionId != AppSettings.Current.CurrentSession)
+                        AppSettings.Current.CurrentSession = changedSessionId;
+
+                    await RefreshAsync();
+                }
+            });
         }
 
         protected IEnumerable<IValidationConstraint<Angel>> GetValidationConstraints(Angel model)

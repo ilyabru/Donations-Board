@@ -50,8 +50,10 @@ namespace AngelBoard.Views
 
         public SettingsViewModel ViewModel { get; set; }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            await ViewModel.LoadAsync();
+
             ResultCollection = new ObservableCollection<DeviceInformationDisplay>();
 
             StartWatcher();

@@ -44,12 +44,8 @@ namespace AngelBoard.Views
             gvc.PropertyChanged += Gvc_PropertyChanged;
             
 
-            AngelPopup.Height = 500;
-
-
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
-
 
             coreTitleBar.ExtendViewIntoTitleBar = false;
         }
@@ -128,18 +124,6 @@ namespace AngelBoard.Views
             }
         }
 
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var transform = Window.Current.Content.TransformToVisual(AngelPopup);
-            Point point = transform.TransformPoint(new Point(0, 0)); // gets the window's (0,0) coordinate relative to the popup
-
-            //double hOffset = (Window.Current.Bounds.Width - this.ActualWidth) / 2;
-            double vOffset = (Window.Current.Bounds.Height - AngelPopup.ActualHeight) / 2;
-
-            //AngelPopup.HorizontalOffset = point.X + hOffset;
-            AngelPopup.VerticalOffset = point.Y + vOffset;
-        }
-
         private void AngelPopup_Closed(object sender, object e)
         {
             gvAngels.SelectedItem = null;
@@ -159,6 +143,26 @@ namespace AngelBoard.Views
         private void KeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             args.Handled = true;
+        }
+
+        private void AngelPopup_LayoutUpdated(object sender, object e)
+        {
+            if (fvAngels.ActualWidth == 0 && fvAngels.ActualHeight == 0)
+            {
+                return;
+            }
+
+            double ActualHorizontalOffset = this.AngelPopup.HorizontalOffset;
+            double ActualVerticalOffset = this.AngelPopup.VerticalOffset;
+
+            double NewHorizontalOffset = (Window.Current.Bounds.Width - fvAngels.ActualWidth) / 2;
+            double NewVerticalOffset = (Window.Current.Bounds.Height - fvAngels.ActualHeight) / 2;
+
+            if (ActualHorizontalOffset != NewHorizontalOffset || ActualVerticalOffset != NewVerticalOffset)
+            {
+                this.AngelPopup.HorizontalOffset = NewHorizontalOffset;
+                this.AngelPopup.VerticalOffset = NewVerticalOffset;
+            }
         }
     }
 }

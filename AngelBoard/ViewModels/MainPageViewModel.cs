@@ -1,4 +1,5 @@
-﻿using AngelBoard.Helpers;
+﻿using AngelBoard.Configuration;
+using AngelBoard.Helpers;
 using AngelBoard.Models;
 using AngelBoard.Services;
 using AngelBoard.ViewModels.Base;
@@ -24,7 +25,6 @@ namespace AngelBoard.ViewModels
 
         private ObservableCollection<Angel> angels;
         private Angel selectedAngel;
-        private Sponsor selectedSponsor;
         private bool isViewing = false;
 
         public MainPageViewModel(IAngelService angelService,
@@ -52,7 +52,7 @@ namespace AngelBoard.ViewModels
                 // sets isViewed property when navigating the flipview
                 if (selectedAngel != null &&
                     selectedAngel != value &&
-                    value != null && 
+                    value != null &&
                     isViewing == true)
                 {
                     SelectedAngel.IsViewed = true;
@@ -70,7 +70,7 @@ namespace AngelBoard.ViewModels
             set
             {
                 // sets isViewed property when leaving flipview
-                if (isViewing == true && 
+                if (isViewing == true &&
                     value == false &&
                     SelectedAngel != null)
                 {
@@ -82,23 +82,14 @@ namespace AngelBoard.ViewModels
             }
         }
 
-        public Sponsor SelectedSponsor
-        {
-            get => selectedSponsor;
-            set => SetPropertyValue(ref selectedSponsor, value);
-        }
-
         public ICommand EditAngels => new RelayCommand(async () => await OnEditAngels());
 
         public async Task LoadAsync()
         {
             IsBusy = true;
 
-
-            Angels = await _angelService.GetAngelsAsync();
+            await RefreshAsync();
             SelectedAngel = null;
-            //SelectedSponsor =  await _sponsorService.GetSponsorAsync(Preferences.Get("selected_sponsor", -1));
-            //Preferences.Clear();
 
             // navigates to control panel on startup
             await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Angels);
@@ -106,9 +97,30 @@ namespace AngelBoard.ViewModels
             IsBusy = false;
         }
 
+        public async Task<bool> RefreshAsync()
+        {
+            bool isOk = true;
+
+            try
+            {
+                Angels = await _angelService.GetAngelsAsync();
+            }
+            catch (Exception ex)
+            {
+                Angels = new ObservableCollection<Angel>();
+                // log error
+
+                isOk = false;
+                throw;
+            }
+
+            return isOk;
+        }
+
         public void Subscribe()
         {
             _messageService.Subscribe<AngelListViewModel, Angel>(this, OnAngelSaved);
+            _messageService.Subscribe<SettingsViewModel, Guid>(this, OnSessionChanged);
         }
 
         public void Unsubscribe()
@@ -132,6 +144,7 @@ namespace AngelBoard.ViewModels
                             break;
                         case "AngelChanged":
                             Angels[listAngelIndex].Merge(savedAngel);
+                            Angels[listAngelIndex].NotifyChanges();
                             break;
                         case "AngelDeleted":
                             Angels.RemoveAt(listAngelIndex);
@@ -139,6 +152,21 @@ namespace AngelBoard.ViewModels
                     }
                 });
             }
+        }
+
+        private async void OnSessionChanged(SettingsViewModel sender, string message, Guid changedSessionId)
+        {
+            await _contextService.RunAsync(async () =>
+            {
+                if (message == "SessionChanged")
+                {
+                    // make sure appsettings was updated even though it should be
+                    if (changedSessionId != AppSettings.Current.CurrentSession)
+                        AppSettings.Current.CurrentSession = changedSessionId;
+
+                    await RefreshAsync();
+                }
+            });
         }
 
         private void AddEditAngel(Angel angel)
@@ -150,11 +178,6 @@ namespace AngelBoard.ViewModels
         private async Task OnEditAngels()
         {
             await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Angels);
-        }
-
-        private async Task OnItemTapped(Angel a)
-        {
-            //await NavigationService.NavigateToPopupAsync<AngelCarouselViewModel>(Angels);
         }
     }
 }

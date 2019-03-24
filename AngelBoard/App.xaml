@@ -17,6 +17,7 @@
             <!--  Converters  -->
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:FormatStringConverter x:Key="FormatStringConverter"/>
 
             <myconverters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
             <myconverters:DecimalConverter x:Key="DecimalConverter" />

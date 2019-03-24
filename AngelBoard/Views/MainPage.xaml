@@ -18,38 +18,9 @@
         <!--Converters-->
         <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="RoyalBlue" FalseValue="Yellow" />
 
-    </Page.Resources>
-    <Page.KeyboardAccelerators>
-        <KeyboardAccelerator Key="P" Modifiers="Control"
-                             Invoked="KeyboardAccelerator_Invoked">
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Invoked">
-                    <core:InvokeCommandAction Command="{x:Bind ViewModel.EditAngels}" />
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </KeyboardAccelerator>
-    </Page.KeyboardAccelerators>
-    <Frame x:Name="frame">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <controls:AdaptiveGridView ItemContainerStyle="{StaticResource AdaptiveGridViewItemStyle}" x:Name="gvAngels"
-                                       Style="{StaticResource GridViewStyle}"
-                      Grid.Row="1"
-                      ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
-                      IsItemClickEnabled="True"
-                      ItemClick="GridView_ItemClick"
-                      DesiredWidth="300"
-                                       
-                                       SizeChanged="GvAngels_SizeChanged"
-                                       SelectionChanged="GvAngels_SelectionChanged"
-                      >
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Angel">
-                        <Grid x:Name="AngelGrid"
+        <DataTemplate x:Key="SmallAngelCardTemplate" x:DataType="models:Angel">
+            <UserControl>
+                <Grid x:Name="AngelGrid"
                               
                               Margin="10"
                               CornerRadius="10"
@@ -57,21 +28,21 @@
                               
                               BorderBrush="DarkRed"
                               BorderThickness="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition  Height="*"/>
-                                <RowDefinition  Height="*"/>
-                                <RowDefinition  Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                                <TextBlock Text="{x:Bind Name, Mode=OneWay}"  Width="350"   Foreground="Black"       FontSize="32"      TextAlignment="Center" TextWrapping="WrapWholeWords"/>
-                            </Viewbox>
-                            <Viewbox Grid.Row="1" VerticalAlignment="Center">
-                                <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"  Width="250"   FontSize="24"   TextAlignment="Center" />
-                            </Viewbox>
-                            <Viewbox Grid.Row="2" VerticalAlignment="Top">
-                                <TextBlock Text="{x:Bind Amount, Mode=OneWay}"   Foreground="Black"  Width="250"   FontSize="32"    TextAlignment="Center"/>
-                            </Viewbox>
-                            <!--<VisualStateManager.VisualStateGroups>
+                    <Grid.RowDefinitions>
+                        <RowDefinition  Height="*"/>
+                        <RowDefinition  Height="*"/>
+                        <RowDefinition  Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay}"  Width="350"   Foreground="Black"       FontSize="33"      TextAlignment="Center" TextWrapping="WrapWholeWords"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
+                        <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"  Width="350"   FontSize="28"   TextAlignment="Center" TextWrapping="WrapWholeWords"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="2" VerticalAlignment="Top" StretchDirection="DownOnly">
+                        <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" x:Name="txtAmount" Foreground="Black"  Width="350"   FontSize="32"    TextAlignment="Center" TextWrapping="WrapWholeWords"/>
+                    </Viewbox>
+                    <!--<VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="ColorStates">
                                     <VisualState>
                                         <VisualState.StateTriggers>
@@ -87,46 +58,91 @@
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>-->
 
-                        </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
+                </Grid>
+            </UserControl>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LargeAngelCardTemplate" x:DataType="models:Angel">
+            <Grid x:Name="AngelGrid"
+                  CornerRadius="10"
+                  Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                  Height="600"
+                  Width="1000"
+                  BorderBrush="DarkRed"
+                  BorderThickness="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition  Height="*"/>
+                    <RowDefinition  Height="*"/>
+                    <RowDefinition  Height="*"/>
+                </Grid.RowDefinitions>
+                <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
+                    <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                               Width="800"   
+                               Foreground="Black"       
+                               FontSize="64"     
+                               TextAlignment="Center" 
+                               TextWrapping="WrapWholeWords"/>
+                </Viewbox>
+                <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
+                    <TextBlock Text="{x:Bind Location, Mode=OneWay}" 
+                               Foreground="Black"  
+                               Width="800"   
+                               FontSize="52"   
+                               TextAlignment="Center"
+                               TextWrapping="WrapWholeWords"/>
+                </Viewbox>
+                <Viewbox Grid.Row="2" VerticalAlignment="Top" StretchDirection="DownOnly">
+                    <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" 
+                               Foreground="Black" 
+                               Width="800"   
+                               FontSize="64"    
+                               TextAlignment="Center"
+                               TextWrapping="WrapWholeWords"/>
+                </Viewbox>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Key="P" Modifiers="Control"
+                             Invoked="KeyboardAccelerator_Invoked">
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Invoked">
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.EditAngels}" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </KeyboardAccelerator>
+    </Page.KeyboardAccelerators>
+    <Frame x:Name="frame">
+        <Grid>
+            <controls:AdaptiveGridView 
+                x:Name="gvAngels"
+                ItemContainerStyle="{StaticResource AdaptiveGridViewItemStyle}" 
+                Style="{StaticResource GridViewStyle}"
+                ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
+                ItemTemplate="{StaticResource SmallAngelCardTemplate}"
+                IsItemClickEnabled="True"
+                ItemClick="GridView_ItemClick"
+                DesiredWidth="300"                   
+                SizeChanged="GvAngels_SizeChanged"
+                SelectionChanged="GvAngels_SelectionChanged"
+                      >
             </controls:AdaptiveGridView>
 
-            <Popup Grid.RowSpan="2" x:Name="AngelPopup" 
-                   IsLightDismissEnabled="True" 
-                   SizeChanged="Page_SizeChanged" 
+            <Popup x:Name="AngelPopup"
                    Closed="AngelPopup_Closed"
+                   LayoutUpdated="AngelPopup_LayoutUpdated"
                    IsOpen="{x:Bind ViewModel.IsViewing, Mode=TwoWay}">
-
+                <!--Style="{StaticResource FlipViewStyle}"-->
+                <!--ItemContainerStyle="{StaticResource FlipViewItemContainerStyle}"-->
                 <FlipView  x:Name="fvAngels"
-                           Style="{StaticResource FlipViewStyle}" 
+                           Style="{StaticResource FlipViewStyle}"
                            ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}" 
-                           SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
-                           Height="500"
-                           Background="Transparent">
-                    <FlipView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Angel">
-                            <Grid Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}" Margin="25"
-                                  CornerRadius="25"
-                                  BorderBrush="DarkRed"
-                                  BorderThickness="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Viewbox  Grid.Row="0">
-                                    <TextBlock Text="{x:Bind Name}"    Width="300"    Foreground="Black"  FontSize="30"  TextAlignment="Center"    VerticalAlignment="Bottom"/>
-                                </Viewbox>
-                                <Viewbox  Grid.Row="1" >
-                                    <TextBlock Text="{x:Bind Location}"  Width="300"  Foreground="Black"  FontSize="40" TextAlignment="Center"  HorizontalAlignment="Center" />
-                                </Viewbox>
-                                <Viewbox Grid.Row="2">
-                                    <TextBlock Text="{x:Bind Amount}"     Width="300"   Foreground="Black"   FontSize="40" TextAlignment="Center" VerticalAlignment="Top"/>
-                                </Viewbox>
-                            </Grid>
-                        </DataTemplate>
-                    </FlipView.ItemTemplate>
+                           SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"                        
+                           ItemTemplate="{StaticResource LargeAngelCardTemplate}"
+                           
+                           >
                 </FlipView>
                 <Popup.ChildTransitions>
                     <TransitionCollection>

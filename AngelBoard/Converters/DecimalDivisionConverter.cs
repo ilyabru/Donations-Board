@@ -9,6 +9,7 @@ namespace AngelBoard.Converters
 {
     public class DecimalDivisionConverter : IValueConverter
     {
+        // Divides the result coming in from source using the specified parameter
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is decimal m)
@@ -20,6 +21,7 @@ namespace AngelBoard.Converters
             return "";
         }
 
+        // Multiplies the result back to source using the specified parameter
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             int.TryParse((string)parameter, out int multiplier);

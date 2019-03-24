@@ -17,7 +17,7 @@ namespace AngelBoard.Models
         public int Id { get; set; }
 
         [Indexed]
-        public int SessionId { get; set; }
+        public Guid SessionId { get; set; }
 
         [MaxLength(300)]
         public string Name
@@ -45,21 +45,25 @@ namespace AngelBoard.Models
             set => SetPropertyValue(ref isMonthly, value);
         }
 
-
         public bool IsViewed
         {
             get => isViewed;
             set => SetPropertyValue(ref isViewed, value);
         }
 
+        [Ignore]
+        public string DisplayAmount => isMonthly ? $"12 x {(amount / 12):C2} = {amount:C2} MONTHLY" : $"{amount:C2}";
+
         public void Merge(Angel source)
         {
             if (source != null)
             {
                 Id = source.Id;
+                SessionId = source.SessionId;
                 Name = source.Name;
                 Location = source.Location;
                 Amount = source.Amount;
+                IsMonthly = source.IsMonthly;
                 IsViewed = source.IsViewed;
             }
         }

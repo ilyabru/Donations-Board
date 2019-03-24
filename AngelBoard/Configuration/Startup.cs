@@ -1,4 +1,5 @@
-﻿using AngelBoard.Services;
+﻿using AngelBoard.Configuration;
+using AngelBoard.Services;
 using AngelBoard.ViewModels;
 using AngelBoard.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,10 @@ namespace AngelBoard
         static public async Task ConfigureAsync()
         {
             ServiceLocator.Configure(_serviceCollection);
+
+            // Initialize Session
+            var sessionService = ServiceLocator.Current.GetService<ISessionService>();
+            AppSettings.Current.CurrentSession = await sessionService.InitializeSession(AppSettings.Current.CurrentSession);
 
             ConfigureNavigation();
         }

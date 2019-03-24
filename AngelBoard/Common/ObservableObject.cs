@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AngelBoard.Helpers
+namespace AngelBoard
 {
     public class ObservableObject : INotifyPropertyChanged
     {
@@ -21,6 +21,12 @@ namespace AngelBoard.Helpers
             this.RaisePropertyChanged(propertyName);
 
             return true;
+        }
+
+        public void NotifyChanges()
+        {
+            // notify all properties
+            RaisePropertyChanged("");
         }
     }
 }

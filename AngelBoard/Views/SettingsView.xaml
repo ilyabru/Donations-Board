@@ -9,33 +9,33 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <DataTemplate x:Key="ResultsListViewTemplate">
+        <DataTemplate x:Key="ResultsListViewTemplate" x:DataType="local:DeviceInformationDisplay">
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*" MinWidth="100"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Height="40" Width="40" Margin="5" VerticalAlignment="Top">
-                    <Image Source="{Binding Path=GlyphBitmapImage}"
+                    <Image Source="{x:Bind GlyphBitmapImage, Mode=OneWay}"
                            Stretch="UniformToFill"/>
                 </Border>
                 <Border Grid.Column="1" Margin="5">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Name:" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" TextWrapping="WrapWholeWords"/>
+                            <TextBlock Text="{x:Bind Name, Mode=OneWay}" FontWeight="Bold" TextWrapping="WrapWholeWords"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Id:" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding Path=Id}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Bind Id, Mode=OneWay}" TextWrapping="Wrap"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="CanPair:" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding Path=CanPair}"/>
+                            <TextBlock Text="{x:Bind CanPair, Mode=OneWay}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="IsPaired:" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding Path=IsPaired}"/>
+                            <TextBlock Text="{x:Bind IsPaired, Mode=OneWay}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -48,6 +48,10 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,15,0">
 
@@ -86,12 +90,36 @@
             <Border BorderBrush="AntiqueWhite" BorderThickness="1">
                 <ListView x:Name="resultsListView"
                           ItemTemplate="{StaticResource ResultsListViewTemplate}"
-                          ItemsSource="{x:Bind ResultCollection}"
+                          ItemsSource="{x:Bind ResultCollection, Mode=OneWay}"
                           SelectionChanged="ResultsListView_SelectionChanged"
                           SelectedItem="{x:Bind ViewModel.SelectedDevice, Mode=TwoWay}"
                           MaxHeight="450">
                 </ListView>
             </Border>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="The current Session is:"/>
+            <TextBlock Text="{x:Bind ViewModel.CurrentSession, Mode=OneWay}"/>
+            <Button Margin="5"
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.SessionLoad}"
+                    IsEnabled="{x:Bind ViewModel.IsSessionSelected, Mode=OneWay}">
+                Load Selected Session
+            </Button>
+            <ListView 
+                Height="450"
+                Margin="5"
+                BorderBrush="AntiqueWhite"
+                BorderThickness="1"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{x:Bind ViewModel.Sessions, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedSession, Mode=TwoWay}"/>
+            <Button Margin="5"
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.SessionCreate}">
+                Create New Session
+            </Button>
         </StackPanel>
     </Grid>
 </Page>
