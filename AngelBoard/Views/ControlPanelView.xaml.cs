@@ -58,13 +58,9 @@ namespace AngelBoard.Views
             appView.Consolidated += OnViewConsolidated;
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel.LoadAsync();
-
-           // var page = nvPanel.MenuItems.OfType<NavigationViewItem>().First();
-
-
         }
 
         private void OnViewConsolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)

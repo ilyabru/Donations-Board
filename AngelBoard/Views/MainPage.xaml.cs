@@ -1,24 +1,16 @@
-﻿using AngelBoard.Services;
+﻿using AngelBoard.Configuration;
+using AngelBoard.Services;
 using AngelBoard.ViewModels;
 using GearVrController4Windows;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
 using Windows.Devices.Enumeration;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -42,7 +34,7 @@ namespace AngelBoard.Views
 
             gvc = ServiceLocator.Current.GetService<GearVrController>();
             gvc.PropertyChanged += Gvc_PropertyChanged;
-            
+
 
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
@@ -72,6 +64,11 @@ namespace AngelBoard.Views
                     }
                 }
             }
+
+            if (gvc.BackButton == true)
+            {
+                AngelPopup.IsOpen = false;
+            }
         }
 
         public MainPageViewModel ViewModel { get; set; }
@@ -95,8 +92,20 @@ namespace AngelBoard.Views
             ViewModel.Subscribe();
             await ViewModel.LoadAsync();
 
-            //var savedDeviceInfo = await DeviceInformation.CreateFromIdAsync("BluetoothLE#BluetoothLE5c:f3:70:87:c6:ee-7d:d0:15:ba:ba:2c"); // TODO: save this somewhere, don't hardcode
-            //gvc.Create(savedDeviceInfo);
+            var ccId = AppSettings.Current.CurrentController;
+
+            if (!string.IsNullOrEmpty(ccId))
+            {
+                try
+                {
+                    var savedDeviceInfo = await DeviceInformation.CreateFromIdAsync(ccId); // TODO: add check that this is proper device ID
+                    gvc.Create(savedDeviceInfo);
+                }
+                catch (Exception ex)
+                {
+                    // log exception
+                }
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

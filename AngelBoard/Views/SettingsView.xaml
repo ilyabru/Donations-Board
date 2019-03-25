@@ -3,13 +3,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AngelBoard.Views"
+    xmlns:common="using:AngelBoard.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <DataTemplate x:Key="ResultsListViewTemplate" x:DataType="local:DeviceInformationDisplay">
+        <DataTemplate x:Key="ResultsListViewTemplate" x:DataType="common:DeviceInformationDisplay">
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -56,42 +57,43 @@
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,15,0">
 
             <TextBlock Text="Select a GearVR Controller" />
-
-            <VariableSizedWrapGrid Orientation="Horizontal" ItemWidth="60">
-                <Button x:Name="selectDevice"
+            <UserControl IsEnabled="{x:Bind ViewModel.IsPairing, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}">
+                <VariableSizedWrapGrid Orientation="Horizontal" ItemWidth="60">
+                    <Button x:Name="selectDevice"
+                            Margin="1"
+                            IsEnabled="{x:Bind ViewModel.IsDeviceSelected, Mode=OneWay}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            VariableSizedWrapGrid.ColumnSpan="3"
+                            Background="Green"
+                            Command="{x:Bind ViewModel.DeviceSelected}">
+                        Use Device
+                    </Button>
+                    <Button x:Name="pairButton"
                                 Margin="1"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                VariableSizedWrapGrid.ColumnSpan="3"
-                                Background="Green"
-                                Command="{x:Bind ViewModel.DeviceSelected}">
-                    Use Device
-                </Button>
-                <Button x:Name="pairButton"
-                                Margin="1"
-                                IsEnabled="False"
-                                Click="PairButton_Click"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                VariableSizedWrapGrid.ColumnSpan="3">
-                    Pair Selected Device
-                </Button>
-                <Button x:Name="unpairButton"
-                                Margin="1"
-                                IsEnabled="False"
-                                Click="UnpairButton_Click"
+                                IsEnabled="{x:Bind ViewModel.SelectedDevice.CanPair, Mode=OneWay, FallbackValue=false}"
+                                Command="{x:Bind ViewModel.PairDevice}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 VariableSizedWrapGrid.ColumnSpan="3">
-                    Unpair Selected Device
-                </Button>
-            </VariableSizedWrapGrid>
-
+                        Pair Selected Device
+                    </Button>
+                    <Button x:Name="unpairButton"
+                                Margin="1"
+                                IsEnabled="{x:Bind ViewModel.SelectedDevice.IsPaired, Mode=OneWay, FallbackValue=false}"
+                                Command="{x:Bind ViewModel.UnpairDevice}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                VariableSizedWrapGrid.ColumnSpan="3">
+                        Unpair Selected Device
+                    </Button>
+                </VariableSizedWrapGrid>
+            </UserControl>
             <Border BorderBrush="AntiqueWhite" BorderThickness="1">
                 <ListView x:Name="resultsListView"
+                          IsEnabled="{x:Bind ViewModel.IsPairing, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                           ItemTemplate="{StaticResource ResultsListViewTemplate}"
-                          ItemsSource="{x:Bind ResultCollection, Mode=OneWay}"
-                          SelectionChanged="ResultsListView_SelectionChanged"
+                          ItemsSource="{x:Bind ViewModel.BLEDeviceResultCollection, Mode=OneWay}"
                           SelectedItem="{x:Bind ViewModel.SelectedDevice, Mode=TwoWay}"
                           MaxHeight="450">
                 </ListView>

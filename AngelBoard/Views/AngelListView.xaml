@@ -38,7 +38,7 @@
                      Text="{x:Bind ViewModel.InputAngel.Amount, Converter={StaticResource DecimalDivisionConverter}, ConverterParameter=12, Mode=TwoWay}"
                      Width="150"
                      Margin="10" 
-                     Header="Amount Monthly"
+                     Header="Monthly Amount"
                      Format="0.00"/>
                 <TextBlock 
                     Visibility="{x:Bind ViewModel.InputAngel.IsMonthly, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"

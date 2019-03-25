@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\DeviceInformationDisplay.cs" />
     <Compile Include="Common\Result.cs" />
     <Compile Include="Common\ValidationConstraint.cs" />
     <Compile Include="Configuration\AppSettings.cs" />

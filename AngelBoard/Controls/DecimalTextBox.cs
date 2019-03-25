@@ -1,26 +1,12 @@
-﻿#region copyright
-// ******************************************************************
-// Copyright (c) Microsoft. All rights reserved.
-// This code is licensed under the MIT License (MIT).
-// THE CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-// INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
-// THE CODE OR THE USE OR OTHER DEALINGS IN THE CODE.
-// ******************************************************************
-#endregion
-
-using System;
-
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace AngelBoard.Controls
 {
+    /// <summary>
+    /// This textbox override allows only decimals numbers to be entered
+    /// Does not allow a value less than zero to be entered to be entered
+    /// </summary>
     public class DecimalTextBox : TextBox
     {
         public DecimalTextBox()
@@ -85,12 +71,12 @@ namespace AngelBoard.Controls
         private void OnBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
         {
             string str = args.NewText;
-            if (String.IsNullOrEmpty(str) || str == "-")
+            if (string.IsNullOrEmpty(str))
             {
                 return;
             }
 
-            args.Cancel = !Decimal.TryParse(str, out decimal m);
+            args.Cancel = !decimal.TryParse(str, out decimal m);
         }
     }
 }
