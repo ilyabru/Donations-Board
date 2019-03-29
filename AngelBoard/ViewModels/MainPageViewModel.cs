@@ -1,17 +1,16 @@
 ﻿using AngelBoard.Configuration;
-using AngelBoard.Helpers;
 using AngelBoard.Models;
 using AngelBoard.Services;
 using AngelBoard.ViewModels.Base;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+using GearVrController4Windows;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Devices.Enumeration;
 
 namespace AngelBoard.ViewModels
 {
@@ -21,7 +20,6 @@ namespace AngelBoard.ViewModels
         private IContextService _contextService;
         private INavigationService _navigationService;
         private IMessageService _messageService;
-        //private ISponsorService _sponsorService;
 
         private ObservableCollection<Angel> angels;
         private Angel selectedAngel;
@@ -32,16 +30,24 @@ namespace AngelBoard.ViewModels
                                  INavigationService navigationService,
                                  IMessageService messageService)
         {
+            GVRC = ServiceLocator.Current.GetService<GearVrController>();
+
             _angelService = angelService;
             _contextService = contextService;
             _navigationService = navigationService;
             _messageService = messageService;
         }
 
+        public GearVrController GVRC { get; set; }
+
         public ObservableCollection<Angel> Angels
         {
             get => angels;
-            set => SetPropertyValue(ref angels, value);
+            set
+            {
+                SetPropertyValue(ref angels, value);
+                RaisePropertyChanged(nameof(TotalAmount));
+            }
         }
 
         public Angel SelectedAngel
@@ -63,7 +69,6 @@ namespace AngelBoard.ViewModels
             }
         }
 
-
         public bool IsViewing
         {
             get => isViewing;
@@ -82,14 +87,31 @@ namespace AngelBoard.ViewModels
             }
         }
 
+        public decimal? TotalAmount => Angels?.Sum(a => a.Amount);
+
         public ICommand EditAngels => new RelayCommand(async () => await OnEditAngels());
 
         public async Task LoadAsync()
         {
             IsBusy = true;
 
+            // populate angel list
             await RefreshAsync();
-            SelectedAngel = null;
+
+            // try to retreive previously used controller
+            var ccId = AppSettings.Current.CurrentController;
+            if (!string.IsNullOrEmpty(ccId))
+            {
+                try
+                {
+                    var savedDeviceInfo = await DeviceInformation.CreateFromIdAsync(ccId); // TODO: add check that this is proper device ID
+                    await GVRC.Create(savedDeviceInfo);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
 
             // navigates to control panel on startup
             await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Angels);
@@ -101,9 +123,13 @@ namespace AngelBoard.ViewModels
         {
             bool isOk = true;
 
+            Angels = null;
+            SelectedAngel = null;
+
             try
             {
                 Angels = await _angelService.GetAngelsAsync();
+                SelectedAngel = null;
             }
             catch (Exception ex)
             {
@@ -113,6 +139,8 @@ namespace AngelBoard.ViewModels
                 isOk = false;
                 throw;
             }
+
+            //SelectedAngel = Angels.FirstOrDefault();
 
             return isOk;
         }
@@ -150,6 +178,7 @@ namespace AngelBoard.ViewModels
                             Angels.RemoveAt(listAngelIndex);
                             break;
                     }
+                    RaisePropertyChanged(nameof(TotalAmount));
                 });
             }
         }

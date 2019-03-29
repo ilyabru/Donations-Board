@@ -26,8 +26,9 @@ namespace AngelBoard.ViewModels
         private ObservableCollection<Angel> angels;
         private Angel selectedAngel;
         private Angel inputAngel;
-
         private bool isNew = true;
+
+        private ObservableCollection<string> locations;
 
         public AngelListViewModel(IAngelService angelService,
                                   IMessageService messageService,
@@ -72,6 +73,12 @@ namespace AngelBoard.ViewModels
             set { SetPropertyValue(ref isNew, value); }
         }
 
+        public ObservableCollection<string> Locations
+        {
+            get => locations;
+            set { SetPropertyValue(ref locations, value); }
+        }
+
         public ICommand SaveAngel => new RelayCommand(async () => await OnSaveAngel());
         public ICommand EditAngel => new RelayCommand(OnEditAngel);
         public ICommand CancelEditAngel => new RelayCommand(OnCancelEditAngel);
@@ -90,6 +97,12 @@ namespace AngelBoard.ViewModels
         public async Task RefreshAsync()
         {
             Angels = await _angelService.GetAngelsAsync();
+            await RefreshLocations();
+        }
+
+        public async Task RefreshLocations()
+        {
+            Locations = await _angelService.GetLocations();
         }
 
         public void Subscribe()
@@ -184,6 +197,7 @@ namespace AngelBoard.ViewModels
                 // Clear textboxes
                 IsNew = true;
                 InputAngel = new Angel();
+                await RefreshLocations();
             }
             else
             {
@@ -209,6 +223,7 @@ namespace AngelBoard.ViewModels
             await _angelService.DeleteAngelAsync(SelectedAngel);
             _messageService.Send(this, "AngelDeleted", SelectedAngel);
             Angels.Remove(SelectedAngel);
+            await RefreshLocations();
         }
     }
 }

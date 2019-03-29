@@ -24,9 +24,12 @@
             <TextBox Text="{x:Bind ViewModel.InputAngel.Name, Mode=TwoWay}"
                      Margin="10" 
                      Header="Name"/>
-            <TextBox Text="{x:Bind ViewModel.InputAngel.Location, Mode=TwoWay}"
+            <AutoSuggestBox x:Name="txtLocation"
+                     Text="{x:Bind ViewModel.InputAngel.Location, Mode=TwoWay}"
                      Margin="10" 
-                     Header="Location"/>
+                     TextChanged="TxtLocation_TextChanged"
+                     Header="Location"
+                     ItemsSource="{x:Bind ViewModel.Locations}"/>
             <StackPanel Orientation="Horizontal">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.InputAngel.IsMonthly, Mode=TwoWay}"
                           Margin="10" 
@@ -54,8 +57,8 @@
                           IsOn="{x:Bind ViewModel.InputAngel.IsViewed, Mode=TwoWay}" 
                           Margin="10" 
                           Header="Has been viewed?"
-                          OffContent=""
-                          OnContent="" />
+                          OffContent="No"
+                          OnContent="Yes" />
 
             <Button Command="{x:Bind ViewModel.SaveAngel}"
                     HorizontalAlignment="Center"

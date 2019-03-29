@@ -43,5 +43,34 @@ namespace AngelBoard.Views
         {
             ViewModel.Unsubscribe();
         }
+
+        private void TxtLocation_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                var suggestions = SearchControls(sender.Text);
+
+                if (suggestions.Count > 0)
+                    sender.ItemsSource = suggestions;
+                else
+                    sender.IsSuggestionListOpen = false;
+            }
+        }
+
+        private List<string> SearchControls(string query)
+        {
+            var suggestions = new List<string>();
+
+            var matchingItems = ViewModel.Locations.Where(
+                l => l.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0);
+
+            foreach (var item in matchingItems)
+            {
+                suggestions.Add(item);
+            }
+
+            return suggestions.OrderByDescending(i => i.StartsWith(query, StringComparison.CurrentCultureIgnoreCase)).ThenBy(i => i).ToList();
+        }
+
     }
 }

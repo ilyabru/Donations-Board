@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AngelBoard.Configuration;
@@ -50,6 +51,13 @@ namespace AngelBoard.Services
         public async Task DeleteAngelAsync(Angel angel)
         {
             await conn.DeleteAsync(angel);
+        }
+
+        public async Task<ObservableCollection<string>> GetLocations()
+        {
+            var locations = await conn.QueryAsync<Angel>("SELECT DISTINCT Location FROM angels");
+
+            return new ObservableCollection<string>(locations.Select(a => a.Location));
         }
     }
 }

@@ -17,11 +17,12 @@
             <!--  Converters  -->
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-            <converters:FormatStringConverter x:Key="FormatStringConverter"/>
+            <converters:StringFormatConverter x:Key="StringFormatConverter"/>
 
             <myconverters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
             <myconverters:DecimalConverter x:Key="DecimalConverter" />
             <myconverters:DecimalDivisionConverter x:Key="DecimalDivisionConverter" />
+            <myconverters:StringToUpperConverter x:Key="StringToUpperConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

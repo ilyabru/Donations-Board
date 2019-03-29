@@ -22,8 +22,6 @@ namespace AngelBoard.Views
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private readonly GearVrController gvc;
-
         public MainPage()
         {
             ViewModel = ServiceLocator.Current.GetService<MainPageViewModel>();
@@ -31,10 +29,6 @@ namespace AngelBoard.Views
             InitializeComponent();
             InitlializeContext();
             InitializeNavigation();
-
-            gvc = ServiceLocator.Current.GetService<GearVrController>();
-            gvc.PropertyChanged += Gvc_PropertyChanged;
-
 
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
@@ -44,7 +38,7 @@ namespace AngelBoard.Views
 
         private void Gvc_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (gvc.TouchpadButton == true)
+            if (ViewModel.GVRC.TouchpadButton == true)
             {
                 if (!AngelPopup.IsOpen)
                 {
@@ -65,7 +59,7 @@ namespace AngelBoard.Views
                 }
             }
 
-            if (gvc.BackButton == true)
+            if (ViewModel.GVRC.BackButton == true)
             {
                 AngelPopup.IsOpen = false;
             }
@@ -91,21 +85,7 @@ namespace AngelBoard.Views
         {
             ViewModel.Subscribe();
             await ViewModel.LoadAsync();
-
-            var ccId = AppSettings.Current.CurrentController;
-
-            if (!string.IsNullOrEmpty(ccId))
-            {
-                try
-                {
-                    var savedDeviceInfo = await DeviceInformation.CreateFromIdAsync(ccId); // TODO: add check that this is proper device ID
-                    gvc.Create(savedDeviceInfo);
-                }
-                catch (Exception ex)
-                {
-                    // log exception
-                }
-            }
+            ViewModel.GVRC.PropertyChanged += Gvc_PropertyChanged;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -14,5 +14,7 @@ namespace AngelBoard.Services
         Task AddAngelAsync(Angel angel);
         Task UpdateAngelAsync(Angel angel);
         Task DeleteAngelAsync(Angel angel);
+
+        Task<ObservableCollection<string>> GetLocations();
     }
 }

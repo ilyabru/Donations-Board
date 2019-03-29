@@ -79,5 +79,12 @@ namespace AngelBoard.Services
         {
             await conn.DeleteAsync(angel);
         }
+
+        public async Task<ObservableCollection<string>> GetLocations()
+        {
+            var locations = await conn.Table<Angel>().ToListAsync();
+
+            return new ObservableCollection<string>(locations.Select(a => a.Location).Distinct().OrderBy(a => a));
+        }
     }
 }

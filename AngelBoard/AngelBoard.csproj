@@ -128,6 +128,7 @@
     <Compile Include="Converters\DecimalConverter.cs" />
     <Compile Include="Converters\DecimalDivisionConverter.cs" />
     <Compile Include="Converters\SelectionChangedEventArgsConverter.cs" />
+    <Compile Include="Converters\StringToUpperConverter.cs" />
     <Compile Include="Helpers\FileAccessHelper.cs" />
     <Compile Include="Common\ObservableObject.cs" />
     <Compile Include="Configuration\ServiceLocator.cs" />
