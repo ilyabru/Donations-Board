@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngelBoard", "AngelBoard\AngelBoard.csproj", "{88917AE2-82AE-4F15-A4E1-FB058371EDB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DonationsBoard", "DonationsBoard\DonationsBoard.csproj", "{88917AE2-82AE-4F15-A4E1-FB058371EDB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
