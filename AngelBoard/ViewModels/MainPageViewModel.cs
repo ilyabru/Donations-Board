@@ -62,6 +62,7 @@ namespace AngelBoard.ViewModels
                     isViewing == true)
                 {
                     SelectedAngel.IsViewed = true;
+                    _angelService.UpdateAngelAsync(SelectedAngel);
                     _messageService.Send(this, "AngelViewed", SelectedAngel);
                 }
 
@@ -80,6 +81,7 @@ namespace AngelBoard.ViewModels
                     SelectedAngel != null)
                 {
                     SelectedAngel.IsViewed = true;
+                    _angelService.UpdateAngelAsync(SelectedAngel);
                     _messageService.Send(this, "AngelViewed", SelectedAngel);
                 }
 

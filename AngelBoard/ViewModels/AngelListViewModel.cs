@@ -129,7 +129,7 @@ namespace AngelBoard.ViewModels
                     {
                         case "AngelViewed":
                             savedAngel.IsViewed = true;
-                            await _angelService.UpdateAngelAsync(savedAngel);
+                            //await _angelService.UpdateAngelAsync(savedAngel);
                             viewedAngel.IsViewed = true;
                             break;
                     }

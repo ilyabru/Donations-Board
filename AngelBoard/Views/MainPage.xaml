@@ -34,7 +34,7 @@
                         <RowDefinition  Height="*"/>
                     </Grid.RowDefinitions>
                     <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                        <TextBlock Text="{x:Bind Name, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"  Width="405"   Foreground="Black"       FontSize="32"      TextAlignment="Center" TextWrapping="WrapWholeWords"/>
+                        <TextBlock Text="{x:Bind Name, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"  Width="405"   Foreground="Black"       FontSize="32"      TextAlignment="Center" TextWrapping="WrapWholeWords" />
                     </Viewbox>
                     <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
                         <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" Foreground="Black"  Width="350"   FontSize="28"   TextAlignment="Center" TextWrapping="WrapWholeWords"/>
