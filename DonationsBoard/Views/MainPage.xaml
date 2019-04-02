@@ -18,7 +18,7 @@
         <!--Converters-->
         <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="RoyalBlue" FalseValue="Yellow" />
 
-        <DataTemplate x:Key="SmallAngelCardTemplate" x:DataType="models:Angel">
+        <DataTemplate x:Key="SmallAngelCardTemplate" x:DataType="models:Donor">
             <UserControl>
                 <Grid x:Name="AngelGrid"
                               
@@ -62,7 +62,7 @@
             </UserControl>
         </DataTemplate>
 
-        <DataTemplate x:Key="LargeAngelCardTemplate" x:DataType="models:Angel">
+        <DataTemplate x:Key="LargeAngelCardTemplate" x:DataType="models:Donor">
             <Grid x:Name="AngelGrid"
                   CornerRadius="10"
                   Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
@@ -105,16 +105,23 @@
 
     <Page.KeyboardAccelerators>
         <KeyboardAccelerator Key="P" Modifiers="Control"
-                             Invoked="KeyboardAccelerator_Invoked">
+                             Invoked="ControlPanelInvoked">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Invoked">
                     <core:InvokeCommandAction Command="{x:Bind ViewModel.EditAngels}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </KeyboardAccelerator>
+        <KeyboardAccelerator Key="F" Modifiers="Control"
+                             Invoked="FullscreenInvoked">
+        </KeyboardAccelerator>
     </Page.KeyboardAccelerators>
     <Frame x:Name="frame">
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <controls:AdaptiveGridView 
                 x:Name="gvAngels"
                 ItemContainerStyle="{StaticResource AdaptiveGridViewItemStyle}" 
@@ -130,14 +137,13 @@
                       >
             </controls:AdaptiveGridView>
 
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,15,15">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind ViewModel.Angels.Count, Mode=OneWay}" FontSize="44" Foreground="Black"/>
-                    <TextBlock Text=" Angels" FontSize="44" Foreground="Black"/>
-                </StackPanel>
-                <TextBlock Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C0}', Mode=OneWay}" FontSize="38" Foreground="Black"/>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
+                <TextBlock Text="{x:Bind ViewModel.Angels.Count, Mode=OneWay}" FontSize="26" Foreground="Black"/>
+                <TextBlock Text=" Champions" FontSize="26" Foreground="Black" Margin="0,0,20,0"/>
+                <TextBlock Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C0}', Mode=OneWay}" FontSize="26" Foreground="Black"/>
             </StackPanel>
-            
+
             <Popup x:Name="AngelPopup"
                    IsLightDismissEnabled="True"
                    Closed="AngelPopup_Closed"

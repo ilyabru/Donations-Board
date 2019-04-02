@@ -2,17 +2,13 @@
 using AngelBoard.Models;
 using AngelBoard.Services;
 using AngelBoard.ViewModels.Base;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Toolkit.Uwp.Helpers;
+using DonationsBoard.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Core;
 
 namespace AngelBoard.ViewModels
 {
@@ -23,9 +19,9 @@ namespace AngelBoard.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IContextService _contextService;
 
-        private ObservableCollection<Angel> angels;
-        private Angel selectedAngel;
-        private Angel inputAngel;
+        private ObservableCollection<Donor> angels;
+        private Donor selectedAngel;
+        private Donor inputAngel;
         private bool isNew = true;
 
         private ObservableCollection<string> locations;
@@ -41,12 +37,12 @@ namespace AngelBoard.ViewModels
             _contextService = contextService;
         }
 
-        public ObservableCollection<Angel> Angels
+        public ObservableCollection<Donor> Angels
         {
             get { return angels; }
             set { SetPropertyValue(ref angels, value); }
         }
-        public Angel SelectedAngel
+        public Donor SelectedAngel
         {
             get { return selectedAngel; }
             set
@@ -61,7 +57,7 @@ namespace AngelBoard.ViewModels
             get { return SelectedAngel != null; }
         }
 
-        public Angel InputAngel
+        public Donor InputAngel
         {
             get { return inputAngel; }
             set { SetPropertyValue(ref inputAngel, value); }
@@ -89,7 +85,7 @@ namespace AngelBoard.ViewModels
             IsBusy = true;
 
             await RefreshAsync();
-            InputAngel = new Angel();
+            InputAngel = new Donor();
 
             IsBusy = false;
         }
@@ -107,7 +103,7 @@ namespace AngelBoard.ViewModels
 
         public void Subscribe()
         {
-            _messageService.Subscribe<MainPageViewModel, Angel>(this, OnAngelUpdated);
+            _messageService.Subscribe<MainPageViewModel, Donor>(this, OnAngelUpdated);
             _messageService.Subscribe<SettingsViewModel, Guid>(this, OnSessionChanged);
         }
 
@@ -116,7 +112,7 @@ namespace AngelBoard.ViewModels
             _messageService.Unsubscribe(this);
         }
 
-        private async void OnAngelUpdated(MainPageViewModel sender, string message, Angel changed)
+        private async void OnAngelUpdated(MainPageViewModel sender, string message, Donor changed)
         {
             if (changed != null)
             {
@@ -152,14 +148,14 @@ namespace AngelBoard.ViewModels
             });
         }
 
-        protected IEnumerable<IValidationConstraint<Angel>> GetValidationConstraints(Angel model)
+        protected IEnumerable<IValidationConstraint<Donor>> GetValidationConstraints(Donor model)
         {
-            yield return new RequiredConstraint<Angel>("Name", model.Name);
-            yield return new RequiredConstraint<Angel>("Location", model.Location);
-            yield return new RequiredGreaterThanZeroConstraint<Angel>("Amount", model.Amount);
+            yield return new RequiredConstraint<Donor>("Name", model.Name);
+            yield return new RequiredConstraint<Donor>("Location", model.Location);
+            yield return new RequiredGreaterThanZeroConstraint<Donor>("Amount", model.Amount);
         }
 
-        private Result Validate(Angel model)
+        private Result Validate(Donor model)
         {
             foreach (var constraint in GetValidationConstraints(model))
             {
@@ -196,7 +192,7 @@ namespace AngelBoard.ViewModels
 
                 // Clear textboxes
                 IsNew = true;
-                InputAngel = new Angel();
+                InputAngel = new Donor();
                 await RefreshLocations();
             }
             else
@@ -215,7 +211,7 @@ namespace AngelBoard.ViewModels
         private void OnCancelEditAngel()
         {
             IsNew = true;
-            InputAngel = new Angel();
+            InputAngel = new Donor();
         }
 
         private async Task OnDeleteAngel()

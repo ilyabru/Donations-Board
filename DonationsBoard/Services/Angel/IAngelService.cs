@@ -9,11 +9,11 @@ namespace AngelBoard.Services
 {
     public interface IAngelService
     {
-        Task<ObservableCollection<Angel>> GetAngelsAsync();
-        Task<Angel> GetAngelAsync(int angelId);
-        Task AddAngelAsync(Angel angel);
-        Task UpdateAngelAsync(Angel angel);
-        Task DeleteAngelAsync(Angel angel);
+        Task<ObservableCollection<Donor>> GetAngelsAsync();
+        Task<Donor> GetAngelAsync(int angelId);
+        Task AddAngelAsync(Donor angel);
+        Task UpdateAngelAsync(Donor angel);
+        Task DeleteAngelAsync(Donor angel);
 
         Task<ObservableCollection<string>> GetLocations();
     }

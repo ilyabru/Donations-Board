@@ -81,7 +81,7 @@
                       SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"
                       Width="350">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Angel">
+                    <DataTemplate x:DataType="models:Donor">
                         <StackPanel Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}">
                             <TextBlock Text="{x:Bind Name, Mode=OneWay}" Foreground="Black" />
                             <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"/>
@@ -99,14 +99,14 @@
             </ListView>
 
             <Button Grid.Row="1" 
-                Content="Edit Angel" 
+                Content="Edit Donor" 
                 Command="{x:Bind ViewModel.EditAngel}"
                 CommandParameter="{x:Bind ViewModel.SelectedAngel}"
                 IsEnabled="{x:Bind ViewModel.IsAngelSelected, Mode=OneWay}"
                 Margin="10"
                 HorizontalAlignment="Center"/>
             <Button Grid.Row="2" 
-                Content="Delete Angel" 
+                Content="Delete Donor" 
                 Command="{x:Bind ViewModel.DeleteAngel}"
                 CommandParameter="{x:Bind ViewModel.SelectedAngel}"
                 IsEnabled="{x:Bind ViewModel.IsAngelSelected, Mode=OneWay}"

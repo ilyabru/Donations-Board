@@ -3,7 +3,7 @@ using AngelBoard.Configuration;
 using AngelBoard.Models;
 using AngelBoard.Services;
 using AngelBoard.ViewModels.Base;
-using GalaSoft.MvvmLight.Command;
+using DonationsBoard.Common;
 using GearVrController4Windows;
 using System;
 using System.Collections.ObjectModel;

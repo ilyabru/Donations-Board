@@ -4,14 +4,15 @@ using System;
 
 namespace AngelBoard.Models
 {
-    [Table("angels")]
-    public class Angel : ObservableObject
+    [Table("donators")]
+    public class Donor : ObservableObject
     {
         private string name;
         private string location;
         private decimal amount;
         private bool isMonthly;
         private bool isViewed;
+        private DateTime createdDate = DateTime.Now;
 
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -51,10 +52,17 @@ namespace AngelBoard.Models
             set => SetPropertyValue(ref isViewed, value);
         }
 
+        public DateTime CreatedDate
+        {
+            get => createdDate;
+            set => SetPropertyValue(ref createdDate, value);
+        }
+
+
         [Ignore]
         public string DisplayAmount => isMonthly ? $"12 x {(amount / 12):C2} = {amount:C2} MONTHLY" : $"{amount:C2}";
 
-        public void Merge(Angel source)
+        public void Merge(Donor source)
         {
             if (source != null)
             {
@@ -65,6 +73,7 @@ namespace AngelBoard.Models
                 Amount = source.Amount;
                 IsMonthly = source.IsMonthly;
                 IsViewed = source.IsViewed;
+                CreatedDate = source.CreatedDate;
             }
         }
     }

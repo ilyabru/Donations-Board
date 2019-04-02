@@ -1,25 +1,16 @@
-﻿using AngelBoard.Configuration;
-using AngelBoard.Services;
+﻿using AngelBoard.Services;
 using AngelBoard.ViewModels;
-using GearVrController4Windows;
-using System;
 using System.ComponentModel;
 using System.Linq;
 using Windows.ApplicationModel.Core;
-using Windows.Devices.Enumeration;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace AngelBoard.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         public MainPage()
@@ -29,43 +20,10 @@ namespace AngelBoard.Views
             InitializeComponent();
             InitlializeContext();
             InitializeNavigation();
-
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
-
-            coreTitleBar.ExtendViewIntoTitleBar = false;
-        }
-
-        private void Gvc_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (ViewModel.GVRC.TouchpadButton == true)
-            {
-                if (!AngelPopup.IsOpen)
-                {
-                    fvAngels.SelectedItem = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.Id).FirstOrDefault();
-                    if (fvAngels.SelectedItem != null)
-                        AngelPopup.IsOpen = true;
-                }
-                else
-                {
-                    if (fvAngels.SelectedIndex < ViewModel.Angels.Count - 1)
-                    {
-                        fvAngels.SetValue(FlipView.SelectedIndexProperty, fvAngels.SelectedIndex + 1);
-                    }
-                    else
-                    {
-                        AngelPopup.IsOpen = false;
-                    }
-                }
-            }
-
-            if (ViewModel.GVRC.BackButton == true)
-            {
-                AngelPopup.IsOpen = false;
-            }
         }
 
         public MainPageViewModel ViewModel { get; set; }
+
 
         private void InitlializeContext()
         {
@@ -105,6 +63,34 @@ namespace AngelBoard.Views
             //Window.Current.Close();
         }
 
+        private void Gvc_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (ViewModel.GVRC.TouchpadButton)
+            {
+                var OldestNonViewedAngel = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
+                var SecondOldestNonViewedAngel = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
+
+                if (!AngelPopup.IsOpen && OldestNonViewedAngel != null) // popup opened and oldest non viewed donor is shown
+                {
+                    fvAngels.SelectedItem = OldestNonViewedAngel;
+                    AngelPopup.IsOpen = true;
+                }
+                else if (fvAngels.SelectedItem == OldestNonViewedAngel && SecondOldestNonViewedAngel != null) // move to next non viewed donor if exists
+                {
+                    fvAngels.SelectedItem = SecondOldestNonViewedAngel;
+                }
+                else // all donors viewed, therefore close
+                {
+                    AngelPopup.IsOpen = false;
+                }
+            }
+
+            if (ViewModel.GVRC.BackButton)
+            {
+                AngelPopup.IsOpen = false;
+            }
+        }
+
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (!AngelPopup.IsOpen)
@@ -129,8 +115,14 @@ namespace AngelBoard.Views
             gvAngels.ItemHeight = e.NewSize.Height / 4;
         }
 
-        private void KeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        private void ControlPanelInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
+            args.Handled = true;
+        }
+
+        private void FullscreenInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
             args.Handled = true;
         }
 

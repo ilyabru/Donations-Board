@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AngelBoard.Configuration;
 using AngelBoard.Models;
@@ -19,43 +16,43 @@ namespace AngelBoard.Services
         {
             _sqliteService = sqliteService;
 
-            conn = _sqliteService.GetConnection("angelboard.db");
+            conn = _sqliteService.GetConnection("EasterSealsDonators.db");
 
-            conn.CreateTableAsync<Angel>().Wait();
+            conn.CreateTableAsync<Donor>().Wait();
         }
 
-        public async Task<ObservableCollection<Angel>> GetAngelsAsync()
+        public async Task<ObservableCollection<Donor>> GetAngelsAsync()
         {
-            var angels = await conn.Table<Angel>().Where(a => a.SessionId == AppSettings.Current.CurrentSession).ToListAsync();
+            var angels = await conn.Table<Donor>().Where(a => a.SessionId == AppSettings.Current.CurrentSession).ToListAsync();
 
-            return new ObservableCollection<Angel>(angels);
+            return new ObservableCollection<Donor>(angels);
         }
 
-        public async Task AddAngelAsync(Angel angel)
+        public async Task AddAngelAsync(Donor angel)
         {
             angel.SessionId = AppSettings.Current.CurrentSession;
 
             await conn.InsertAsync(angel);
         }
 
-        public async Task<Angel> GetAngelAsync(int angelId)
+        public async Task<Donor> GetAngelAsync(int angelId)
         {
-            return await conn.Table<Angel>().FirstOrDefaultAsync(a => a.Id == angelId);
+            return await conn.Table<Donor>().FirstOrDefaultAsync(a => a.Id == angelId);
         }
 
-        public async Task UpdateAngelAsync(Angel angel)
+        public async Task UpdateAngelAsync(Donor angel)
         {
             await conn.UpdateAsync(angel);
         }
 
-        public async Task DeleteAngelAsync(Angel angel)
+        public async Task DeleteAngelAsync(Donor angel)
         {
             await conn.DeleteAsync(angel);
         }
 
         public async Task<ObservableCollection<string>> GetLocations()
         {
-            var locations = await conn.QueryAsync<Angel>("SELECT DISTINCT Location FROM angels");
+            var locations = await conn.QueryAsync<Donor>("SELECT DISTINCT Location FROM angels");
 
             return new ObservableCollection<string>(locations.Select(a => a.Location));
         }

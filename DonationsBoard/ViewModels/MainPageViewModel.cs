@@ -2,7 +2,7 @@
 using AngelBoard.Models;
 using AngelBoard.Services;
 using AngelBoard.ViewModels.Base;
-using GalaSoft.MvvmLight.Command;
+using DonationsBoard.Common;
 using GearVrController4Windows;
 using System;
 using System.Collections.ObjectModel;
@@ -21,8 +21,8 @@ namespace AngelBoard.ViewModels
         private INavigationService _navigationService;
         private IMessageService _messageService;
 
-        private ObservableCollection<Angel> angels;
-        private Angel selectedAngel;
+        private ObservableCollection<Donor> angels;
+        private Donor selectedAngel;
         private bool isViewing = false;
 
         public MainPageViewModel(IAngelService angelService,
@@ -40,7 +40,7 @@ namespace AngelBoard.ViewModels
 
         public GearVrController GVRC { get; set; }
 
-        public ObservableCollection<Angel> Angels
+        public ObservableCollection<Donor> Angels
         {
             get => angels;
             set
@@ -50,7 +50,7 @@ namespace AngelBoard.ViewModels
             }
         }
 
-        public Angel SelectedAngel
+        public Donor SelectedAngel
         {
             get => selectedAngel;
             set
@@ -97,6 +97,9 @@ namespace AngelBoard.ViewModels
         {
             IsBusy = true;
 
+            // navigates to control panel on startup
+            await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Angels);
+
             // populate angel list
             await RefreshAsync();
 
@@ -115,9 +118,6 @@ namespace AngelBoard.ViewModels
                 }
             }
 
-            // navigates to control panel on startup
-            await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Angels);
-
             IsBusy = false;
         }
 
@@ -135,7 +135,7 @@ namespace AngelBoard.ViewModels
             }
             catch (Exception ex)
             {
-                Angels = new ObservableCollection<Angel>();
+                Angels = new ObservableCollection<Donor>();
                 // log error
 
                 isOk = false;
@@ -149,7 +149,7 @@ namespace AngelBoard.ViewModels
 
         public void Subscribe()
         {
-            _messageService.Subscribe<AngelListViewModel, Angel>(this, OnAngelSaved);
+            _messageService.Subscribe<AngelListViewModel, Donor>(this, OnAngelSaved);
             _messageService.Subscribe<SettingsViewModel, Guid>(this, OnSessionChanged);
         }
 
@@ -158,7 +158,7 @@ namespace AngelBoard.ViewModels
             _messageService.Unsubscribe(this);
         }
 
-        private async void OnAngelSaved(AngelListViewModel sender, string message, Angel changed)
+        private async void OnAngelSaved(AngelListViewModel sender, string message, Donor changed)
         {
             if (changed != null)
             {
@@ -200,7 +200,7 @@ namespace AngelBoard.ViewModels
             });
         }
 
-        private void AddEditAngel(Angel angel)
+        private void AddEditAngel(Donor angel)
         {
             int index = Angels.IndexOf(Angels.Where(a => a.Id == angel.Id).First());
             Angels[index] = angel;

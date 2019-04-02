@@ -10,7 +10,7 @@ namespace AngelBoard.ViewModels
 {
     public class ControlPanelViewModel : BaseViewModel
     {
-        private readonly NavigationItem AngelListItem = new NavigationItem("Angel List", typeof(AngelListViewModel));
+        private readonly NavigationItem AngelListItem = new NavigationItem("Donor List", typeof(AngelListViewModel));
 
         private INavigationService _navigationService;
 
