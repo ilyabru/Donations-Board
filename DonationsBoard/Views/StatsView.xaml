@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="AngelBoard.Views.StatsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DonationsBoard.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <controls:DataGrid ItemsSource="{x:Bind ViewModel.CityStatistics, Mode=OneWay}"
+                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                           AutoGenerateColumns="False"
+                           AlternatingRowBackground="Transparent"
+                           AlternatingRowForeground="Gray"
+                           CanUserSortColumns="True"
+                           CanUserReorderColumns="False"
+                           CanUserResizeColumns="True"
+                           ColumnHeaderHeight="32"
+                           MaxColumnWidth="400"
+                           GridLinesVisibility="Horizontal"
+                           IsReadOnly="True"
+                           SelectionMode="Single">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="City" Binding="{Binding City}" />
+                <controls:DataGridTextColumn Header="Total Donators" Binding="{Binding TotalDonations}" />
+                <controls:DataGridTextColumn Header="Total Amount" Binding="{Binding AmountRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}'}" />
+                <controls:DataGridTextColumn Header="Average Amount" Binding="{Binding AverageRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}'}" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+    </Grid>
+</Page>

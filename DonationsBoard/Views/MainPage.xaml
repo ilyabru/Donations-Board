@@ -15,16 +15,13 @@
     KeyboardAcceleratorPlacementMode="Hidden"
     >
     <Page.Resources>
-        <!--Converters-->
-        <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="RoyalBlue" FalseValue="Yellow" />
-
         <DataTemplate x:Key="SmallAngelCardTemplate" x:DataType="models:Donor">
             <UserControl>
                 <Grid x:Name="AngelGrid"                            
                               Margin="10"
                               CornerRadius="10"
                               Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"                            
-                              BorderBrush="DarkRed"
+                              BorderBrush="#d1070f"
                               BorderThickness="5">
                     <Grid.RowDefinitions>
                         <RowDefinition  Height="*"/>
@@ -68,7 +65,7 @@
                   Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                   Height="600"
                   Width="1000"
-                  BorderBrush="DarkRed"
+                  BorderBrush="#d1070f"
                   BorderThickness="5">
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="*"/>
@@ -107,6 +104,7 @@
     </Page.Resources>
 
     <Page.KeyboardAccelerators>
+        <!--open control panel TODO: only allow one control panel at a time-->
         <KeyboardAccelerator Key="P" Modifiers="Control"
                              Invoked="ControlPanelInvoked">
             <i:Interaction.Behaviors>
@@ -115,8 +113,13 @@
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </KeyboardAccelerator>
+        <!--enable fullscreen, can be disabled using nav bar-->
         <KeyboardAccelerator Key="F" Modifiers="Control"
                              Invoked="FullscreenInvoked">
+        </KeyboardAccelerator>
+        <!--close popup without controller-->
+        <KeyboardAccelerator Key="Escape"
+                             Invoked="EscapeInvoked">
         </KeyboardAccelerator>
     </Page.KeyboardAccelerators>
     <Frame x:Name="frame">
@@ -157,7 +160,7 @@
 
             <!--popup showing a larger card of the donator-->
             <Popup x:Name="AngelPopup"
-                   IsLightDismissEnabled="True"
+                   IsLightDismissEnabled="False"
                    Closed="AngelPopup_Closed"
                    LayoutUpdated="AngelPopup_LayoutUpdated"
                    IsOpen="{x:Bind ViewModel.IsViewing, Mode=TwoWay}">
@@ -167,10 +170,7 @@
                            Style="{StaticResource FlipViewStyle}"
                            ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}" 
                            SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"                        
-                           ItemTemplate="{StaticResource LargeAngelCardTemplate}"
-                           
-                           >
-                </FlipView>
+                           ItemTemplate="{StaticResource LargeAngelCardTemplate}" />
                 <Popup.ChildTransitions>
                     <TransitionCollection>
                         <PopupThemeTransition />

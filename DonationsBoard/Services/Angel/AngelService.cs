@@ -52,7 +52,7 @@ namespace AngelBoard.Services
 
         public async Task<ObservableCollection<string>> GetLocations()
         {
-            var locations = await conn.QueryAsync<Donor>("SELECT DISTINCT Location FROM angels");
+            var locations = await conn.QueryAsync<Donor>("SELECT DISTINCT Location FROM donators");
 
             return new ObservableCollection<string>(locations.Select(a => a.Location));
         }

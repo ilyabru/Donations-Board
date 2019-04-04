@@ -147,5 +147,10 @@ namespace AngelBoard.Views
                 this.AngelPopup.VerticalOffset = NewVerticalOffset;
             }
         }
+
+        private void EscapeInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            AngelPopup.IsOpen = false;
+        }
     }
 }

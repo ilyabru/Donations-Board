@@ -22,6 +22,7 @@
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:StringFormatConverter x:Key="StringFormatConverter"/>
+            <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="#A1D6E2" FalseValue="#ffe119" />
 
             <myconverters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
             <myconverters:DecimalConverter x:Key="DecimalConverter" />

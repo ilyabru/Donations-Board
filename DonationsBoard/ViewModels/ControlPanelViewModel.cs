@@ -3,14 +3,13 @@ using AngelBoard.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AngelBoard.ViewModels
 {
     public class ControlPanelViewModel : BaseViewModel
     {
         private readonly NavigationItem AngelListItem = new NavigationItem("Donor List", typeof(AngelListViewModel));
+        private readonly NavigationItem StatsItem = new NavigationItem("Statistics", typeof(StatsViewModel));
 
         private INavigationService _navigationService;
 
@@ -61,6 +60,7 @@ namespace AngelBoard.ViewModels
         private IEnumerable<NavigationItem> GetItems()
         {
             yield return AngelListItem;
+            yield return StatsItem;
         }
     }
 }
