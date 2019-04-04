@@ -20,12 +20,10 @@
 
         <DataTemplate x:Key="SmallAngelCardTemplate" x:DataType="models:Donor">
             <UserControl>
-                <Grid x:Name="AngelGrid"
-                              
+                <Grid x:Name="AngelGrid"                            
                               Margin="10"
                               CornerRadius="10"
-                              Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                              
+                              Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"                            
                               BorderBrush="DarkRed"
                               BorderThickness="5">
                     <Grid.RowDefinitions>
@@ -34,30 +32,32 @@
                         <RowDefinition  Height="*"/>
                     </Grid.RowDefinitions>
                     <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                        <TextBlock Text="{x:Bind Name, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"  Width="405"   Foreground="Black"       FontSize="32"      TextAlignment="Center" TextWrapping="WrapWholeWords" />
+                        <TextBlock Text="{x:Bind Name, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"  
+                                   Width="400"   
+                                   Foreground="Black"       
+                                   FontSize="28"      
+                                   TextAlignment="Center" 
+                                   TextWrapping="WrapWholeWords"
+                                   Style="{StaticResource displayFont}" />
                     </Viewbox>
                     <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
-                        <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" Foreground="Black"  Width="350"   FontSize="28"   TextAlignment="Center" TextWrapping="WrapWholeWords"/>
+                        <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
+                                   Foreground="Black"  
+                                   Width="350"   
+                                   FontSize="28"   
+                                   TextAlignment="Center" 
+                                   TextWrapping="WrapWholeWords"
+                                   Style="{StaticResource displayFont}" />
                     </Viewbox>
                     <Viewbox Grid.Row="2" VerticalAlignment="Top" StretchDirection="DownOnly">
-                        <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" x:Name="txtAmount" Foreground="Black"  Width="350"   FontSize="32"    TextAlignment="Center" TextWrapping="WrapWholeWords"/>
+                        <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}"
+                                   Foreground="Black" 
+                                   Width="350"   
+                                   FontSize="28"   
+                                   TextAlignment="Center" 
+                                   TextWrapping="WrapWholeWords"
+                                   Style="{StaticResource displayFont}"/>
                     </Viewbox>
-                    <!--<VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="ColorStates">
-                                    <VisualState>
-                                        <VisualState.StateTriggers>
-                                            <StateTrigger IsActive="{x:Bind IsViewed, Mode=OneWay}" />
-                                        </VisualState.StateTriggers>
-
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="AngelGrid"
-                                                            Storyboard.TargetProperty="(Grid.Background)(SolidColorBrush.Color)"
-                                                            From="Yellow" To="Green" />
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>-->
-
                 </Grid>
             </UserControl>
         </DataTemplate>
@@ -76,12 +76,13 @@
                     <RowDefinition  Height="*"/>
                 </Grid.RowDefinitions>
                 <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                    <TextBlock Text="{x:Bind Name,Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
+                    <TextBlock Text="{x:Bind Name,Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"
                                Width="1000"   
                                Foreground="Black"       
                                FontSize="64"     
                                TextAlignment="Center" 
-                               TextWrapping="WrapWholeWords"/>
+                               TextWrapping="WrapWholeWords"
+                               Style="{StaticResource displayFont}" />
                 </Viewbox>
                 <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
                     <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
@@ -89,7 +90,8 @@
                                Width="800"   
                                FontSize="52"   
                                TextAlignment="Center"
-                               TextWrapping="WrapWholeWords"/>
+                               TextWrapping="WrapWholeWords"
+                               Style="{StaticResource displayFont}"/>
                 </Viewbox>
                 <Viewbox Grid.Row="2" VerticalAlignment="Top" StretchDirection="DownOnly">
                     <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" 
@@ -97,7 +99,8 @@
                                Width="800"   
                                FontSize="64"    
                                TextAlignment="Center"
-                               TextWrapping="WrapWholeWords"/>
+                               TextWrapping="WrapWholeWords"
+                               Style="{StaticResource displayFont}"/>
                 </Viewbox>
             </Grid>
         </DataTemplate>
@@ -122,6 +125,16 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <!--Background video-->
+            <MediaPlayerElement 
+                x:Name="BackgroundMedia"
+                Grid.RowSpan="2"
+                Source="ms-appx:///Assets/ESBackground.mp4"
+                AutoPlay="True"
+                Stretch="Fill"
+                AreTransportControlsEnabled="False" />
+
+            <!--scrollable grid view for displaying donators-->
             <controls:AdaptiveGridView 
                 x:Name="gvAngels"
                 ItemContainerStyle="{StaticResource AdaptiveGridViewItemStyle}" 
@@ -133,17 +146,16 @@
                 ItemClick="GridView_ItemClick"
                 DesiredWidth="300"                   
                 SizeChanged="GvAngels_SizeChanged"
-                SelectionChanged="GvAngels_SelectionChanged"
-                      >
-            </controls:AdaptiveGridView>
+                SelectionChanged="GvAngels_SelectionChanged" />
 
-
+            <!--bottom text showing total donators and amount--> 
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
-                <TextBlock Text="{x:Bind ViewModel.Angels.Count, Mode=OneWay}" FontSize="26" Foreground="Black"/>
-                <TextBlock Text=" Champions" FontSize="26" Foreground="Black" Margin="0,0,20,0"/>
-                <TextBlock Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C0}', Mode=OneWay}" FontSize="26" Foreground="Black"/>
+                <TextBlock Text="{x:Bind ViewModel.Angels.Count, Mode=OneWay}" FontSize="26" Style="{StaticResource displayFont}" />
+                <TextBlock Text=" Champions" FontSize="26" Margin="0,0,20,0" Style="{StaticResource displayFont}"/>
+                <TextBlock Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C0}', Mode=OneWay}" FontSize="26" Style="{StaticResource displayFont}"/>
             </StackPanel>
 
+            <!--popup showing a larger card of the donator-->
             <Popup x:Name="AngelPopup"
                    IsLightDismissEnabled="True"
                    Closed="AngelPopup_Closed"

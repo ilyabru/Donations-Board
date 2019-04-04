@@ -85,7 +85,7 @@
                         <StackPanel Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}">
                             <TextBlock Text="{x:Bind Name, Mode=OneWay}" Foreground="Black" />
                             <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"/>
-                            <TextBlock Text="{x:Bind Amount, Mode=OneWay}" Foreground="Black"/>
+                            <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" Foreground="Black"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

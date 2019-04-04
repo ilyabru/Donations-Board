@@ -20,6 +20,8 @@ namespace AngelBoard.Views
             InitializeComponent();
             InitlializeContext();
             InitializeNavigation();
+
+            BackgroundMedia.MediaPlayer.IsLoopingEnabled = true;
         }
 
         public MainPageViewModel ViewModel { get; set; }
@@ -112,7 +114,7 @@ namespace AngelBoard.Views
         // ensure only 4 rows of data exist
         private void GvAngels_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            gvAngels.ItemHeight = e.NewSize.Height / 4;
+            gvAngels.ItemHeight = e.NewSize.Height / 6;
         }
 
         private void ControlPanelInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)

@@ -176,7 +176,6 @@ namespace AngelBoard.ViewModels
                 if (IsNew)
                 {
                     await _angelService.AddAngelAsync(InputAngel);
-                    Angels.Add(InputAngel);
 
                     _messageService.Send(this, "NewAngelSaved", InputAngel);
                 }
@@ -193,7 +192,7 @@ namespace AngelBoard.ViewModels
                 // Clear textboxes
                 IsNew = true;
                 InputAngel = new Donor();
-                await RefreshLocations();
+                await RefreshAsync();
             }
             else
             {
@@ -216,10 +215,13 @@ namespace AngelBoard.ViewModels
 
         private async Task OnDeleteAngel()
         {
-            await _angelService.DeleteAngelAsync(SelectedAngel);
-            _messageService.Send(this, "AngelDeleted", SelectedAngel);
-            Angels.Remove(SelectedAngel);
-            await RefreshLocations();
+            if (await _dialogService.ShowAsync("Confirm delete", $@"Are you sure you want to delete ""{SelectedAngel.Name}""?", "Ok", "Cancel"))
+            {
+                await _angelService.DeleteAngelAsync(SelectedAngel);
+                _messageService.Send(this, "AngelDeleted", SelectedAngel);
+                Angels.Remove(SelectedAngel);
+                await RefreshLocations();
+            }
         }
     }
 }
