@@ -17,7 +17,16 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>AngelBoard_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>DonationsBoard_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>E:\telethon ilya\Package\</AppxPackageDir>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>3941A66F754D8BD0068C9FE1DA92CD693AE83D49</PackageCertificateThumbprint>
+    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -186,15 +195,18 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="AngelBoard_TemporaryKey.pfx" />
-    <Content Include="Assets\ESBackground.mp4" />
     <Content Include="Assets\Fonts\DSMarkerFelt.ttf" />
     <Content Include="Assets\Fonts\BubblegumSans-Regular.ttf" />
     <Content Include="Assets\Fonts\Capriola-Regular.ttf" />
     <Content Include="Assets\Fonts\JosefinSans-Light.ttf" />
     <Content Include="Assets\Fonts\JosefinSans-Regular.ttf" />
     <Content Include="Assets\Fonts\JosefinSans-Thin.ttf" />
+    <None Include="DonationsBoard_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GearVrController4Windows.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -266,11 +278,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="GearVrController4Windows">
-      <HintPath>..\..\..\..\..\Users\Ilya\Source\Repos\GearVrController4Windows\GearVrController4Windows\bin\x64\Debug\GearVrController4Windows.dll</HintPath>
+    <Reference Include="GearVrController4Windows, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GearVrController4Windows\GearVrController4Windows\bin\x64\Release\GearVrController4Windows.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -12,7 +12,7 @@ namespace AngelBoard.Common
         public DeviceInformationDisplay(DeviceInformation deviceInfoIn)
         {
             deviceInfo = deviceInfoIn;
-            UpdateGlyphBitmapImage();
+            //UpdateGlyphBitmapImage();
         }
 
         public DeviceInformationKind Kind => deviceInfo.Kind;
@@ -50,7 +50,7 @@ namespace AngelBoard.Common
             RaisePropertyChanged("CanPair");
             RaisePropertyChanged("IsPaired");
 
-            UpdateGlyphBitmapImage();
+            //UpdateGlyphBitmapImage();
         }
 
         private async void UpdateGlyphBitmapImage()

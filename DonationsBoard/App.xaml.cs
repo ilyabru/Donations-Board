@@ -91,6 +91,9 @@ namespace AngelBoard
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            var gvr = ServiceLocator.Current.GetService<GearVrController4Windows.GearVrController>();
+            gvr.ClearBluetoothLEDeviceAsync();
+
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();

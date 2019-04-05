@@ -11,7 +11,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="LightSkyBlue"
+    Background="#1b61ba"
     KeyboardAcceleratorPlacementMode="Hidden"
     >
     <Page.Resources>
@@ -35,7 +35,8 @@
                                    FontSize="28"      
                                    TextAlignment="Center" 
                                    TextWrapping="WrapWholeWords"
-                                   Style="{StaticResource displayFont}" />
+                                   Style="{StaticResource displayFont}"
+                                   Padding="0,2,0,0"/>
                     </Viewbox>
                     <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
                         <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
@@ -129,13 +130,13 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!--Background video-->
-            <MediaPlayerElement 
+            <!--<MediaPlayerElement 
                 x:Name="BackgroundMedia"
                 Grid.RowSpan="2"
                 Source="ms-appx:///Assets/ESBackground.mp4"
                 AutoPlay="True"
                 Stretch="Fill"
-                AreTransportControlsEnabled="False" />
+                AreTransportControlsEnabled="False" />-->
 
             <!--scrollable grid view for displaying donators-->
             <controls:AdaptiveGridView 

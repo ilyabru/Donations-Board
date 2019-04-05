@@ -1,14 +1,9 @@
 ﻿using AngelBoard.Configuration;
 using AngelBoard.Models;
-using Microsoft.Toolkit.Uwp.Helpers;
 using SQLite;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AngelBoard.Services
@@ -80,6 +75,9 @@ namespace AngelBoard.Services
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Julia Shwartz", Location = "Scarborough", Amount = 150m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "James Crawford", Location = "North Bay", Amount = 100m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Gordon Freeman", Location = "City 17", Amount = 250m, IsViewed = false },
+                new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Wayne Newton", Location = "Markham", Amount = 100m, IsViewed = false },
+                new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Larry Gorrigan + Sue Maclean", Location = "Picton", Amount = 100m, IsViewed = false },
+                new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Martine Martinez", Location = "Bolton", Amount = 110m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Wayne Newton", Location = "Markham", Amount = 100m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Larry Gorrigan + Sue Maclean", Location = "Picton", Amount = 100m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Martine Martinez", Location = "Bolton", Amount = 110m, IsViewed = false },

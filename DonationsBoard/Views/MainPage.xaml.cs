@@ -24,7 +24,7 @@ namespace AngelBoard.Views
             InitlializeContext();
             InitializeNavigation();
 
-            BackgroundMedia.MediaPlayer.IsLoopingEnabled = true;
+            //BackgroundMedia.MediaPlayer.IsLoopingEnabled = true;
         }
 
         public MainPageViewModel ViewModel { get; set; }
