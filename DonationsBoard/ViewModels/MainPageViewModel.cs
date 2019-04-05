@@ -56,10 +56,11 @@ namespace AngelBoard.ViewModels
             set
             {
                 // sets isViewed property when navigating the flipview
-                if (selectedAngel != null &&
-                    selectedAngel != value &&
-                    value != null &&
-                    isViewing == true)
+                if (selectedAngel != null
+                    && selectedAngel != value
+                    && value != null
+                    && isViewing == true
+                    && SelectedAngel.IsViewed == false)
                 {
                     SelectedAngel.IsViewed = true;
                     _angelService.UpdateAngelAsync(SelectedAngel);
@@ -76,9 +77,10 @@ namespace AngelBoard.ViewModels
             set
             {
                 // sets isViewed property when leaving flipview
-                if (isViewing == true &&
-                    value == false &&
-                    SelectedAngel != null)
+                if (isViewing == true
+                    && value == false
+                    && SelectedAngel != null
+                    && SelectedAngel.IsViewed == false)
                 {
                     SelectedAngel.IsViewed = true;
                     _angelService.UpdateAngelAsync(SelectedAngel);

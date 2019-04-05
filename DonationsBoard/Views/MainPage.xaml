@@ -66,7 +66,7 @@
                   Height="600"
                   Width="1000"
                   BorderBrush="#d1070f"
-                  BorderThickness="5">
+                  BorderThickness="15">
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="*"/>
                     <RowDefinition  Height="*"/>
@@ -85,7 +85,7 @@
                     <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
                                Foreground="Black"  
                                Width="800"   
-                               FontSize="52"   
+                               FontSize="64"   
                                TextAlignment="Center"
                                TextWrapping="WrapWholeWords"
                                Style="{StaticResource displayFont}"/>
@@ -149,19 +149,19 @@
                 ItemClick="GridView_ItemClick"
                 DesiredWidth="300"                   
                 SizeChanged="GvAngels_SizeChanged"
-                SelectionChanged="GvAngels_SelectionChanged" />
+                >
+            </controls:AdaptiveGridView>
 
             <!--bottom text showing total donators and amount--> 
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
                 <TextBlock Text="{x:Bind ViewModel.Angels.Count, Mode=OneWay}" FontSize="26" Style="{StaticResource displayFont}" />
-                <TextBlock Text=" Champions" FontSize="26" Margin="0,0,20,0" Style="{StaticResource displayFont}"/>
+                <TextBlock Text=" Angels" FontSize="26" Margin="0,0,20,0" Style="{StaticResource displayFont}"/>
                 <TextBlock Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C0}', Mode=OneWay}" FontSize="26" Style="{StaticResource displayFont}"/>
             </StackPanel>
 
             <!--popup showing a larger card of the donator-->
             <Popup x:Name="AngelPopup"
                    IsLightDismissEnabled="False"
-                   Closed="AngelPopup_Closed"
                    LayoutUpdated="AngelPopup_LayoutUpdated"
                    IsOpen="{x:Bind ViewModel.IsViewing, Mode=TwoWay}">
                 <!--Style="{StaticResource FlipViewStyle}"-->
@@ -170,7 +170,8 @@
                            Style="{StaticResource FlipViewStyle}"
                            ItemsSource="{x:Bind ViewModel.Angels, Mode=OneWay}" 
                            SelectedItem="{x:Bind ViewModel.SelectedAngel, Mode=TwoWay}"                        
-                           ItemTemplate="{StaticResource LargeAngelCardTemplate}" />
+                           ItemTemplate="{StaticResource LargeAngelCardTemplate}"
+                           SelectionChanged="FvAngels_SelectionChanged"/>
                 <Popup.ChildTransitions>
                     <TransitionCollection>
                         <PopupThemeTransition />

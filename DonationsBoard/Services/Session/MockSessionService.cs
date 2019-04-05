@@ -12,11 +12,13 @@ namespace AngelBoard.Services
     public class MockSessionService : ISessionService
     {
         private SQLiteAsyncConnection conn;
+        private readonly ISQLiteService _sQLiteService;
 
-        public MockSessionService()
+        public MockSessionService(ISQLiteService sQLiteService)
         {
-            conn = new SQLiteAsyncConnection(":memory:");
+            _sQLiteService = sQLiteService;
 
+            conn = _sQLiteService.GetConnection();
 
             conn.CreateTableAsync<Session>().Wait();
         }

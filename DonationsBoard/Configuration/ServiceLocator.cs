@@ -16,10 +16,10 @@ namespace AngelBoard
 
         static public void Configure(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<ISQLiteService, SQLiteService>();
-            serviceCollection.AddSingleton<ISessionService, SessionService>();
-            serviceCollection.AddSingleton<IAngelService, AngelService>();
-            serviceCollection.AddSingleton<IStatsService, StatsService>();
+            serviceCollection.AddSingleton<ISQLiteService, MockSQLiteService>();
+            serviceCollection.AddSingleton<ISessionService, MockSessionService>();
+            serviceCollection.AddSingleton<IAngelService, MockAngelService>();
+            serviceCollection.AddSingleton<IStatsService, MockStatsService>();
 
             serviceCollection.AddSingleton<IMessageService, MessageService>();
             serviceCollection.AddSingleton<IDialogService, DialogService>();

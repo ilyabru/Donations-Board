@@ -16,7 +16,7 @@ namespace AngelBoard.Services
         {
             _sqliteService = sqliteService;
 
-            conn = _sqliteService.GetConnection("EasterSealsDonators.db");
+            conn = _sqliteService.GetConnection();
 
             conn.CreateTableAsync<Donor>().Wait();
         }
@@ -52,7 +52,7 @@ namespace AngelBoard.Services
 
         public async Task<ObservableCollection<string>> GetLocations()
         {
-            var locations = await conn.QueryAsync<Donor>("SELECT DISTINCT Location FROM donators");
+            var locations = await conn.QueryAsync<Donor>("SELECT DISTINCT Location FROM donors");
 
             return new ObservableCollection<string>(locations.Select(a => a.Location));
         }

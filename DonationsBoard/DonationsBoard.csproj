@@ -146,7 +146,9 @@
     <Compile Include="Services\Session\ISessionService.cs" />
     <Compile Include="Services\Session\MockSessionService.cs" />
     <Compile Include="Services\Session\SessionService.cs" />
+    <Compile Include="Services\SQLite\MockSQLiteService.cs" />
     <Compile Include="Services\Statistics\IStatsService.cs" />
+    <Compile Include="Services\Statistics\MockStatsService.cs" />
     <Compile Include="Services\Statistics\StatsService.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
     <Compile Include="ViewModels\NavigationItem.cs" />
@@ -166,8 +168,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Angel\AngelService.cs" />
     <Compile Include="Services\Angel\IAngelService.cs" />
-    <Compile Include="Services\ISQLiteService.cs" />
-    <Compile Include="Services\SQLiteService.cs" />
+    <Compile Include="Services\SQLite\ISQLiteService.cs" />
+    <Compile Include="Services\SQLite\SQLiteService.cs" />
     <Compile Include="ViewModels\AngelListViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />

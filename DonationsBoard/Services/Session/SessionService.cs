@@ -19,7 +19,7 @@ namespace AngelBoard.Services
         {
             _sqliteService = sqliteService;
 
-            conn = _sqliteService.GetConnection("EasterSealsDonators.db");
+            conn = _sqliteService.GetConnection();
 
             conn.CreateTableAsync<Session>().Wait();
         }

@@ -1,5 +1,6 @@
 ﻿using AngelBoard.Services;
 using AngelBoard.ViewModels;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using Windows.ApplicationModel.Core;
@@ -13,6 +14,8 @@ namespace AngelBoard.Views
 {
     public sealed partial class MainPage : Page
     {
+        const int rowItemCount = 6;
+
         public MainPage()
         {
             ViewModel = ServiceLocator.Current.GetService<MainPageViewModel>();
@@ -101,20 +104,10 @@ namespace AngelBoard.Views
             }
         }
 
-        private void AngelPopup_Closed(object sender, object e)
-        {
-            gvAngels.SelectedItem = null;
-        }
-
-        private void GvAngels_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            gvAngels.ScrollIntoView(e.AddedItems.FirstOrDefault());
-        }
-
         // ensure only 4 rows of data exist
         private void GvAngels_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            gvAngels.ItemHeight = e.NewSize.Height / 6;
+            gvAngels.ItemHeight = e.NewSize.Height / rowItemCount;
         }
 
         private void ControlPanelInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
@@ -151,6 +144,16 @@ namespace AngelBoard.Views
         private void EscapeInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             AngelPopup.IsOpen = false;
+        }
+
+        private void FvAngels_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // get total amount of items per row
+            int colItemCount = (int)Math.Round(gvAngels.ActualWidth / gvAngels.DesiredWidth, 0, MidpointRounding.AwayFromZero);
+
+            
+
+            gvAngels.ScrollIntoView(e.AddedItems.FirstOrDefault());
         }
     }
 }

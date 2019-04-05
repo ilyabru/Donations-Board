@@ -4,7 +4,7 @@ using System;
 
 namespace AngelBoard.Models
 {
-    [Table("donators")]
+    [Table("donors")]
     public class Donor : ObservableObject
     {
         private string name;

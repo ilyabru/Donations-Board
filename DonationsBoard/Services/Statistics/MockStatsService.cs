@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AngelBoard.Configuration;
 using AngelBoard.Models;
@@ -8,12 +7,12 @@ using SQLite;
 
 namespace AngelBoard.Services
 {
-    public class StatsService : IStatsService
+    public class MockStatsService : IStatsService
     {
         private readonly ISQLiteService _sqliteService;
         private SQLiteAsyncConnection conn;
 
-        public StatsService(ISQLiteService sqliteService)
+        public MockStatsService(ISQLiteService sqliteService)
         {
             _sqliteService = sqliteService;
 
@@ -28,7 +27,7 @@ namespace AngelBoard.Services
                 COUNT(Id) as 'TotalDonations',
                 SUM(Amount) as 'AmountRaised',
                 AVG(Amount) as 'AverageRaised'
-                FROM donators
+                FROM [donors]
                 WHERE SessionId = ?
                 GROUP BY Location
                 ORDER BY City, TotalDonations, AmountRaised
