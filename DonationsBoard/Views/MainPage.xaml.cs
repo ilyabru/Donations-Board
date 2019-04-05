@@ -14,7 +14,7 @@ namespace AngelBoard.Views
 {
     public sealed partial class MainPage : Page
     {
-        const int rowItemCount = 6;
+        const int maxItemsPerColumn = 6;
 
         public MainPage()
         {
@@ -88,11 +88,24 @@ namespace AngelBoard.Views
                 {
                     AngelPopup.IsOpen = false;
                 }
+                ScrollGrid(fvAngels.SelectedIndex);
             }
 
             if (ViewModel.GVRC.BackButton)
             {
                 AngelPopup.IsOpen = false;
+            }
+        }
+
+        private void ScrollGrid(int selectedIndex)
+        {
+            // get total amount of items per row
+            int itemsPerRow = (int)Math.Round(gvAngels.ActualWidth / gvAngels.DesiredWidth, 0, MidpointRounding.AwayFromZero); // 4
+
+            // if big card is pointing to an item on the fourth row or greater, attempt to scroll up one row
+            if (selectedIndex > itemsPerRow * 3)
+            {
+                gvAngels.ScrollIntoView(gvAngels.Items.ElementAt(selectedIndex - (itemsPerRow * 2)), ScrollIntoViewAlignment.Leading);
             }
         }
 
@@ -107,7 +120,7 @@ namespace AngelBoard.Views
         // ensure only 4 rows of data exist
         private void GvAngels_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            gvAngels.ItemHeight = e.NewSize.Height / rowItemCount;
+            gvAngels.ItemHeight = e.NewSize.Height / maxItemsPerColumn;
         }
 
         private void ControlPanelInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
@@ -151,7 +164,7 @@ namespace AngelBoard.Views
             // get total amount of items per row
             int colItemCount = (int)Math.Round(gvAngels.ActualWidth / gvAngels.DesiredWidth, 0, MidpointRounding.AwayFromZero);
 
-            
+
 
             gvAngels.ScrollIntoView(e.AddedItems.FirstOrDefault());
         }
