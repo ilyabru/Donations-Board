@@ -14,7 +14,7 @@ namespace AngelBoard.Views
 {
     public sealed partial class MainPage : Page
     {
-        const int maxItemsPerColumn = 6;
+        const int maxItemsPerColumn = 4;
 
         public MainPage()
         {
@@ -103,9 +103,9 @@ namespace AngelBoard.Views
             int itemsPerRow = (int)Math.Round(gvAngels.ActualWidth / gvAngels.DesiredWidth, 0, MidpointRounding.AwayFromZero); // 4
 
             // if big card is pointing to an item on the fourth row or greater, attempt to scroll up one row
-            if (selectedIndex > itemsPerRow * 3)
+            if (selectedIndex >= itemsPerRow * 2)
             {
-                gvAngels.ScrollIntoView(gvAngels.Items.ElementAt(selectedIndex - (itemsPerRow * 2)), ScrollIntoViewAlignment.Leading);
+                gvAngels.ScrollIntoView(gvAngels.Items.ElementAt(selectedIndex - (itemsPerRow * 1)), ScrollIntoViewAlignment.Leading);
             }
         }
 

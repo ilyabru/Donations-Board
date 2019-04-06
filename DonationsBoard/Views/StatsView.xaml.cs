@@ -30,5 +30,10 @@ namespace AngelBoard.Views
         {
            // ViewModel.Unsubscribe();
         }
+
+        private void DataGrid_Sorting(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridColumnEventArgs e)
+        {
+
+        }
     }
 }

@@ -15,14 +15,14 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="displayFont" TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="/Assets/Fonts/JosefinSans-Regular.ttf#Josefin Sans" />
+                <Setter Property="FontFamily" Value="/Assets/Fonts/Aller_Bd.ttf#Aller" />
             </Style>
             
             <!--  Converters  -->
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:StringFormatConverter x:Key="StringFormatConverter"/>
-            <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="#A1D6E2" FalseValue="#ffe119" />
+            <converters:BoolToObjectConverter x:Key="BoolToBrushConverter" TrueValue="White" FalseValue="#ffe119" />
 
             <myconverters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
             <myconverters:DecimalConverter x:Key="DecimalConverter" />

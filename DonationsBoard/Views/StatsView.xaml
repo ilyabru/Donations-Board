@@ -22,7 +22,8 @@
                            MaxColumnWidth="400"
                            GridLinesVisibility="Horizontal"
                            IsReadOnly="True"
-                           SelectionMode="Single">
+                           SelectionMode="Single"
+                           Sorting="DataGrid_Sorting">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="City" Binding="{Binding City}" />
                 <controls:DataGridTextColumn Header="Total Donators" Binding="{Binding TotalDonations}" />
