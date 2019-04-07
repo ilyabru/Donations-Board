@@ -1,5 +1,6 @@
 ﻿using AngelBoard;
 using AngelBoard.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -33,7 +34,39 @@ namespace AngelBoard.Views
 
         private void DataGrid_Sorting(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridColumnEventArgs e)
         {
+            // Clear previous sorted column if we start sorting a different column
+            string previousSortedColumn = ViewModel.CachedSortedColumn;
+            if (previousSortedColumn != string.Empty)
+            {
+                foreach (DataGridColumn dataGridColumn in dg.Columns)
+                {
+                    if (dataGridColumn.Tag != null && dataGridColumn.Tag.ToString() == previousSortedColumn &&
+                        (e.Column.Tag == null || previousSortedColumn != e.Column.Tag.ToString()))
+                    {
+                        dataGridColumn.SortDirection = null;
+                    }
+                }
+            }
 
+            // Toggle clicked column's sorting method
+            if (e.Column.Tag != null)
+            {
+                if (e.Column.SortDirection == null)
+                {
+                    dg.ItemsSource = ViewModel.SortData(e.Column.Tag.ToString(), true);
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else if (e.Column.SortDirection == DataGridSortDirection.Ascending)
+                {
+                    dg.ItemsSource = ViewModel.SortData(e.Column.Tag.ToString(), false);
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+                else
+                {
+                    dg.ItemsSource = ViewModel.ResetData();
+                    e.Column.SortDirection = null;
+                }
+            }
         }
     }
 }

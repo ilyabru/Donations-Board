@@ -16,6 +16,7 @@ namespace AngelBoard.ViewModels
         private readonly IMessageService _messageService;
 
         private ObservableCollection<CityStatistic> cityStatistics;
+        private string _cachedSortedColumn;
 
         public StatsViewModel(IStatsService statsService, IMessageService messageService)
         {
@@ -27,6 +28,12 @@ namespace AngelBoard.ViewModels
         {
             get { return cityStatistics; }
             set { SetPropertyValue(ref cityStatistics, value); }
+        }
+
+        public string CachedSortedColumn
+        {
+            get => _cachedSortedColumn;
+            set => _cachedSortedColumn = value;
         }
 
         public async Task LoadAsync()
@@ -41,6 +48,73 @@ namespace AngelBoard.ViewModels
         public async Task RefreshAsync()
         {
             CityStatistics = await _statsService.GetStatsAsync();
+        }
+
+        public ObservableCollection<CityStatistic> SortData(string sortBy, bool ascending)
+        {
+            _cachedSortedColumn = sortBy;
+            switch (sortBy)
+            {
+                case "City":
+                    if (ascending)
+                    {
+                        return new ObservableCollection<CityStatistic>(from city in cityStatistics
+                                                                       orderby city.City ascending
+                                                                       select city);
+                    }
+                    else
+                    {
+                        return new ObservableCollection<CityStatistic>(from city in cityStatistics
+                                                                       orderby city.City descending
+                                                                       select city);
+                    }
+                case "TotalDonations":
+                    if (ascending)
+                    {
+                        return new ObservableCollection<CityStatistic>(from city in cityStatistics
+                                                                       orderby city.TotalDonations ascending
+                                                                       select city);
+                    }
+                    else
+                    {
+                        return new ObservableCollection<CityStatistic>(from city in cityStatistics
+                                                                       orderby city.TotalDonations descending
+                                                                       select city);
+                    }
+                case "AmountRaised":
+                    if (ascending)
+                    {
+                        return new ObservableCollection<CityStatistic>(from city in cityStatistics
+                                                                       orderby city.AmountRaised ascending
+                                                                       select city);
+                    }
+                    else
+                    {
+                        return new ObservableCollection<CityStatistic>(from city in cityStatistics
+                                                                       orderby city.AmountRaised descending
+                                                                       select city);
+                    }
+                case "AverageRaised":
+                    if (ascending)
+                    {
+                        return new ObservableCollection<CityStatistic>(from city in cityStatistics
+                                                                       orderby city.AverageRaised ascending
+                                                                       select city);
+                    }
+                    else
+                    {
+                        return new ObservableCollection<CityStatistic>(from city in cityStatistics
+                                                                       orderby city.AverageRaised descending
+                                                                       select city);
+                    }
+            }
+
+            return cityStatistics;
+        }
+
+        public ObservableCollection<CityStatistic> ResetData()
+        {
+            return new ObservableCollection<CityStatistic>(cityStatistics);
         }
 
         //public void Subscribe()

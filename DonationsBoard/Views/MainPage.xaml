@@ -122,6 +122,9 @@
         <KeyboardAccelerator Key="Escape"
                              Invoked="EscapeInvoked">
         </KeyboardAccelerator>
+        <KeyboardAccelerator Key="W"
+                             Invoked="RightArrowInvoked">
+        </KeyboardAccelerator>
     </Page.KeyboardAccelerators>
     <Frame x:Name="frame">
         <Grid>

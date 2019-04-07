@@ -168,5 +168,27 @@ namespace AngelBoard.Views
 
             gvAngels.ScrollIntoView(e.AddedItems.FirstOrDefault());
         }
+
+        private void RightArrowInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            var OldestNonViewedAngel = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
+            var SecondOldestNonViewedAngel = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
+
+            if (!AngelPopup.IsOpen && OldestNonViewedAngel != null) // popup opened and oldest non viewed donor is shown
+            {
+                fvAngels.SelectedItem = OldestNonViewedAngel;
+                AngelPopup.IsOpen = true;
+            }
+            else if (fvAngels.SelectedItem == OldestNonViewedAngel && SecondOldestNonViewedAngel != null) // move to next non viewed donor if exists
+            {
+                fvAngels.SelectedItem = SecondOldestNonViewedAngel;
+            }
+            else // all donors viewed, therefore close
+            {
+                AngelPopup.IsOpen = false;
+            }
+            ScrollGrid(fvAngels.SelectedIndex);
+            args.Handled = true;
+        }
     }
 }

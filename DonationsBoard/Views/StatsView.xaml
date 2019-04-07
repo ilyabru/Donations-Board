@@ -10,7 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <controls:DataGrid ItemsSource="{x:Bind ViewModel.CityStatistics, Mode=OneWay}"
+        <controls:DataGrid x:Name="dg"
+                           ItemsSource="{x:Bind ViewModel.CityStatistics, Mode=OneWay}"
                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                            AutoGenerateColumns="False"
                            AlternatingRowBackground="Transparent"
@@ -25,10 +26,10 @@
                            SelectionMode="Single"
                            Sorting="DataGrid_Sorting">
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="City" Binding="{Binding City}" />
-                <controls:DataGridTextColumn Header="Total Donators" Binding="{Binding TotalDonations}" />
-                <controls:DataGridTextColumn Header="Total Amount" Binding="{Binding AmountRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}'}" />
-                <controls:DataGridTextColumn Header="Average Amount" Binding="{Binding AverageRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}'}" />
+                <controls:DataGridTextColumn Header="City" Binding="{Binding City}" Tag="City"/>
+                <controls:DataGridTextColumn Header="Total Donators" Binding="{Binding TotalDonations}" Tag="TotalDonations"/>
+                <controls:DataGridTextColumn Header="Total Amount" Binding="{Binding AmountRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}'}" Tag="AmountRaised" />
+                <controls:DataGridTextColumn Header="Average Amount" Binding="{Binding AverageRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}'}" Tag="AverageRaised"/>
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>
