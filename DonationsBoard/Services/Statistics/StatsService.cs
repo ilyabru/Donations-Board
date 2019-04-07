@@ -28,7 +28,7 @@ namespace AngelBoard.Services
                 COUNT(Id) as 'TotalDonations',
                 SUM(Amount) as 'AmountRaised',
                 AVG(Amount) as 'AverageRaised'
-                FROM donators
+                FROM donors
                 WHERE SessionId = ?
                 GROUP BY Location
                 ORDER BY City, TotalDonations, AmountRaised

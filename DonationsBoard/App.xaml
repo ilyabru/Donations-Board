@@ -15,7 +15,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="displayFont" TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="/Assets/Fonts/Aller_Bd.ttf#Aller" />
+                <Setter Property="FontFamily" Value="/Assets/Fonts/SourceSansPro-Bold.ttf#Source Sans Pro" />
             </Style>
             
             <!--  Converters  -->

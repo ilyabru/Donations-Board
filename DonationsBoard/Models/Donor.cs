@@ -59,7 +59,7 @@ namespace AngelBoard.Models
         }
 
         [Ignore]
-        public string DisplayAmount => isMonthly ? $"12 x {(amount / 12):C0} = {amount:C0} MONTHLY" : $"{amount:C2}";
+        public string DisplayAmount => isMonthly ? $"12 x {(amount / 12):C0} = {amount:C0} MONTHLY" : $"{amount:C0}";
 
         public void Merge(Donor source)
         {

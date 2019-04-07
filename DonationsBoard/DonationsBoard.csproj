@@ -202,6 +202,7 @@
     <Content Include="Assets\Fonts\JosefinSans-Regular.ttf" />
     <Content Include="Assets\Fonts\JosefinSans-Thin.ttf" />
     <Content Include="Assets\Fonts\Aller_Bd.ttf" />
+    <Content Include="Assets\Fonts\SourceSansPro-Bold.ttf" />
     <None Include="DonationsBoard_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

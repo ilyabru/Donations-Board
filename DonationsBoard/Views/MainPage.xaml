@@ -30,7 +30,7 @@
                     </Grid.RowDefinitions>
                     <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
                         <TextBlock Text="{x:Bind Name, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"  
-                                   Width="400"   
+                                   Width="300"   
                                    Foreground="Black"       
                                    FontSize="28"      
                                    TextAlignment="Center" 
@@ -41,16 +41,16 @@
                     <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
                         <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
                                    Foreground="Black"  
-                                   Width="350"   
+                                   Width="200"   
                                    FontSize="28"   
                                    TextAlignment="Center" 
-                                   TextWrapping="WrapWholeWords"
+                                   TextWrapping="Wrap"
                                    Style="{StaticResource displayFont}" />
                     </Viewbox>
                     <Viewbox Grid.Row="2" VerticalAlignment="Top" StretchDirection="DownOnly">
                         <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}"
                                    Foreground="Black" 
-                                   Width="350"   
+                                   Width="200"   
                                    FontSize="28"   
                                    TextAlignment="Center" 
                                    TextWrapping="WrapWholeWords"
@@ -77,7 +77,7 @@
                     <TextBlock Text="{x:Bind Name,Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"
                                Width="1000"   
                                Foreground="Black"       
-                               FontSize="64"     
+                               FontSize="96"     
                                TextAlignment="Center" 
                                TextWrapping="WrapWholeWords"
                                Style="{StaticResource displayFont}" />
@@ -86,16 +86,16 @@
                     <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
                                Foreground="Black"  
                                Width="800"   
-                               FontSize="64"   
+                               FontSize="76"   
                                TextAlignment="Center"
-                               TextWrapping="WrapWholeWords"
+                               TextWrapping="Wrap"
                                Style="{StaticResource displayFont}"/>
                 </Viewbox>
                 <Viewbox Grid.Row="2" VerticalAlignment="Top" StretchDirection="DownOnly">
                     <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" 
                                Foreground="Black" 
                                Width="800"   
-                               FontSize="64"    
+                               FontSize="96"    
                                TextAlignment="Center"
                                TextWrapping="WrapWholeWords"
                                Style="{StaticResource displayFont}"/>
