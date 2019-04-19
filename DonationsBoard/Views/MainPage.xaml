@@ -132,15 +132,10 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <!--Background video-->
-            <!--<MediaPlayerElement 
-                x:Name="BackgroundMedia"
-                Grid.RowSpan="2"
-                Source="ms-appx:///Assets/ESBackground.mp4"
-                AutoPlay="True"
-                Stretch="Fill"
-                AreTransportControlsEnabled="False" />-->
-
+            <!--Background image-->
+            <Image Source="ms-appx:///Assets/ESBackground.png"
+                   Grid.RowSpan="2"
+                   Stretch="UniformToFill"/>
             <!--scrollable grid view for displaying donators-->
             <controls:AdaptiveGridView 
                 x:Name="gvAngels"

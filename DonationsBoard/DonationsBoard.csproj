@@ -195,13 +195,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="AngelBoard_TemporaryKey.pfx" />
-    <Content Include="Assets\Fonts\DSMarkerFelt.ttf" />
-    <Content Include="Assets\Fonts\BubblegumSans-Regular.ttf" />
-    <Content Include="Assets\Fonts\Capriola-Regular.ttf" />
-    <Content Include="Assets\Fonts\JosefinSans-Light.ttf" />
-    <Content Include="Assets\Fonts\JosefinSans-Regular.ttf" />
-    <Content Include="Assets\Fonts\JosefinSans-Thin.ttf" />
-    <Content Include="Assets\Fonts\Aller_Bd.ttf" />
+    <Content Include="Assets\ESBackground.png" />
     <Content Include="Assets\Fonts\SourceSansPro-Bold.ttf" />
     <None Include="DonationsBoard_TemporaryKey.pfx" />
   </ItemGroup>
