@@ -10,7 +10,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public class NavigationService : INavigationService
     {

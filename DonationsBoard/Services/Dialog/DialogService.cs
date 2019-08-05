@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public class DialogService : IDialogService
     {

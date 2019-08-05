@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace AngelBoard.Controls
+namespace DonationBoard.Controls
 {
     /// <summary>
     /// This textbox override allows only decimals numbers to be entered

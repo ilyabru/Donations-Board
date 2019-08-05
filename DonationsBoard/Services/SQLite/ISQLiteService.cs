@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public interface ISQLiteService
     {

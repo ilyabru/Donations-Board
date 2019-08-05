@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
-namespace AngelBoard.Converters
+namespace DonationBoard.Converters
 {
     public class DecimalDivisionConverter : IValueConverter
     {

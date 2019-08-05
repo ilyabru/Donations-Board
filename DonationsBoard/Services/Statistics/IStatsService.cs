@@ -1,9 +1,9 @@
-﻿using DonationsBoard.Models;
+﻿using DonationBoard.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public interface IStatsService
     {

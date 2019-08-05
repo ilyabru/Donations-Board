@@ -1,4 +1,4 @@
-﻿namespace AngelBoard.Helpers
+﻿namespace DonationBoard.Helpers
 {
     public static class FileAccessHelper
     {

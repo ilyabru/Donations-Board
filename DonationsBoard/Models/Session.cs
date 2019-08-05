@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AngelBoard.Models
+namespace DonationBoard.Models
 {
     [Table("sessions")]
     public class Session

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public interface IContextService
     {

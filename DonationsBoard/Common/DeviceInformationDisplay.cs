@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Windows.Devices.Enumeration;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace AngelBoard.Common
+namespace DonationBoard.Common
 {
     public class DeviceInformationDisplay : ObservableObject
     {

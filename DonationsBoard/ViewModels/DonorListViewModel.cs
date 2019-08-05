@@ -1,8 +1,8 @@
-﻿using AngelBoard.Configuration;
-using AngelBoard.Models;
-using AngelBoard.Services;
-using AngelBoard.ViewModels.Base;
-using DonationsBoard.Common;
+﻿using DonationBoard.Configuration;
+using DonationBoard.Models;
+using DonationBoard.Services;
+using DonationBoard.ViewModels.Base;
+using DonationBoard.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,57 +10,57 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace AngelBoard.ViewModels
+namespace DonationBoard.ViewModels
 {
-    public class AngelListViewModel : BaseViewModel
+    public class DonorListViewModel : BaseViewModel
     {
-        private readonly IAngelService _angelService;
+        private readonly IDonorService _donorService;
         private readonly IMessageService _messageService;
         private readonly IDialogService _dialogService;
         private readonly IContextService _contextService;
 
-        private ObservableCollection<Donor> angels;
-        private Donor selectedAngel;
-        private Donor inputAngel;
+        private ObservableCollection<Donor> donors;
+        private Donor selectedDonor;
+        private Donor inputDonor;
         private bool isNew = true;
 
         private ObservableCollection<string> locations;
 
-        public AngelListViewModel(IAngelService angelService,
+        public DonorListViewModel(IDonorService donorService,
                                   IMessageService messageService,
                                   IDialogService dialogService,
                                   IContextService contextService)
         {
-            _angelService = angelService;
+            _donorService = donorService;
             _messageService = messageService;
             _dialogService = dialogService;
             _contextService = contextService;
         }
 
-        public ObservableCollection<Donor> Angels
+        public ObservableCollection<Donor> Donors
         {
-            get { return angels; }
-            set { SetPropertyValue(ref angels, value); }
+            get { return donors; }
+            set { SetPropertyValue(ref donors, value); }
         }
-        public Donor SelectedAngel
+        public Donor SelectedDonor
         {
-            get { return selectedAngel; }
+            get { return selectedDonor; }
             set
             {
-                SetPropertyValue(ref selectedAngel, value);
-                RaisePropertyChanged(nameof(IsAngelSelected));
+                SetPropertyValue(ref selectedDonor, value);
+                RaisePropertyChanged(nameof(IsDonorSelected));
             }
         }
 
-        public bool IsAngelSelected
+        public bool IsDonorSelected
         {
-            get { return SelectedAngel != null; }
+            get { return SelectedDonor != null; }
         }
 
-        public Donor InputAngel
+        public Donor InputDonor
         {
-            get { return inputAngel; }
-            set { SetPropertyValue(ref inputAngel, value); }
+            get { return inputDonor; }
+            set { SetPropertyValue(ref inputDonor, value); }
         }
 
         public bool IsNew
@@ -75,35 +75,35 @@ namespace AngelBoard.ViewModels
             set { SetPropertyValue(ref locations, value); }
         }
 
-        public ICommand SaveAngel => new RelayCommand(async () => await OnSaveAngel());
-        public ICommand EditAngel => new RelayCommand(OnEditAngel);
-        public ICommand CancelEditAngel => new RelayCommand(OnCancelEditAngel);
-        public ICommand DeleteAngel => new RelayCommand(async () => await OnDeleteAngel());
+        public ICommand SaveDonor => new RelayCommand(async () => await OnSaveDonor());
+        public ICommand EditDonor => new RelayCommand(OnEditDonor);
+        public ICommand CancelEditDonor => new RelayCommand(OnCancelEditDonor);
+        public ICommand DeleteDonor => new RelayCommand(async () => await OnDeleteDonor());
 
         public async Task LoadAsync()
         {
             IsBusy = true;
 
             await RefreshAsync();
-            InputAngel = new Donor();
+            InputDonor = new Donor();
 
             IsBusy = false;
         }
 
         public async Task RefreshAsync()
         {
-            Angels = await _angelService.GetAngelsAsync();
+            Donors = await _donorService.GetDonorsAsync();
             await RefreshLocations();
         }
 
         public async Task RefreshLocations()
         {
-            Locations = await _angelService.GetLocations();
+            Locations = await _donorService.GetLocations();
         }
 
         public void Subscribe()
         {
-            _messageService.Subscribe<MainPageViewModel, Donor>(this, OnAngelUpdated);
+            _messageService.Subscribe<MainPageViewModel, Donor>(this, OnDonorUpdated);
             _messageService.Subscribe<SettingsViewModel, Guid>(this, OnSessionChanged);
         }
 
@@ -112,21 +112,21 @@ namespace AngelBoard.ViewModels
             _messageService.Unsubscribe(this);
         }
 
-        private async void OnAngelUpdated(MainPageViewModel sender, string message, Donor changed)
+        private async void OnDonorUpdated(MainPageViewModel sender, string message, Donor changed)
         {
             if (changed != null)
             {
                 await _contextService.RunAsync(async () =>
                 {
-                    var savedAngel = await _angelService.GetAngelAsync(changed.Id);
-                    var viewedAngel = Angels.FirstOrDefault(a => a.Id == changed.Id);
+                    var savedDonor = await _donorService.GetDonorAsync(changed.Id);
+                    var viewedDonor = Donors.FirstOrDefault(a => a.Id == changed.Id);
 
                     switch (message)
                     {
-                        case "AngelViewed":
-                            savedAngel.IsViewed = true;
+                        case "DonorViewed":
+                            savedDonor.IsViewed = true;
                             //await _angelService.UpdateAngelAsync(savedAngel);
-                            viewedAngel.IsViewed = true;
+                            viewedDonor.IsViewed = true;
                             break;
                     }
                 });
@@ -167,31 +167,31 @@ namespace AngelBoard.ViewModels
             return Result.Ok();
         }
 
-        private async Task OnSaveAngel()
+        private async Task OnSaveDonor()
         {
             // SelectedAngel.Merge(InputAngel);
-            var result = Validate(InputAngel);
+            var result = Validate(InputDonor);
             if (result.IsOk)
             {
                 if (IsNew)
                 {
-                    await _angelService.AddAngelAsync(InputAngel);
+                    await _donorService.AddDonorAsync(InputDonor);
 
-                    _messageService.Send(this, "NewAngelSaved", InputAngel);
+                    _messageService.Send(this, "NewDonorSaved", InputDonor);
                 }
                 else
                 {
-                    await _angelService.UpdateAngelAsync(InputAngel);
-                    SelectedAngel.Merge(InputAngel);
+                    await _donorService.UpdateDonorAsync(InputDonor);
+                    SelectedDonor.Merge(InputDonor);
 
-                    SelectedAngel = null; // reset listview
+                    SelectedDonor = null; // reset listview
 
-                    _messageService.Send(this, "AngelChanged", InputAngel);
+                    _messageService.Send(this, "DonorChanged", InputDonor);
                 }
 
                 // Clear textboxes
                 IsNew = true;
-                InputAngel = new Donor();
+                InputDonor = new Donor();
                 await RefreshAsync();
             }
             else
@@ -200,26 +200,26 @@ namespace AngelBoard.ViewModels
             }
         }
 
-        private void OnEditAngel()
+        private void OnEditDonor()
         {
             IsNew = false;
 
-            InputAngel.Merge(SelectedAngel);
+            InputDonor.Merge(SelectedDonor);
         }
 
-        private void OnCancelEditAngel()
+        private void OnCancelEditDonor()
         {
             IsNew = true;
-            InputAngel = new Donor();
+            InputDonor = new Donor();
         }
 
-        private async Task OnDeleteAngel()
+        private async Task OnDeleteDonor()
         {
-            if (await _dialogService.ShowAsync("Confirm delete", $@"Are you sure you want to delete ""{SelectedAngel.Name}""?", "Ok", "Cancel"))
+            if (await _dialogService.ShowAsync("Confirm delete", $@"Are you sure you want to delete ""{SelectedDonor.Name}""?", "Ok", "Cancel"))
             {
-                await _angelService.DeleteAngelAsync(SelectedAngel);
-                _messageService.Send(this, "AngelDeleted", SelectedAngel);
-                Angels.Remove(SelectedAngel);
+                await _donorService.DeleteDonorAsync(SelectedDonor);
+                _messageService.Send(this, "DonorDeleted", SelectedDonor);
+                Donors.Remove(SelectedDonor);
                 await RefreshLocations();
             }
         }

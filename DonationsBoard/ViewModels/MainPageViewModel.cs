@@ -1,8 +1,8 @@
-﻿using AngelBoard.Configuration;
-using AngelBoard.Models;
-using AngelBoard.Services;
-using AngelBoard.ViewModels.Base;
-using DonationsBoard.Common;
+﻿using DonationBoard.Configuration;
+using DonationBoard.Models;
+using DonationBoard.Services;
+using DonationBoard.ViewModels.Base;
+using DonationBoard.Common;
 using GearVrController4Windows;
 using System;
 using System.Collections.ObjectModel;
@@ -12,27 +12,27 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Devices.Enumeration;
 
-namespace AngelBoard.ViewModels
+namespace DonationBoard.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
-        private IAngelService _angelService;
+        private IDonorService _donorService;
         private IContextService _contextService;
         private INavigationService _navigationService;
         private IMessageService _messageService;
 
-        private ObservableCollection<Donor> angels;
-        private Donor selectedAngel;
+        private ObservableCollection<Donor> donors;
+        private Donor selectedDonor;
         private bool isViewing = false;
 
-        public MainPageViewModel(IAngelService angelService,
+        public MainPageViewModel(IDonorService donorService,
                                  IContextService contextService,
                                  INavigationService navigationService,
                                  IMessageService messageService)
         {
             GVRC = ServiceLocator.Current.GetService<GearVrController>();
 
-            _angelService = angelService;
+            _donorService = donorService;
             _contextService = contextService;
             _navigationService = navigationService;
             _messageService = messageService;
@@ -40,34 +40,34 @@ namespace AngelBoard.ViewModels
 
         public GearVrController GVRC { get; set; }
 
-        public ObservableCollection<Donor> Angels
+        public ObservableCollection<Donor> Donors
         {
-            get => angels;
+            get => donors;
             set
             {
-                SetPropertyValue(ref angels, value);
+                SetPropertyValue(ref donors, value);
                 RaisePropertyChanged(nameof(TotalAmount));
             }
         }
 
-        public Donor SelectedAngel
+        public Donor SelectedDonor
         {
-            get => selectedAngel;
+            get => selectedDonor;
             set
             {
                 // sets isViewed property when navigating the flipview
-                if (selectedAngel != null
-                    && selectedAngel != value
+                if (selectedDonor != null
+                    && selectedDonor != value
                     && value != null
                     && isViewing == true
-                    && SelectedAngel.IsViewed == false)
+                    && SelectedDonor.IsViewed == false)
                 {
-                    SelectedAngel.IsViewed = true;
-                    _angelService.UpdateAngelAsync(SelectedAngel);
-                    _messageService.Send(this, "AngelViewed", SelectedAngel);
+                    SelectedDonor.IsViewed = true;
+                    _donorService.UpdateDonorAsync(SelectedDonor);
+                    _messageService.Send(this, "DonorViewed", SelectedDonor);
                 }
 
-                SetPropertyValue(ref selectedAngel, value);
+                SetPropertyValue(ref selectedDonor, value);
             }
         }
 
@@ -79,28 +79,28 @@ namespace AngelBoard.ViewModels
                 // sets isViewed property when leaving flipview
                 if (isViewing == true
                     && value == false
-                    && SelectedAngel != null
-                    && SelectedAngel.IsViewed == false)
+                    && SelectedDonor != null
+                    && SelectedDonor.IsViewed == false)
                 {
-                    SelectedAngel.IsViewed = true;
-                    _angelService.UpdateAngelAsync(SelectedAngel);
-                    _messageService.Send(this, "AngelViewed", SelectedAngel);
+                    SelectedDonor.IsViewed = true;
+                    _donorService.UpdateDonorAsync(SelectedDonor);
+                    _messageService.Send(this, "DonorViewed", SelectedDonor);
                 }
 
                 SetPropertyValue(ref isViewing, value);
             }
         }
 
-        public decimal? TotalAmount => Angels?.Sum(a => a.Amount);
+        public decimal? TotalAmount => Donors?.Sum(a => a.Amount);
 
-        public ICommand EditAngels => new RelayCommand(async () => await OnEditAngels());
+        public ICommand EditDonors => new RelayCommand(async () => await OnEditDonors());
 
         public async Task LoadAsync()
         {
             IsBusy = true;
 
             // navigates to control panel on startup
-            await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Angels);
+            await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Donors);
 
             // populate angel list
             await RefreshAsync();
@@ -127,17 +127,17 @@ namespace AngelBoard.ViewModels
         {
             bool isOk = true;
 
-            Angels = null;
-            SelectedAngel = null;
+            Donors = null;
+            SelectedDonor = null;
 
             try
             {
-                Angels = await _angelService.GetAngelsAsync();
-                SelectedAngel = null;
+                Donors = await _donorService.GetDonorsAsync();
+                SelectedDonor = null;
             }
-            catch (Exception ex)
+            catch
             {
-                Angels = new ObservableCollection<Donor>();
+                Donors = new ObservableCollection<Donor>();
                 // log error
 
                 isOk = false;
@@ -151,7 +151,7 @@ namespace AngelBoard.ViewModels
 
         public void Subscribe()
         {
-            _messageService.Subscribe<AngelListViewModel, Donor>(this, OnAngelSaved);
+            _messageService.Subscribe<DonorListViewModel, Donor>(this, OnDonorSaved);
             _messageService.Subscribe<SettingsViewModel, Guid>(this, OnSessionChanged);
         }
 
@@ -160,26 +160,26 @@ namespace AngelBoard.ViewModels
             _messageService.Unsubscribe(this);
         }
 
-        private async void OnAngelSaved(AngelListViewModel sender, string message, Donor changed)
+        private async void OnDonorSaved(DonorListViewModel sender, string message, Donor changed)
         {
             if (changed != null)
             {
                 await _contextService.RunAsync(async () =>
                 {
-                    var savedAngel = await _angelService.GetAngelAsync(changed.Id);
-                    var listAngelIndex = Angels.IndexOf(Angels.FirstOrDefault(a => a.Id == changed.Id));
+                    var savedDonor = await _donorService.GetDonorAsync(changed.Id);
+                    var listDonorIndex = Donors.IndexOf(Donors.FirstOrDefault(a => a.Id == changed.Id));
 
                     switch (message)
                     {
-                        case "NewAngelSaved":
-                            Angels.Add(savedAngel);
+                        case "NewDonorSaved":
+                            Donors.Add(savedDonor);
                             break;
-                        case "AngelChanged":
-                            Angels[listAngelIndex].Merge(savedAngel);
-                            Angels[listAngelIndex].NotifyChanges();
+                        case "DonorChanged":
+                            Donors[listDonorIndex].Merge(savedDonor);
+                            Donors[listDonorIndex].NotifyChanges();
                             break;
-                        case "AngelDeleted":
-                            Angels.RemoveAt(listAngelIndex);
+                        case "DonorDeleted":
+                            Donors.RemoveAt(listDonorIndex);
                             break;
                     }
                     RaisePropertyChanged(nameof(TotalAmount));
@@ -202,15 +202,15 @@ namespace AngelBoard.ViewModels
             });
         }
 
-        private void AddEditAngel(Donor angel)
+        private void AddEditDonor(Donor donor)
         {
-            int index = Angels.IndexOf(Angels.Where(a => a.Id == angel.Id).First());
-            Angels[index] = angel;
+            int index = Donors.IndexOf(Donors.Where(a => a.Id == donor.Id).First());
+            Donors[index] = donor;
         }
 
-        private async Task OnEditAngels()
+        private async Task OnEditDonors()
         {
-            await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Angels);
+            await _navigationService.CreateNewViewAsync<ControlPanelViewModel>(Donors);
         }
     }
 }

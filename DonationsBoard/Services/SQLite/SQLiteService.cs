@@ -1,7 +1,7 @@
-﻿using AngelBoard.Helpers;
+﻿using DonationBoard.Helpers;
 using SQLite;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public class SQLiteService : ISQLiteService
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AngelBoard.Models;
+using DonationBoard.Models;
 using SQLite;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public class MockSQLiteService : ISQLiteService
     {

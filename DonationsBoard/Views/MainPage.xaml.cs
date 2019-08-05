@@ -1,5 +1,5 @@
-﻿using AngelBoard.Services;
-using AngelBoard.ViewModels;
+﻿using DonationBoard.Services;
+using DonationBoard.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
-namespace AngelBoard.Views
+namespace DonationBoard.Views
 {
     public sealed partial class MainPage : Page
     {
@@ -72,55 +72,55 @@ namespace AngelBoard.Views
         {
             if (ViewModel.GVRC.TouchpadButton)
             {
-                var OldestNonViewedAngel = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
-                var SecondOldestNonViewedAngel = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
+                var OldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
+                var SecondOldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
 
-                if (!AngelPopup.IsOpen && OldestNonViewedAngel != null) // popup opened and oldest non viewed donor is shown
+                if (!DonorPopup.IsOpen && OldestNonViewedDonor != null) // popup opened and oldest non viewed donor is shown
                 {
-                    fvAngels.SelectedItem = OldestNonViewedAngel;
-                    AngelPopup.IsOpen = true;
+                    fvDonors.SelectedItem = OldestNonViewedDonor;
+                    DonorPopup.IsOpen = true;
                 }
-                else if (fvAngels.SelectedItem == OldestNonViewedAngel && SecondOldestNonViewedAngel != null) // move to next non viewed donor if exists
+                else if (fvDonors.SelectedItem == OldestNonViewedDonor && SecondOldestNonViewedDonor != null) // move to next non viewed donor if exists
                 {
-                    fvAngels.SelectedItem = SecondOldestNonViewedAngel;
+                    fvDonors.SelectedItem = SecondOldestNonViewedDonor;
                 }
                 else // all donors viewed, therefore close
                 {
-                    AngelPopup.IsOpen = false;
+                    DonorPopup.IsOpen = false;
                 }
-                ScrollGrid(fvAngels.SelectedIndex);
+                ScrollGrid(fvDonors.SelectedIndex);
             }
 
             if (ViewModel.GVRC.BackButton)
             {
-                AngelPopup.IsOpen = false;
+                DonorPopup.IsOpen = false;
             }
         }
 
         private void ScrollGrid(int selectedIndex)
         {
             // get total amount of items per row
-            int itemsPerRow = (int)Math.Round(gvAngels.ActualWidth / gvAngels.DesiredWidth, 0, MidpointRounding.AwayFromZero); // 4
+            int itemsPerRow = (int)Math.Round(gvDonors.ActualWidth / gvDonors.DesiredWidth, 0, MidpointRounding.AwayFromZero); // 4
 
             // if big card is pointing to an item on the fourth row or greater, attempt to scroll up one row
             if (selectedIndex >= itemsPerRow * 2)
             {
-                gvAngels.ScrollIntoView(gvAngels.Items.ElementAt(selectedIndex - (itemsPerRow * 1)), ScrollIntoViewAlignment.Leading);
+                gvDonors.ScrollIntoView(gvDonors.Items.ElementAt(selectedIndex - (itemsPerRow * 1)), ScrollIntoViewAlignment.Leading);
             }
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (!AngelPopup.IsOpen)
+            if (!DonorPopup.IsOpen)
             {
-                AngelPopup.IsOpen = true;
+                DonorPopup.IsOpen = true;
             }
         }
 
         // ensure only 4 rows of data exist
-        private void GvAngels_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void GvDonors_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            gvAngels.ItemHeight = e.NewSize.Height / maxItemsPerColumn;
+            gvDonors.ItemHeight = e.NewSize.Height / maxItemsPerColumn;
         }
 
         private void ControlPanelInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
@@ -134,60 +134,60 @@ namespace AngelBoard.Views
             args.Handled = true;
         }
 
-        private void AngelPopup_LayoutUpdated(object sender, object e)
+        private void DonorPopup_LayoutUpdated(object sender, object e)
         {
-            if (fvAngels.ActualWidth == 0 && fvAngels.ActualHeight == 0)
+            if (fvDonors.ActualWidth == 0 && fvDonors.ActualHeight == 0)
             {
                 return;
             }
 
-            double ActualHorizontalOffset = this.AngelPopup.HorizontalOffset;
-            double ActualVerticalOffset = this.AngelPopup.VerticalOffset;
+            double ActualHorizontalOffset = this.DonorPopup.HorizontalOffset;
+            double ActualVerticalOffset = this.DonorPopup.VerticalOffset;
 
-            double NewHorizontalOffset = (Window.Current.Bounds.Width - fvAngels.ActualWidth) / 2;
-            double NewVerticalOffset = (Window.Current.Bounds.Height - fvAngels.ActualHeight) / 2;
+            double NewHorizontalOffset = (Window.Current.Bounds.Width - fvDonors.ActualWidth) / 2;
+            double NewVerticalOffset = (Window.Current.Bounds.Height - fvDonors.ActualHeight) / 2;
 
             if (ActualHorizontalOffset != NewHorizontalOffset || ActualVerticalOffset != NewVerticalOffset)
             {
-                this.AngelPopup.HorizontalOffset = NewHorizontalOffset;
-                this.AngelPopup.VerticalOffset = NewVerticalOffset;
+                this.DonorPopup.HorizontalOffset = NewHorizontalOffset;
+                this.DonorPopup.VerticalOffset = NewVerticalOffset;
             }
         }
 
         private void EscapeInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            AngelPopup.IsOpen = false;
+            DonorPopup.IsOpen = false;
         }
 
-        private void FvAngels_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FvDonors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // get total amount of items per row
-            int colItemCount = (int)Math.Round(gvAngels.ActualWidth / gvAngels.DesiredWidth, 0, MidpointRounding.AwayFromZero);
+            int colItemCount = (int)Math.Round(gvDonors.ActualWidth / gvDonors.DesiredWidth, 0, MidpointRounding.AwayFromZero);
 
 
 
-            gvAngels.ScrollIntoView(e.AddedItems.FirstOrDefault());
+            gvDonors.ScrollIntoView(e.AddedItems.FirstOrDefault());
         }
 
         private void RightArrowInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            var OldestNonViewedAngel = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
-            var SecondOldestNonViewedAngel = ViewModel.Angels.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
+            var OldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
+            var SecondOldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
 
-            if (!AngelPopup.IsOpen && OldestNonViewedAngel != null) // popup opened and oldest non viewed donor is shown
+            if (!DonorPopup.IsOpen && OldestNonViewedDonor != null) // popup opened and oldest non viewed donor is shown
             {
-                fvAngels.SelectedItem = OldestNonViewedAngel;
-                AngelPopup.IsOpen = true;
+                fvDonors.SelectedItem = OldestNonViewedDonor;
+                DonorPopup.IsOpen = true;
             }
-            else if (fvAngels.SelectedItem == OldestNonViewedAngel && SecondOldestNonViewedAngel != null) // move to next non viewed donor if exists
+            else if (fvDonors.SelectedItem == OldestNonViewedDonor && SecondOldestNonViewedDonor != null) // move to next non viewed donor if exists
             {
-                fvAngels.SelectedItem = SecondOldestNonViewedAngel;
+                fvDonors.SelectedItem = SecondOldestNonViewedDonor;
             }
             else // all donors viewed, therefore close
             {
-                AngelPopup.IsOpen = false;
+                DonorPopup.IsOpen = false;
             }
-            ScrollGrid(fvAngels.SelectedIndex);
+            ScrollGrid(fvDonors.SelectedIndex);
             args.Handled = true;
         }
     }

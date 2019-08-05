@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
-namespace AngelBoard.Converters
+namespace DonationBoard.Converters
 {
     public class SelectionChangedEventArgsConverter : IValueConverter
     {

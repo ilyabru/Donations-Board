@@ -1,11 +1,11 @@
 ﻿<Page
-    x:Class="AngelBoard.Views.ControlPanelView"
+    x:Class="DonationBoard.Views.ControlPanelView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:AngelBoard.Views"
+    xmlns:local="using:DonationBoard.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodels="using:AngelBoard.ViewModels"
+    xmlns:viewmodels="using:DonationBoard.ViewModels"
     xmlns:muxc="using:Windows.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">

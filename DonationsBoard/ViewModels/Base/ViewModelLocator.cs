@@ -1,9 +1,9 @@
-﻿using AngelBoard.Services;
+﻿using DonationBoard.Services;
 using System;
 using System.Globalization;
 using System.Reflection;
 
-namespace AngelBoard.ViewModels.Base
+namespace DonationBoard.ViewModels.Base
 {
     //public class ViewModelLocator
     //{

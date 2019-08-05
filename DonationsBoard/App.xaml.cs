@@ -1,6 +1,6 @@
-﻿using AngelBoard.Services;
-using AngelBoard.ViewModels;
-using AngelBoard.Views;
+﻿using DonationBoard.Services;
+using DonationBoard.ViewModels;
+using DonationBoard.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +19,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace AngelBoard
+namespace DonationBoard
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

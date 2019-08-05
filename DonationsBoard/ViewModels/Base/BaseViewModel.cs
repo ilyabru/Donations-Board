@@ -1,8 +1,8 @@
-﻿using AngelBoard.Helpers;
-using AngelBoard.Services;
+﻿using DonationBoard.Helpers;
+using DonationBoard.Services;
 using System.Threading.Tasks;
 
-namespace AngelBoard.ViewModels.Base
+namespace DonationBoard.ViewModels.Base
 {
     public class BaseViewModel : ObservableObject
     {

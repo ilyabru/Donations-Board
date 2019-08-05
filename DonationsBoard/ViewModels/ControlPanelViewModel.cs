@@ -1,14 +1,14 @@
-﻿using AngelBoard.Services;
-using AngelBoard.ViewModels.Base;
+﻿using DonationBoard.Services;
+using DonationBoard.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AngelBoard.ViewModels
+namespace DonationBoard.ViewModels
 {
     public class ControlPanelViewModel : BaseViewModel
     {
-        private readonly NavigationItem AngelListItem = new NavigationItem("Donor List", typeof(AngelListViewModel));
+        private readonly NavigationItem DonorListItem = new NavigationItem("Donor List", typeof(DonorListViewModel));
         private readonly NavigationItem StatsItem = new NavigationItem("Statistics", typeof(StatsViewModel));
 
         private INavigationService _navigationService;
@@ -37,7 +37,7 @@ namespace AngelBoard.ViewModels
         public void LoadAsync()
         {
             Items = GetItems().ToArray();
-            _navigationService.Navigate(typeof(AngelListViewModel));
+            _navigationService.Navigate(typeof(DonorListViewModel));
         }
 
         public void NavigateTo(Type viewModel)
@@ -59,7 +59,7 @@ namespace AngelBoard.ViewModels
 
         private IEnumerable<NavigationItem> GetItems()
         {
-            yield return AngelListItem;
+            yield return DonorListItem;
             yield return StatsItem;
         }
     }

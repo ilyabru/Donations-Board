@@ -1,4 +1,4 @@
-﻿using AngelBoard.Models;
+﻿using DonationBoard.Models;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public class MockSessionService : ISessionService
     {

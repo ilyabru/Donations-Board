@@ -1,8 +1,8 @@
-﻿using AngelBoard.Helpers;
+﻿using DonationBoard.Helpers;
 using SQLite;
 using System;
 
-namespace AngelBoard.Models
+namespace DonationBoard.Models
 {
     [Table("donors")]
     public class Donor : ObservableObject

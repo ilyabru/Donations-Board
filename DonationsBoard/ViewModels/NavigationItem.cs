@@ -1,7 +1,7 @@
-﻿using AngelBoard.Helpers;
+﻿using DonationBoard.Helpers;
 using System;
 
-namespace AngelBoard.ViewModels
+namespace DonationBoard.ViewModels
 {
     public class NavigationItem : ObservableObject
     {

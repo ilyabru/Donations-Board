@@ -1,4 +1,4 @@
-﻿using AngelBoard.ViewModels;
+﻿using DonationBoard.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +7,20 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace AngelBoard.Views
+namespace DonationBoard.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class AngelListView : Page
+    public sealed partial class DonorListView : Page
     {
-        public AngelListView()
+        public DonorListView()
         {
-            ViewModel = ServiceLocator.Current.GetService<AngelListViewModel>();
+            ViewModel = ServiceLocator.Current.GetService<DonorListViewModel>();
             this.InitializeComponent();
         }
 
-        public AngelListViewModel ViewModel { get; set; }
+        public DonorListViewModel ViewModel { get; set; }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {

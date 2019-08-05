@@ -1,7 +1,7 @@
-﻿using AngelBoard.Configuration;
-using AngelBoard.Services;
-using AngelBoard.ViewModels;
-using AngelBoard.Views;
+﻿using DonationBoard.Configuration;
+using DonationBoard.Services;
+using DonationBoard.ViewModels;
+using DonationBoard.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AngelBoard
+namespace DonationBoard
 {
     static public class Startup
     {
@@ -30,7 +30,7 @@ namespace AngelBoard
         {
             NavigationService.Register<MainPageViewModel, MainPage>();
             NavigationService.Register<ControlPanelViewModel, ControlPanelView>();
-            NavigationService.Register<AngelListViewModel, AngelListView>();
+            NavigationService.Register<DonorListViewModel, DonorListView>();
             NavigationService.Register<StatsViewModel, StatsView>();
             NavigationService.Register<SettingsViewModel, SettingsView>();
         }

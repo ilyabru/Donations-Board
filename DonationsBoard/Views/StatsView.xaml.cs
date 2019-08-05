@@ -1,12 +1,12 @@
-﻿using AngelBoard;
-using AngelBoard.ViewModels;
+﻿using DonationBoard;
+using DonationBoard.ViewModels;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace AngelBoard.Views
+namespace DonationBoard.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.

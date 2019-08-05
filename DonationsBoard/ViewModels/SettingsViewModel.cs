@@ -1,9 +1,8 @@
-﻿using AngelBoard.Common;
-using AngelBoard.Configuration;
-using AngelBoard.Models;
-using AngelBoard.Services;
-using AngelBoard.ViewModels.Base;
-using DonationsBoard.Common;
+﻿using DonationBoard.Common;
+using DonationBoard.Configuration;
+using DonationBoard.Models;
+using DonationBoard.Services;
+using DonationBoard.ViewModels.Base;
 using GearVrController4Windows;
 using System;
 using System.Collections.ObjectModel;
@@ -12,7 +11,7 @@ using System.Windows.Input;
 using Windows.Devices.Enumeration;
 using Windows.Foundation;
 
-namespace AngelBoard.ViewModels
+namespace DonationBoard.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {

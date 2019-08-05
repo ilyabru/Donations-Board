@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using AngelBoard.Configuration;
-using AngelBoard.Models;
-using DonationsBoard.Models;
+using DonationBoard.Configuration;
+using DonationBoard.Models;
 using SQLite;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public class StatsService : IStatsService
     {

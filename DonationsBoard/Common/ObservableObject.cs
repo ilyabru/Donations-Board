@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AngelBoard
+namespace DonationBoard
 {
     public class ObservableObject : INotifyPropertyChanged
     {

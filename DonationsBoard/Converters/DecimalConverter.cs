@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 
-namespace AngelBoard.Converters
+namespace DonationBoard.Converters
 {
     public sealed class DecimalConverter : IValueConverter
     {

@@ -1,6 +1,6 @@
-﻿using AngelBoard.Services;
-using AngelBoard.ViewModels.Base;
-using DonationsBoard.Models;
+﻿using DonationBoard.Services;
+using DonationBoard.ViewModels.Base;
+using DonationBoard.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AngelBoard.ViewModels
+namespace DonationBoard.ViewModels
 {
     public class StatsViewModel : BaseViewModel
     {

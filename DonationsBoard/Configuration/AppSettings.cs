@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace AngelBoard.Configuration
+namespace DonationBoard.Configuration
 {
     public class AppSettings
     {

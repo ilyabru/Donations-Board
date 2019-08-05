@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using AngelBoard.Models;
+using DonationBoard.Models;
 
-namespace AngelBoard.Services
+namespace DonationBoard.Services
 {
     public interface ISessionService
     {

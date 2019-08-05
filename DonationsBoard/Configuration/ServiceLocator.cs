@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using AngelBoard.Services;
-using AngelBoard.ViewModels;
+using DonationBoard.Services;
+using DonationBoard.ViewModels;
 using GearVrController4Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.ViewManagement;
 
-namespace AngelBoard
+namespace DonationBoard
 {
     public class ServiceLocator : IDisposable
     {
@@ -18,7 +18,7 @@ namespace AngelBoard
         {
             serviceCollection.AddSingleton<ISQLiteService, MockSQLiteService>();
             serviceCollection.AddSingleton<ISessionService, MockSessionService>();
-            serviceCollection.AddSingleton<IAngelService, MockAngelService>();
+            serviceCollection.AddSingleton<IDonorService, MockDonorService>();
             serviceCollection.AddSingleton<IStatsService, MockStatsService>();
 
             serviceCollection.AddSingleton<IMessageService, MessageService>();
@@ -31,7 +31,7 @@ namespace AngelBoard
             // view models
             serviceCollection.AddTransient<MainPageViewModel>();
             serviceCollection.AddTransient<ControlPanelViewModel>();
-            serviceCollection.AddTransient<AngelListViewModel>();
+            serviceCollection.AddTransient<DonorListViewModel>();
             serviceCollection.AddTransient<StatsViewModel>();
             serviceCollection.AddTransient<SettingsViewModel>();
 
