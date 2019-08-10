@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="using:DonationBoard.ViewModels"
-    xmlns:muxc="using:Windows.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -21,14 +20,14 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <muxc:NavigationView x:Name="nvPanel" 
-                             MenuItemsSource="{x:Bind ViewModel.Items}"
-                             MenuItemTemplate="{StaticResource NavigationViewItem}"
-                             SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
-                             PaneDisplayMode="Top"
-                             IsBackEnabled="False"
-                             IsBackButtonVisible="Collapsed"
-                             SelectionChanged="OnSelectionChanged">
+        <NavigationView x:Name="nvPanel" 
+                        MenuItemsSource="{x:Bind ViewModel.Items}"
+                        MenuItemTemplate="{StaticResource NavigationViewItem}"
+                        SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
+                        PaneDisplayMode="Top"
+                        IsBackEnabled="False"
+                        IsBackButtonVisible="Collapsed"
+                        SelectionChanged="OnSelectionChanged">
             <Grid>
                 <Frame x:Name="frame" Margin="10">
                     <Frame.ContentTransitions>
@@ -38,6 +37,6 @@
                     </Frame.ContentTransitions>
                 </Frame>
             </Grid>
-        </muxc:NavigationView>
+        </NavigationView>
     </Grid>
 </Page>
