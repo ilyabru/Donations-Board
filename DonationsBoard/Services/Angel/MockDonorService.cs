@@ -42,6 +42,7 @@ namespace DonationBoard.Services
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Julia Shwartz", Location = "Scarborough", Amount = 150m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "James Crawford", Location = "North Bay", Amount = 100m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Gordon Freeman", Location = "City 17", Amount = 250m, IsViewed = false },
+                new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Ilya Brusnitsyn", Location = "Toronto", Amount = 250m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Wayne Newton", Location = "Markham", Amount = 100m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Larry Gorrigan + Sue Maclean", Location = "Picton", Amount = 100m, IsViewed = false },
                 new Donor { SessionId = AppSettings.Current.CurrentSession, Name = "Martine Martinez", Location = "Bolton", Amount = 110m, IsViewed = false },
