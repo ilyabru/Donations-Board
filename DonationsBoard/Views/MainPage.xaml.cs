@@ -72,17 +72,17 @@ namespace DonationBoard.Views
         {
             if (ViewModel.GVRC.TouchpadButton)
             {
-                var OldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
-                var SecondOldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
+                var oldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
+                var secondOldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
 
-                if (!DonorPopup.IsOpen && OldestNonViewedDonor != null) // popup opened and oldest non viewed donor is shown
+                if (!DonorPopup.IsOpen && oldestNonViewedDonor != null) // popup opened and oldest non viewed donor is shown
                 {
-                    fvDonors.SelectedItem = OldestNonViewedDonor;
+                    fvDonors.SelectedItem = oldestNonViewedDonor;
                     DonorPopup.IsOpen = true;
                 }
-                else if (fvDonors.SelectedItem == OldestNonViewedDonor && SecondOldestNonViewedDonor != null) // move to next non viewed donor if exists
+                else if (fvDonors.SelectedItem == oldestNonViewedDonor && secondOldestNonViewedDonor != null) // move to next non viewed donor if exists
                 {
-                    fvDonors.SelectedItem = SecondOldestNonViewedDonor;
+                    fvDonors.SelectedItem = secondOldestNonViewedDonor;
                 }
                 else // all donors viewed, therefore close
                 {
@@ -171,17 +171,17 @@ namespace DonationBoard.Views
 
         private void RightArrowInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            var OldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
-            var SecondOldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
+            var oldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
+            var secondOldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
 
-            if (!DonorPopup.IsOpen && OldestNonViewedDonor != null) // popup opened and oldest non viewed donor is shown
+            if (!DonorPopup.IsOpen && oldestNonViewedDonor != null) // popup opened and oldest non viewed donor is shown
             {
-                fvDonors.SelectedItem = OldestNonViewedDonor;
+                fvDonors.SelectedItem = oldestNonViewedDonor;
                 DonorPopup.IsOpen = true;
             }
-            else if (fvDonors.SelectedItem == OldestNonViewedDonor && SecondOldestNonViewedDonor != null) // move to next non viewed donor if exists
+            else if (fvDonors.SelectedItem == oldestNonViewedDonor && secondOldestNonViewedDonor != null) // move to next non viewed donor if exists
             {
-                fvDonors.SelectedItem = SecondOldestNonViewedDonor;
+                fvDonors.SelectedItem = secondOldestNonViewedDonor;
             }
             else // all donors viewed, therefore close
             {
