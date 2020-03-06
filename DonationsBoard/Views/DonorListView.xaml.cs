@@ -1,4 +1,5 @@
-﻿using DonationBoard.ViewModels;
+﻿using DonationBoard.Models;
+using DonationBoard.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,8 +59,25 @@ namespace DonationBoard.Views
                 suggestions.Add(item);
             }
 
-            return suggestions.OrderByDescending(i => i.StartsWith(query, StringComparison.CurrentCultureIgnoreCase)).ThenBy(i => i).ToList();
+            return suggestions.OrderByDescending(i => 
+                i.StartsWith(query, StringComparison.CurrentCultureIgnoreCase))
+                    .ThenBy(i => i)
+                    .ToList();
         }
 
+        private void lstvDonors_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ViewModel.SelectedDonors = lstvDonors.SelectedItems
+                .Cast<Donor>()
+                .ToList();
+        }
+
+        private void btnClearToggles_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if (lstvDonors.SelectionMode == ListViewSelectionMode.Multiple)
+            {
+                lstvDonors.SelectedItems.Clear();
+            }
+        }
     }
 }

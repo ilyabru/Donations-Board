@@ -57,10 +57,12 @@
                           OnContent="Yes" />
 
             <Button Command="{x:Bind ViewModel.SaveDonor}"
+                    Width="300"
                     HorizontalAlignment="Center"
                     Margin="10"
                     Content="Save" />
             <Button IsEnabled="{x:Bind ViewModel.IsNew, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                    Width="300"
                     Command="{x:Bind ViewModel.CancelEditDonor}"
                     HorizontalAlignment="Center"
                     Margin="10"
@@ -72,16 +74,21 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ListView Grid.Row="0"
-                      ItemsSource="{x:Bind ViewModel.Donors, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.SelectedDonor, Mode=TwoWay}"
-                      Width="350">
+            <ListView x:Name="lstvDonors"
+                      Grid.Row="0"
+                      ItemsSource="{x:Bind ViewModel.Donors, Mode=OneWay}"                     
+                      Width="350"
+                      SelectionMode="Multiple"
+                      SelectionChanged="lstvDonors_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Donor">
                         <StackPanel Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}">
                             <TextBlock Text="{x:Bind Name, Mode=OneWay}" Foreground="Black" />
                             <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"/>
                             <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" Foreground="Black"/>
+                            <TextBlock Text="{x:Bind ViewedDate, Mode=OneWay, 
+                                Converter={StaticResource StringFormatConverter}, 
+                                ConverterParameter='Viewed at: {0}'}" Foreground="Black"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -93,21 +100,34 @@
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
-
+            
+            <Button Grid.Row="1" 
+                Content="Toggle Viewed" 
+                Command="{x:Bind ViewModel.ToggleViewedStatus}"
+                IsEnabled="{x:Bind ViewModel.IsDonorSelected, Mode=OneWay}"
+                Margin="10"
+                HorizontalAlignment="Left"/>
+            <Button x:Name="btnClearToggles"
+                Grid.Row="2" 
+                Content="Clear Selections"
+                Click="btnClearToggles_Click"
+                IsEnabled="{x:Bind ViewModel.IsDonorSelected, Mode=OneWay}"
+                Margin="10"
+                HorizontalAlignment="Left"/>
             <Button Grid.Row="1" 
                 Content="Edit Donor" 
                 Command="{x:Bind ViewModel.EditDonor}"
-                CommandParameter="{x:Bind ViewModel.SelectedDonor}"
-                IsEnabled="{x:Bind ViewModel.IsDonorSelected, Mode=OneWay}"
+                CommandParameter="{x:Bind ViewModel.SelectedDonors[0]}"
+                IsEnabled="{x:Bind ViewModel.AreMultipleDonorsSelectedAndAny, Converter={StaticResource BoolNegationConverter},Mode=OneWay}"
                 Margin="10"
-                HorizontalAlignment="Center"/>
+                HorizontalAlignment="Right"/>
             <Button Grid.Row="2" 
                 Content="Delete Donor" 
                 Command="{x:Bind ViewModel.DeleteDonor}"
-                CommandParameter="{x:Bind ViewModel.SelectedDonor}"
-                IsEnabled="{x:Bind ViewModel.IsDonorSelected, Mode=OneWay}"
+                CommandParameter="{x:Bind ViewModel.SelectedDonors[0]}"
+                IsEnabled="{x:Bind ViewModel.AreMultipleDonorsSelectedAndAny, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                 Margin="10"
-                HorizontalAlignment="Center"/>
+                HorizontalAlignment="Right"/>
         </Grid>
     </Grid>
 

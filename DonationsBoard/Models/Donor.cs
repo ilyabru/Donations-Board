@@ -13,6 +13,7 @@ namespace DonationBoard.Models
         private bool isMonthly;
         private bool isViewed;
         private DateTime createdDate = DateTime.Now;
+        private DateTime? viewedDate;
 
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -58,6 +59,12 @@ namespace DonationBoard.Models
             set => SetPropertyValue(ref createdDate, value);
         }
 
+        public DateTime? ViewedDate
+        {
+            get => viewedDate;
+            set => SetPropertyValue(ref viewedDate, value);
+        }
+
         [Ignore]
         public string DisplayAmount => isMonthly ? $"12 x {(amount / 12):C0} = {amount:C0} MONTHLY" : $"{amount:C0}";
 
@@ -73,6 +80,7 @@ namespace DonationBoard.Models
                 IsMonthly = source.IsMonthly;
                 IsViewed = source.IsViewed;
                 CreatedDate = source.CreatedDate;
+                ViewedDate = source.ViewedDate;
             }
         }
     }

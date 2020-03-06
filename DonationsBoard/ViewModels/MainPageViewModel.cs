@@ -63,6 +63,7 @@ namespace DonationBoard.ViewModels
                     && SelectedDonor.IsViewed == false)
                 {
                     SelectedDonor.IsViewed = true;
+                    SelectedDonor.ViewedDate = DateTime.Now;
                     _donorService.UpdateDonorAsync(SelectedDonor);
                     _messageService.Send(this, "DonorViewed", SelectedDonor);
                 }
@@ -83,6 +84,7 @@ namespace DonationBoard.ViewModels
                     && SelectedDonor.IsViewed == false)
                 {
                     SelectedDonor.IsViewed = true;
+                    SelectedDonor.ViewedDate = DateTime.Now;
                     _donorService.UpdateDonorAsync(SelectedDonor);
                     _messageService.Send(this, "DonorViewed", SelectedDonor);
                 }

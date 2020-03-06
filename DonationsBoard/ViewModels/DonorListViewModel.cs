@@ -20,7 +20,7 @@ namespace DonationBoard.ViewModels
         private readonly IContextService _contextService;
 
         private ObservableCollection<Donor> donors;
-        private Donor selectedDonor;
+        private IList<Donor> selectedDonors;
         private Donor inputDonor;
         private bool isNew = true;
 
@@ -42,19 +42,27 @@ namespace DonationBoard.ViewModels
             get { return donors; }
             set { SetPropertyValue(ref donors, value); }
         }
-        public Donor SelectedDonor
+
+        public IList<Donor> SelectedDonors
         {
-            get { return selectedDonor; }
+            get { return selectedDonors; }
             set
             {
-                SetPropertyValue(ref selectedDonor, value);
+                SetPropertyValue(ref selectedDonors, value);
                 RaisePropertyChanged(nameof(IsDonorSelected));
+                RaisePropertyChanged(nameof(AreMultipleDonorsSelectedAndAny));
             }
         }
 
         public bool IsDonorSelected
         {
-            get { return SelectedDonor != null; }
+            get { return SelectedDonors == null ? false : SelectedDonors.Any(); }
+        }
+
+        // used to enable/disable buttons for editing and deleting a SINGLE donor
+        public bool AreMultipleDonorsSelectedAndAny // TODO: finda better name or change logic
+        {
+            get { return SelectedDonors == null ? true : !IsDonorSelected || SelectedDonors.Count() > 1; }
         }
 
         public Donor InputDonor
@@ -79,6 +87,7 @@ namespace DonationBoard.ViewModels
         public ICommand EditDonor => new RelayCommand(OnEditDonor);
         public ICommand CancelEditDonor => new RelayCommand(OnCancelEditDonor);
         public ICommand DeleteDonor => new RelayCommand(async () => await OnDeleteDonor());
+        public ICommand ToggleViewedStatus => new RelayCommand(async () => await OnToggleViewedStatus());
 
         public async Task LoadAsync()
         {
@@ -124,16 +133,31 @@ namespace DonationBoard.ViewModels
                     switch (message)
                     {
                         case "DonorViewed":
-                            savedDonor.IsViewed = true;
-                            //await _angelService.UpdateAngelAsync(savedAngel);
-                            viewedDonor.IsViewed = true;
+                            viewedDonor.Merge(savedDonor);
                             break;
                     }
                 });
             }
         }
 
-        private async void OnSessionChanged(SettingsViewModel sender, string message, Guid changedSessionId)
+        private async Task OnToggleViewedStatus()
+        {
+            int viewedDonorCount = SelectedDonors.Where(d => d.IsViewed == true).Count();
+            bool allDonorsViewed = viewedDonorCount >= SelectedDonors.Count();
+
+            foreach (var donor in SelectedDonors)
+            {
+                donor.IsViewed = !allDonorsViewed;
+                donor.ViewedDate = donor.IsViewed ? (DateTime?)DateTime.Now : null;
+                await _donorService.UpdateDonorAsync(donor);
+                _messageService.Send(this, "DonorChanged", donor);
+            }
+        }
+
+        // refresh list if a different session save file is loaded
+        private async void OnSessionChanged(SettingsViewModel sender,
+                                            string message,
+                                            Guid changedSessionId)
         {
             await _contextService.RunAsync(async () =>
             {
@@ -177,14 +201,22 @@ namespace DonationBoard.ViewModels
                 {
                     await _donorService.AddDonorAsync(InputDonor);
 
+                    // append new donor to end of list
+                    Donors.Add(InputDonor);
+
                     _messageService.Send(this, "NewDonorSaved", InputDonor);
                 }
                 else
                 {
-                    await _donorService.UpdateDonorAsync(InputDonor);
-                    SelectedDonor.Merge(InputDonor);
+                    // this will only execute if only a single is selected
+                    var selectedDonor = SelectedDonors.First();
 
-                    SelectedDonor = null; // reset listview
+                    await _donorService.UpdateDonorAsync(InputDonor);
+
+                    // update donor in existing list
+                    var listDonorIndex = Donors.IndexOf(Donors.FirstOrDefault(a => a.Id == InputDonor.Id));
+                    Donors[listDonorIndex].Merge(InputDonor);
+                    Donors[listDonorIndex].NotifyChanges();
 
                     _messageService.Send(this, "DonorChanged", InputDonor);
                 }
@@ -192,11 +224,11 @@ namespace DonationBoard.ViewModels
                 // Clear textboxes
                 IsNew = true;
                 InputDonor = new Donor();
-                await RefreshAsync();
             }
             else
             {
-                await _dialogService.ShowAsync(result.Message, $"{result.Description} Please, correct the error and try again.");
+                await _dialogService.ShowAsync(result.Message,
+                    $"{result.Description} Please, correct the error and try again.");
             }
         }
 
@@ -204,7 +236,8 @@ namespace DonationBoard.ViewModels
         {
             IsNew = false;
 
-            InputDonor.Merge(SelectedDonor);
+            // this will only execute if only a single is selected
+            InputDonor.Merge(SelectedDonors.First());
         }
 
         private void OnCancelEditDonor()
@@ -215,11 +248,12 @@ namespace DonationBoard.ViewModels
 
         private async Task OnDeleteDonor()
         {
-            if (await _dialogService.ShowAsync("Confirm delete", $@"Are you sure you want to delete ""{SelectedDonor.Name}""?", "Ok", "Cancel"))
+            var selectedDonor = SelectedDonors.First();
+            if (await _dialogService.ShowAsync("Confirm delete", $@"Are you sure you want to delete ""{selectedDonor.Name}""?", "Ok", "Cancel"))
             {
-                await _donorService.DeleteDonorAsync(SelectedDonor);
-                _messageService.Send(this, "DonorDeleted", SelectedDonor);
-                Donors.Remove(SelectedDonor);
+                await _donorService.DeleteDonorAsync(selectedDonor);
+                _messageService.Send(this, "DonorDeleted", selectedDonor);
+                Donors.Remove(selectedDonor);
                 await RefreshLocations();
             }
         }
