@@ -310,7 +310,7 @@
   <ItemGroup>
     <Reference Include="GearVrController4Windows, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GearVrController4Windows\GearVrController4Windows\bin\x64\Release\GearVrController4Windows.dll</HintPath>
+      <HintPath>..\..\..\GearVrController4Windows\GearVrController4Windows\bin\Release\GearVrController4Windows.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

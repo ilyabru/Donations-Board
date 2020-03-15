@@ -59,46 +59,52 @@
         </DataTemplate>
 
         <DataTemplate x:Key="LargeDonorCardTemplate" x:DataType="models:Donor">
-            <Grid x:Name="DonorGrid"
+            <controls:DropShadowPanel                  
+                Height="600"
+                Width="1000"
+                BlurRadius="20.0"
+                Color="Black" >
+                <Grid x:Name="DonorGrid"
                   CornerRadius="10"
                   Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                   Height="600"
                   Width="1000"
                   BorderBrush="#d1070f"
                   BorderThickness="15">
-                <Grid.RowDefinitions>
-                    <RowDefinition  Height="*"/>
-                    <RowDefinition  Height="*"/>
-                    <RowDefinition  Height="*"/>
-                </Grid.RowDefinitions>
-                <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
-                    <TextBlock Text="{x:Bind Name,Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"
+                    <Grid.RowDefinitions>
+                        <RowDefinition  Height="*"/>
+                        <RowDefinition  Height="*"/>
+                        <RowDefinition  Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Viewbox Grid.Row="0" VerticalAlignment="Bottom" StretchDirection="DownOnly">
+                        <TextBlock Text="{x:Bind Name,Converter={StaticResource StringToUpperConverter}, Mode=OneWay}"
                                Width="1000"   
                                Foreground="Black"       
                                FontSize="96"     
                                TextAlignment="Center" 
                                TextWrapping="WrapWholeWords"
                                Style="{StaticResource displayFont}" />
-                </Viewbox>
-                <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
-                    <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
+                    </Viewbox>
+                    <Viewbox Grid.Row="1" VerticalAlignment="Center" StretchDirection="DownOnly">
+                        <TextBlock Text="{x:Bind Location, Converter={StaticResource StringToUpperConverter}, Mode=OneWay}" 
                                Foreground="Black"  
                                Width="800"   
                                FontSize="76"   
                                TextAlignment="Center"
                                TextWrapping="Wrap"
                                Style="{StaticResource displayFont}"/>
-                </Viewbox>
-                <Viewbox Grid.Row="2" VerticalAlignment="Top" StretchDirection="DownOnly">
-                    <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" 
+                    </Viewbox>
+                    <Viewbox Grid.Row="2" VerticalAlignment="Top" StretchDirection="DownOnly">
+                        <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" 
                                Foreground="Black" 
                                Width="800"   
                                FontSize="96"    
                                TextAlignment="Center"
                                TextWrapping="WrapWholeWords"
                                Style="{StaticResource displayFont}"/>
-                </Viewbox>
-            </Grid>
+                    </Viewbox>
+                </Grid>
+            </controls:DropShadowPanel>
         </DataTemplate>
     </Page.Resources>
 
@@ -149,7 +155,7 @@
                 >
             </controls:AdaptiveGridView>
 
-            <!--bottom text showing total donators and amount--> 
+            <!--bottom text showing total donators and amount-->
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
                 <TextBlock Text="{x:Bind ViewModel.Donors.Count, Mode=OneWay}" FontSize="26" Style="{StaticResource displayFont}" />
                 <TextBlock Text=" Angels" FontSize="26" Margin="0,0,20,0" Style="{StaticResource displayFont}"/>
