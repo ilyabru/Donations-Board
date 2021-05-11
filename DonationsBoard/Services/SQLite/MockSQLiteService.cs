@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DonationBoard.Helpers;
 using DonationBoard.Models;
 using SQLite;
 
@@ -14,7 +15,7 @@ namespace DonationBoard.Services
 
         public MockSQLiteService()
         {
-            conn = new SQLiteAsyncConnection("Data Source=ESDonationsTestDb.sqlite;");
+            conn = new SQLiteAsyncConnection(FileAccessHelper.GetLocalFilePath("ESDonationsTestDb.db"));
             conn.CreateTablesAsync<Donor, Session>().Wait();
             conn.DeleteAllAsync<Donor>().Wait();
             conn.DeleteAllAsync<Session>().Wait();

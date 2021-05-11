@@ -12,13 +12,13 @@ namespace DonationBoard.Services
     public class MockSessionService : ISessionService
     {
         private SQLiteAsyncConnection conn;
-        private readonly ISQLiteService _sQLiteService;
+        private readonly ISQLiteService _sqliteService;
 
         public MockSessionService(ISQLiteService sQLiteService)
         {
-            _sQLiteService = sQLiteService;
+            _sqliteService = sQLiteService;
 
-            conn = _sQLiteService.GetConnection();
+            conn = _sqliteService.GetConnection();
 
             conn.CreateTableAsync<Session>().Wait();
         }

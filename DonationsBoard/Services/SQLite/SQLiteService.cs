@@ -7,7 +7,7 @@ namespace DonationBoard.Services
     {
         public SQLiteAsyncConnection GetConnection()
         {
-            return new SQLiteAsyncConnection(FileAccessHelper.GetLocalFilePath("EasterSealsDonators.db"));
+            return new SQLiteAsyncConnection(FileAccessHelper.GetLocalFilePath("EasterSealsDonors.db"));
         }
     }
 }
