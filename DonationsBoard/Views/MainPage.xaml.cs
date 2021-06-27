@@ -70,7 +70,8 @@ namespace DonationBoard.Views
 
         private void Gvc_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (ViewModel.GVRC.TouchpadButton)
+            if (e.PropertyName == nameof(GearVrController4Windows.GearVrController.TouchpadButton)
+                && ViewModel.GVRC.TouchpadButton == true)
             {
                 var oldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).FirstOrDefault();
                 var secondOldestNonViewedDonor = ViewModel.Donors.Where(a => a.IsViewed == false).OrderBy(a => a.CreatedDate).Skip(1).FirstOrDefault();
@@ -91,7 +92,8 @@ namespace DonationBoard.Views
                 ScrollGrid(fvDonors.SelectedIndex);
             }
 
-            if (ViewModel.GVRC.BackButton)
+            if (e.PropertyName == nameof(GearVrController4Windows.GearVrController.BackButton)
+                && ViewModel.GVRC.BackButton == true)
             {
                 DonorPopup.IsOpen = false;
             }

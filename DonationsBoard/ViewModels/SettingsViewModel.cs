@@ -134,7 +134,7 @@ namespace DonationBoard.ViewModels
 
         private void OnDeviceSelected()
         {
-            _gearVrController.Create(SelectedDevice.DeviceInformation);
+            _gearVrController.ConnectAsync(SelectedDevice.DeviceInformation);
 
             AppSettings.Current.CurrentController = SelectedDevice.DeviceInformation.Id;
         }

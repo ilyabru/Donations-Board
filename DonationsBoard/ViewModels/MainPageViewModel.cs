@@ -114,7 +114,7 @@ namespace DonationBoard.ViewModels
                 try
                 {
                     var savedDeviceInfo = await DeviceInformation.CreateFromIdAsync(ccId); // TODO: add check that this is proper device ID
-                    await GVRC.Create(savedDeviceInfo);
+                    await GVRC.ConnectAsync(savedDeviceInfo);
                 }
                 catch (Exception ex)
                 {
