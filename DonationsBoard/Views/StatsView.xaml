@@ -28,8 +28,8 @@
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="City" Binding="{Binding City}" Tag="City"/>
                 <controls:DataGridTextColumn Header="Total Donators" Binding="{Binding TotalDonations}" Tag="TotalDonations"/>
-                <controls:DataGridTextColumn Header="Total Amount" Binding="{Binding AmountRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}'}" Tag="AmountRaised" />
-                <controls:DataGridTextColumn Header="Average Amount" Binding="{Binding AverageRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}'}" Tag="AverageRaised"/>
+                <controls:DataGridTextColumn Header="Total Amount" Binding="{Binding AmountRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}', ConverterLanguage='en-CA'}" Tag="AmountRaised" />
+                <controls:DataGridTextColumn Header="Average Amount" Binding="{Binding AverageRaised, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C2}', ConverterLanguage='en-CA'}" Tag="AverageRaised"/>
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>

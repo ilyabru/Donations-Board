@@ -82,23 +82,16 @@
                       SelectionChanged="lstvDonors_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Donor">
-                        <StackPanel Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}">
-                            <TextBlock Text="{x:Bind Name, Mode=OneWay}" Foreground="Black" />
-                            <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black"/>
-                            <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" Foreground="Black"/>
+                        <StackPanel Background="{x:Bind IsViewed, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}" BorderBrush="Black" BorderThickness="1">
+                            <TextBlock Text="{x:Bind Name, Mode=OneWay}" Foreground="Black" Margin="3,1,3,1"/>
+                            <TextBlock Text="{x:Bind Location, Mode=OneWay}" Foreground="Black" Margin="3,1,3,1"/>
+                            <TextBlock Text="{x:Bind DisplayAmount, Mode=OneWay}" Foreground="Black" Margin="3,1,3,1"/>
                             <TextBlock Text="{x:Bind ViewedDate, Mode=OneWay, 
                                 Converter={StaticResource StringFormatConverter}, 
-                                ConverterParameter='Viewed at: {0}'}" Foreground="Black"/>
+                                ConverterParameter='Viewed at: {0}'}" Foreground="Black" Margin="3,1,3,1"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Padding" Value="12,2,12,0" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="Padding" Value="12,2,12,0" />
-                    </Style>
-                </ListView.ItemContainerStyle>
             </ListView>
             
             <Button Grid.Row="1" 

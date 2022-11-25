@@ -159,7 +159,7 @@
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
                 <TextBlock Text="{x:Bind ViewModel.Donors.Count, Mode=OneWay}" FontSize="26" Style="{StaticResource displayFont}" />
                 <TextBlock Text=" Angels" FontSize="26" Margin="0,0,20,0" Style="{StaticResource displayFont}"/>
-                <TextBlock Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C0}', Mode=OneWay}" FontSize="26" Style="{StaticResource displayFont}"/>
+                <TextBlock Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:C0}', ConverterLanguage='en-CA', Mode=OneWay}" FontSize="26" Style="{StaticResource displayFont}"/>
             </StackPanel>
 
             <!--popup showing a larger card of the donator-->
